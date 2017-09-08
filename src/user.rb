@@ -6,3 +6,10 @@
     Description: 
 
 =end
+
+class User
+    
+        def initialize
+        end
+    
+    end

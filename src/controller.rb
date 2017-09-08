@@ -6,3 +6,10 @@
     Description: 
 
 =end
+
+class Controller
+
+    def initialize
+    end
+
+end

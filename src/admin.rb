@@ -6,3 +6,10 @@
     Description: 
 
 =end
+
+class Admin
+    
+        def initialize
+        end
+    
+    end

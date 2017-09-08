@@ -6,3 +6,10 @@
     Description: 
 
 =end
+
+class DatabaseController
+    
+        def initialize
+        end
+    
+    end

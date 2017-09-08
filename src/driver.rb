@@ -6,3 +6,10 @@
     Description: 
 
 =end
+
+class Driver
+    
+        def initialize
+        end
+    
+    end
