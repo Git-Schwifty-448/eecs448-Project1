@@ -7,9 +7,17 @@
 
 =end
 
+require_relative "driver"
+
 class Controller
 
     def initialize
+    end
+
+    def original
+        drive = Driver.new
+
+        drive.title_print("Hello from Controller")
     end
 
 end

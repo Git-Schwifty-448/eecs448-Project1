@@ -7,8 +7,14 @@
 
 =end
 
+require "./src/controller.rb"
+
 def run
     puts "Run"
+
+    co = Controller.new
+
+    co.original
 end
 
 run
