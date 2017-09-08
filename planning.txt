@@ -1,0 +1,30 @@
+
+
+Project 1 Planning
+
+Modes
++ Admin
+  -> User can create an event
+  -> Event will have a name
+  -> Must be a real date and 12/24 hr options
+  -> Slotted through 30 minute increments, all on the same 24hr block
+  -> Create should be listed as an attendee
+
+  -> User creates an event, event is stored, and then retrieved by users in User mode
+
++ User
+  -> Users will be able to see list of events
+  -> for ea time slot, the user will be able to choose attend or not
+
+
+Using SQLite
+  -> Fields { Name of event, Date, Time slots (CSV,  24hrs), Attendees (CSV) } 
+
+Ruby Classes
+  -> Main.rb
+  —-> Controller.rb
+  ———> Admin.rb
+  ———> User.rb
+
+  -> databaseController.rb
+  -> driver.rb
