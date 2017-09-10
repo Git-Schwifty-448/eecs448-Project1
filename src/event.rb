@@ -1,9 +1,9 @@
 =begin
 
     File: event.rb
-    Author:
+    Author: Qualen Pollard
     Date Created: 9/10/17
-    Description:
+    Description: Represents an event s
 
 =end
 
@@ -11,16 +11,24 @@ class Event
 
     #Contstructor method
     def initialize
-      @name, @date, @time, @description
+      @attendee, @month, @weekDay, @day, @time, @description
     end
 
     #Accessor methods
-    def getName
-      @name
+    def getAttendee
+      @attendee
     end
 
-    def getDate
-      @date
+    def getMonth
+      @month
+    end
+
+    def getWeekDay
+      @weekDay
+    end
+
+    def getDay
+      @day
     end
 
     def getTime
@@ -32,12 +40,20 @@ class Event
     end
 
     #Setter methods
-    def setName(theName)
-      @name = theName
+    def setAttendee(theAttendee)
+      @attendee = theAttendee
     end
 
-    def setDate(theDate)
-      @date = theDate
+    def setMonth(theMonth)
+      @month = theMonth
+    end
+
+    def setWeekDay(theWeekDay)
+      @weekDay = theWeekDay
+    end
+
+    def setDay(theDay)
+      @day = theDay
     end
 
     def setTime(theTime)
@@ -47,8 +63,6 @@ class Event
     def setDescription(theDescription)
       @description = theDescription
     end
-    
-
 
 
 end
