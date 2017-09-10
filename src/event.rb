@@ -17,6 +17,10 @@ class Event
 		@attendees = Array.new #contains strings with the names of attendees
     end
 
+	def addAttendee(name)
+		@attendees.push(name)
+	end
+
 	def getName
 		@name
 	end
