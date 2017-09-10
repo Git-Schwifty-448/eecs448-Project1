@@ -8,6 +8,8 @@
 =end
 
 require_relative "driver"
+require_relative "admin"
+require_relative "user"
 
 class Controller
 
@@ -29,9 +31,11 @@ class Controller
 
         case menu_choice
             when 1
-                puts "option 1"
+                @admin_controller = Admin.new
+                @admin_controller.run
             when 2
-                puts "option 2"
+                @user_controller = User.new
+                @user_controller.run
         end
 
 

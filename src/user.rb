@@ -11,5 +11,8 @@ class User
     
         def initialize
         end
-    
+
+        def run
+            puts "user"
+        end
     end

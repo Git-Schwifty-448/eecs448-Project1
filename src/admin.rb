@@ -12,4 +12,8 @@ class Admin
         def initialize
         end
     
+        def run
+            puts "admin"
+        end
+
     end
