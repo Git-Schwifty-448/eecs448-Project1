@@ -31,8 +31,23 @@ class Event
       @description
     end
 
-    
+    #Setter methods
+    def setName(theName)
+      @name = theName
+    end
 
+    def setDate(theDate)
+      @date = theDate
+    end
+
+    def setTime(theTime)
+      @time = theTime
+    end
+
+    def setDescription(theDescription)
+      @description = theDescription
+    end
+    
 
 
 
