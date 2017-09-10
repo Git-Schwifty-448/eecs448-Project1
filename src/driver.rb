@@ -38,5 +38,28 @@ class Driver
         end
         print "\u2518\n"
     end
-    
+
+    def menu_builder(option_array)
+
+        
+                option_array.each do |option|            
+                    puts " \u21E8 #{option}"
+                end
+        
+                choice_getter(1,option_array.length)
+                
+            end
+        
+            def choice_getter(low,high)
+                
+                choice = 0
+        
+                while (choice < low || choice > high)
+                    print "Please make a selection: "
+                    choice = gets.to_i
+                end
+        
+                return choice
+        
+            end
 end

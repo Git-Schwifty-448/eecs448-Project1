@@ -14,7 +14,7 @@ def run
 
     co = Controller.new
 
-    co.original
+    co.run
 end
 
 run

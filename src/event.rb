@@ -7,7 +7,7 @@
 
 =end
 
-class Controller
+class Event
 
     def initialize
 
