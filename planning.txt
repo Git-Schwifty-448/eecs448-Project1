@@ -18,7 +18,7 @@ Modes
 
 
 Using SQLite
-  -> Fields { Name of event, Date, Time slots (CSV,  24hrs), Attendees (CSV) } 
+  -> Fields { Name of event, Descripton, Date, Time slots (CSV,  24hrs), Attendees (CSV) } 
 
 Ruby Classes
   -> Main.rb
