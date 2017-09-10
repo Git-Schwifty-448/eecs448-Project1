@@ -17,10 +17,6 @@ def run
     co = Controller.new
 
     co.run
-
-	dbCont = DatabaseController.new
-	e = Event.new("Partaaay", "gonna be lit", "6", "whenever")
-	dbCont.persist_event(e)
 end
 
 run
