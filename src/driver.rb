@@ -46,7 +46,8 @@ class Driver
                     puts " \u21E8 #{option}"
                 end
         
-                choice_getter(1,option_array.length)
+                menu_choice = choice_getter(1,option_array.length)
+                return menu_choice
                 
             end
         
