@@ -1,0 +1,22 @@
+event
+
+
+
+
+{ Name of event, Date, Time slots (CSV,  24hrs), Attendees (CSV) }
+
+
+
+FOR EACH EVENT {
+
+    Upcoming Events (12 hrs)/(24 hrs)
+    Name, Date, Time Slots, Attendees
+
+can you make this event? (Or enter "24" to change to 24 hour date format)
+
+}
+
+
+
+
+
