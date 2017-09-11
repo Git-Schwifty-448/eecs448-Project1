@@ -8,6 +8,7 @@
 =end
 
 require_relative 'event'
+require_relative 'databaseController'
 
 class User
     
@@ -19,6 +20,25 @@ class User
     end
 
     def run
+
+        @db = DatabaseController.new
+
+        #eventually this will be pulling events from the database based on the time list
+        # @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",["15:00","23:30"])            
+        # @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"])
+        # @e3 = Event.new("e3","new e3","06/06/17",["12:30"]) 
+        
+        # @db.persist_event(@e1)
+        # @db.persist_event(@e2)
+        # @db.persist_event(@e3)
+
+
+        @event_array = @db.get_events
+
+
+        @events = true
+
+
 
         @events = true                              # only for testing
 
@@ -43,21 +63,11 @@ class User
     
     end
 
-
+    # If there are events stored in the database, they are grabbed 
+    # and printed to terminal window (via single_event_printer). 
+    # If there are no events, a message is printed as such   
     def get_events
-
-        #eventually this will be pulling events from the database based on the time list
-            @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",["15:00","23:30"])            
-            @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"])
-            @e3 = Event.new("e3","new e3","06/06/17",["12:30"]) 
-            
-            @event_array = [@e1,@e2,@e3]
-            @events = true
-
-
-        # if there are events to grab
         if @events  == true
-
             system "clear"
             @drive.title_print_ext("Events")
             @drive.sub_title_print("Upcoming Events")
@@ -66,16 +76,8 @@ class User
             # Grab each event
             for i in 0...@event_array.length
                 @drive.hr
-
-                # Print each event
                 single_event_printer(@event_array[i])
-
-
             end
-
-            # event_controller()
-
-
         else
             print "There are not currently any events in the database\n"
         end
