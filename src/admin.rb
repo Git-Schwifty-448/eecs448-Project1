@@ -21,10 +21,17 @@ class Admin
           @event_date_time = DateTime.new
         end
 
-        def run
+        def run                                                                 #Main method that calls other methods
+          yesNo = true
           @drive.title_print("Admin Mode")
-          print set_admin_info
-          print create_event
+          set_admin_info
+
+          while yesNo
+            create_date
+            create_date_time
+
+            yesNo = get_validation                                              #Asks user if they want to create another event.
+          end
         end
 
         #Accessor method
@@ -86,13 +93,13 @@ class Admin
         end
 
         #Method in charge of getting information of events and creating them.
-        def create_event
+        def create_date
           invalid_date = true
 
           #Temperary date of todays date.
           date = Date.today
 
-            @drive.title_print("Create an Event")
+            @drive.title_print("Date Formation")
 
             print "Enter a name for the event: "
             eventName = gets.chomp
@@ -160,13 +167,38 @@ class Admin
               invalid_date = false
             end
 
-
-
           end
-
-
-
 
         end
 
-    end
+
+        def create_date_time
+
+        end
+
+
+        def get_validation
+          print "Would you like to create another event?(Yes/No): "
+          response = gets.chomp
+
+          #Check for Alphetical characters
+          while !(response =~ /[[:alpha:]]/)
+            print "Not a valid input. Enter Yes/No: "
+            response = gets.chomp
+          end
+
+          #Check for if the answer is yes or no.
+          while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
+            print "Not a valid input. Enter Yes/No: "
+            response = gets.chomp
+          end
+
+          #Sets a temp variable to return to call.
+          if ((response.casecmp("yes")) == 0)
+            return true
+          elsif ((response.casecmp("no")) == 0)
+            return false
+          end
+        end
+
+end
