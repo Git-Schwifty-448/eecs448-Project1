@@ -7,35 +7,37 @@
 
 class Event
 
-    def initialize(name, description, date, timeslots)
+	# timeslots and attendees must be passed in as arrays, but empty arryas are
+	# are acceptable
+    def initialize(name, description, date, timeslots, attendees)
 		@name = name
 		@description = description
 		@date = date
 		@timeslots = timeslots
-		@attendees = Array.new #contains strings with the names of attendees
+		@attendees = attendees #contains strings with the names of attendees
     end
 
-	def addAttendee(name)
+	def add_attendee(name)
 		@attendees.push(name)
 	end
 
-	def getName
+	def get_name
 		@name
 	end
 
-	def getDescription
+	def get_description
 		@description
 	end
 
-	def getDate
+	def get_date
 		@date
 	end
 
-	def getTimeslots
+	def get_timeslots
 		@timeslots
 	end
 
-	def getAttendees
+	def get_attendees
 		@attendees
 	end
 
