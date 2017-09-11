@@ -9,7 +9,6 @@
 
 require "./src/controller.rb"
 require "./src/event.rb"
-require "./src/databaseController.rb"
 
 def run
     puts "Run"
