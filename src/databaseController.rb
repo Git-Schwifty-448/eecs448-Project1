@@ -29,6 +29,13 @@ class DatabaseController
 			end
 		end
 
+		if(!@DB.table_exists?(:timeslots))
+			@DB.create_table :timeslots do
+				String :time
+				String :parent_id
+			end
+		end
+
 		if(!@DB.table_exists?(:attendees))
 			@DB.create_table :attendees do
 				String :name
@@ -45,9 +52,13 @@ class DatabaseController
 	# attendee belongs to
 	def persist_event(event)
 		@DB.transaction do
-			id = @DB[:events].insert(:name => event.getName, :description => event.getDescription, :date => event.getDate, :timeslots => event.getTimeslots)
+			id = @DB[:events].insert(:name => event.get_name, :description => event.get_description, :date => event.get_date)
 
-			event.getAttendees.each do |attendee|
+			event.get_timeslots.each do |timeslot|
+				@DB[:timeslots].insert(:time => timeslot, :parent_id => id)
+			end
+
+			event.get_attendees.each do |attendee|
 				@DB[:attendees].insert(:name => attendee, :parent_id => id)
 			end
 		end
@@ -65,12 +76,17 @@ class DatabaseController
 		events = []
 
 		@DB[:events].each do |event|
-			newEvent = Event.new(event[:"name"], event[:"description"], event[:"date"], event[:"timeslots"])
-
-			@DB[:attendees].where(parent_id: event[:"id"]).each do |attendee|
-				newEvent.addAttendee(attendee[:"name"])
+			newTimeslots = []
+			@DB[:timeslots].where(parent_id: event[:"id"]).each do |timeslot|
+				newTimeslots.push(timeslot[:"time"])
 			end
 
+			newAttendees = []
+			@DB[:attendees].where(parent_id: event[:"id"]).each do |attendee|
+				newAttendees.push(attendee[:"name"])
+			end
+
+			newEvent = Event.new(event[:"name"], event[:"description"], event[:"date"], newTimeslots, newAttendees)
 			events.push(newEvent)
 		end
 
