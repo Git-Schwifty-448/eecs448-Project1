@@ -3,11 +3,12 @@
     File: main.rb
     Author:
     Date Created: 9/8/17
-    Description: 
+    Description:
 
 =end
 
 require "./src/controller.rb"
+require "./src/event.rb"
 
 def run
     system "clear"

@@ -3,7 +3,7 @@
     File: controller.rb
     Author:
     Date Created: 9/8/17
-    Description: 
+    Description:
 
 =end
 
@@ -48,8 +48,7 @@ class Controller
                 @user_controller = User.new
                 @user_controller.run
         end
-
-
+		
     end
 
 end
