@@ -18,7 +18,7 @@ class Driver
         title_size = title.length
 
         # top line
-        print "\u250C"
+        print "\n\u250C"
         for i in 0...@size
             print "\u2500"
         end

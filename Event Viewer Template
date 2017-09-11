@@ -20,3 +20,15 @@ can you make this event? (Or enter "24" to change to 24 hour date format)
 
 
 
+## Model for data for user Model
+
+List of Events 
+-> read into an array the list of events in time order
+-> grab each row, print each row
+
+-> user selects which row event he wants to attend event
+-> User is posted to database as Attendee using map key
+
+-> User goes back to list of events (loops)
+
+-> When finished, user is presented with a confirmation screen showing attended events

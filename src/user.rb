@@ -7,6 +7,8 @@
 
 =end
 
+require_relative 'event'
+
 class User
     
         def initialize
@@ -27,6 +29,7 @@ class User
 
         # updates the member variable @user_name with a name given by the user
         def get_user_name
+            system "clear"
             @drive.title_print("User Mode")
             @drive.sub_title_print("Get User Name")
 
@@ -34,23 +37,36 @@ class User
             @user_name = gets.chomp
         end
 
+        def get_list_events
+        
+        end
+
 
         def get_events
-            if(@events  == true) 
-                print "\n\n"
+
+            #eventually this will be pulling events from the database based on the time list
+                @e1 = Event.new("e1","new e1","01/02/17",["15:00","23:30"])            
+                @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"]) 
                 
+                @event_array = [@e1,@e2]
+                @events = true
 
-                # get the first event from the database
 
-                @name = "Event Sample"
-                @date = "10/9/17"
-                @time = ["15:30","16:00"]
-                @attendees = "Alex, Q, Abe"
-                
-                send = [@name,@date,@time,@attendees]
+            # if there are events to grab
+            if @events  == true
 
-                event_tray(send)
+                system "clear"
+                @drive.title_print("Events")
+                @drive.sub_title_print("Upcoming Events")
+                print "    (use t to toggle 12 or 24 hour time formats)\n"
 
+                # Grab each event
+                for i in 0...@event_array.length
+                    # Print each event
+                    single_event_printer(@event_array[i])
+                end
+
+                # event_controller()
 
 
             else
@@ -58,12 +74,99 @@ class User
             end
         end
 
-        # outputs a single event as an array to send to eventTray
-        def single_event_printer(data)
+        # Template for printing events
+        def single_event_printer(event)
+            puts "\n       Event Name: " + event.getName
+            puts "      Description: " + event.getDescription
+            puts "             Date: " + event.getDate
+            print "          Time(s)\n"
 
-            puts "\n Event Name: " + data[0]
-            puts "       Date: " + data[1]
-            print "    Time(s): "
+            if !@military_time
+                print "           (12hr): "
+            else
+                print "           (24hr): "
+            end
+
+            if event.getTimeslots.kind_of?(Array)
+
+                for i in 0...event.getTimeslots.length
+                    print event.getTimeslots[i]
+                    if i != event.getTimeslots.length-1
+                        print ", "
+                    end
+
+                end
+            else
+                print "Should be an array!\n"
+            end
+
+            puts "\n        Attendees: "
+
+            if event.getAttendees.kind_of?(Array)
+
+                for i in 0...event.getAttendees.length
+                    print event.getAttendees[i]
+                    if i != event.getAttendees.length-1
+                        print ", "
+                    end
+
+                end
+            else
+                print "Should be an array!\n"
+            end
+        end
+
+        # outputs each event and returns if the user wants to attend
+        def event_controller(event)
+
+
+            system "clear"
+            @drive.title_print("Events")
+            @drive.sub_title_print("Upcoming Events")
+
+            single_event_printer(data)
+
+            print "\n    Toggle time format with t"
+
+            @input_char = ''
+
+            while (@input_char != 'y') && (@input_char != 'n') && (@input_char != 't')
+                print "\n\n    Do you wish to attend this event?: (y/n) "
+                @input_char = gets.chomp
+            end
+
+
+            case @input_char
+                when 'y'
+                when 'n'
+                    # go grab the next entry
+                when 't'
+                    #repring the event with military time flipped
+                    if !@military_time
+                        @military_time = true
+                    else
+                        @military_time = false
+                    end
+                    system "clear"
+                    event_tray(data)
+            end
+
+        end
+            
+    end
+
+=begin GARBAGE
+
+
+            puts "\n    Event Name: " + data[0]
+            puts "          Date: " + data[1]
+            print "       Time(s)\n"
+            if !@military_time
+                print "        (12hr): "
+            else
+                print "        (24hr): "
+            end
+            
             
             if data[2].kind_of?(Array)
                 for i in 0...data[2].length
@@ -99,48 +202,6 @@ class User
                 print data[2] + "\n"
             end
 
-            puts "  Attendees: " + data[3]
-        end
+            puts "     Attendees: " + data[3]
 
-        # outputs each event and returns if the user wants to attend
-        def event_tray(data)
-            @drive.title_print("Events")
-            @title = "Upcoming Events"
-
-            if(@militaryTime == false)
-                @title = @title + " (12hr)"
-            else 
-                @title = @title + " (24hr)"
-            end
-
-            @drive.sub_title_print(@title)
-
-            single_event_printer(data)
-
-            print "\n    Toggle time format with t"
-
-            @input_char = ''
-
-            while (@input_char != 'y') && (@input_char != 'n') && (@input_char != 't')
-                print "\n\n    Do you wish to attend this event?: (y/n) "
-                @input_char = gets.chomp
-            end
-
-
-            case @input_char
-                when 'y'
-                when 'n'
-                when 't'
-                    #repring the event with military time flipped
-                    if !@military_time
-                        @military_time = true
-                    else
-                        @military_time = false
-                    end
-
-                    event_tray(data)
-            end
-
-        end
-            
-    end
+=end
