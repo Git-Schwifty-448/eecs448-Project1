@@ -3,13 +3,15 @@
     File: controller.rb
     Author:
     Date Created: 9/8/17
-    Description: 
+    Description:
 
 =end
 
 require_relative "driver"
 require_relative "admin"
 require_relative "user"
+require_relative "event"
+require_relative "databaseController"
 
 class Controller
 
@@ -26,7 +28,7 @@ class Controller
 
         menu[0] = "1. Admin Mode"
         menu[1] = "2. User Mode"
-        
+
         menu_choice = @drive.menu_builder(menu)
 
         case menu_choice
@@ -37,8 +39,7 @@ class Controller
                 @user_controller = User.new
                 @user_controller.run
         end
-
-
+		
     end
 
 end
