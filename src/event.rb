@@ -1,68 +1,42 @@
 =begin
-
     File: event.rb
-    Author: Qualen Pollard
+    Author:
     Date Created: 9/10/17
-    Description: Represents an event s
-
+    Description: Models an event.
 =end
 
 class Event
 
-    #Contstructor method
-    def initialize
-      @attendee, @month, @weekDay, @day, @time, @description
+    def initialize(name, description, date, timeslots)
+		@name = name
+		@description = description
+		@date = date
+		@timeslots = timeslots
+		@attendees = Array.new #contains strings with the names of attendees
     end
 
-    #Accessor methods
-    def getAttendee
-      @attendee
-    end
+	def addAttendee(name)
+		@attendees.push(name)
+	end
 
-    def getMonth
-      @month
-    end
+	def getName
+		@name
+	end
 
-    def getWeekDay
-      @weekDay
-    end
+	def getDescription
+		@description
+	end
 
-    def getDay
-      @day
-    end
+	def getDate
+		@date
+	end
 
-    def getTime
-      @time
-    end
+	def getTimeslots
+		@timeslots
+	end
 
-    def getDescription
-      @description
-    end
-
-    #Setter methods
-    def setAttendee(theAttendee)
-      @attendee = theAttendee
-    end
-
-    def setMonth(theMonth)
-      @month = theMonth
-    end
-
-    def setWeekDay(theWeekDay)
-      @weekDay = theWeekDay
-    end
-
-    def setDay(theDay)
-      @day = theDay
-    end
-
-    def setTime(theTime)
-      @time = theTime
-    end
-
-    def setDescription(theDescription)
-      @description = theDescription
-    end
-
+	def getAttendees
+		@attendees
+	end
 
 end
