@@ -24,16 +24,19 @@ class User
         @db = DatabaseController.new
 
         #eventually this will be pulling events from the database based on the time list
-        # @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",["15:00","23:30"])            
-        # @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"])
-        # @e3 = Event.new("e3","new e3","06/06/17",["12:30"]) 
+        @e1_times = ["15:00","23:30","17:30"]
+        @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",@e1_times,["Abe"])            
+        @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"],["Dick"])
+        @e3 = Event.new("e3","new e3","06/06/17",["12:30"],["Alex"]) 
         
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
         # @db.persist_event(@e3)
 
 
-        @event_array = @db.get_events
+        # @event_array = @db.get_events
+
+        @event_array = [@e1,@e2,@e3]
 
 
         @events = true
@@ -83,7 +86,7 @@ class User
         end
     end
 
-    # Template for printing events
+    # Template for printing a single event
     def single_event_printer(event)
         puts "\n       Event Name: " + event.getName
         print "      Description: "
@@ -99,9 +102,9 @@ class User
 
         # make sure the event was created correctly
         if event.getTimeslots.kind_of?(Array)
-            for i in 0...event.getTimeslots.length
-                print event.getTimeslots[i]
-                if i != event.getTimeslots.length-1
+            for j in 0...event.getTimeslots.length
+                print event.getTimeslots[j]
+                if j != event.getTimeslots.length-1
                     print ", "
                 end
             end
@@ -124,6 +127,7 @@ class User
                 end
 
             end
+            print "\n"
         else
             print "Should be an array!\n"
         end

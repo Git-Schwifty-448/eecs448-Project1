@@ -6,12 +6,12 @@
 =end
 
 class Event
-        def initialize(name, description, date, timeslots)
+        def initialize(name, description, date, timeslots,attendees)
             @name = name
             @description = description
             @date = date
-            @timeslots = Array.new #contains strings with the timeslots to choose from
-            @attendees = Array.new #contains strings with the names of attendees
+            @timeslots = timeslots #contains strings with the timeslots to choose from
+            @attendees = attendees #contains strings with the names of attendees
         end
     
         def addAttendee(name)
