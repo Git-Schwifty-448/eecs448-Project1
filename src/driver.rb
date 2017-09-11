@@ -10,7 +10,7 @@
 class Driver
     
     def initialize
-        @size = 75
+        @size = 95
     end
 
     def title_print(title)
@@ -26,8 +26,12 @@ class Driver
 
         # title line
         print "\u2502 \u25B6 #{title} "
-        for i in 0...(@size - (title_size+4))
-            print " "
+        for i in 0...(@size-4 - title_size)
+            if i == (@size - 3)
+                print "\u2513"
+            else
+                print " "
+            end
         end
         print "\u2502\n"
 
@@ -39,19 +43,58 @@ class Driver
         print "\u2518\n"
     end
 
-    def sub_title_print(title)
+    #for use with sub title print onyl
+    def title_print_ext(title)
         
         title_size = title.length
 
+        # top line
+        print "\n\u250C"
+        for i in 0...@size
+            print "\u2500"
+        end
+        print "\u2510\n"
+
         # title line
-        print "\u2502   \u25B6 #{title} "
-        for i in 0...(@size - (title_size+6))
-            print " "
+        print "\u2502 \u25B6 #{title} "
+        for i in 0...(@size-4 - title_size)
+            if i == (@size-7 - title_size)
+                print "\u2517"
+            else
+                print " "
+            end
         end
         print "\u2502\n"
 
         # bottom line
         print "\u2514"
+        for i in 0...@size
+            if i == 3
+                print "\u252C"
+            else
+                print "\u2500"
+            end
+        end
+        print "\u2534\u2500\u2500\u2500\u2510\n"
+    end
+
+    def sub_title_print(title)
+        
+        title_size = title.length
+
+        # title line
+        print "    \u2502 \u25B6 #{title} "
+        for i in 0...(@size - (title_size+4))
+            if i == (@size-7 - title_size)
+                print "\u2517"
+            else
+                print " "
+            end
+        end
+        print "\u2502\n"
+
+        # bottom line
+        print "    \u2514"
         for i in 0...@size
             print "\u2500"
         end
@@ -80,6 +123,46 @@ class Driver
         end
 
         return choice
+
+    end
+
+    def hr
+        for i in 0...@size+2
+            if i > 3
+                print "-"
+            else
+                print " "
+            end
+        end
+    end
+
+    def desc_printer(string)
+        @length = string.length.clone
+        string = string.split(' ')
+
+        @new_string = String.new
+        @first_line = true
+
+        for i in 0...string.length
+            @new_string = @new_string + string[i] + " "
+
+            if @first_line
+                if @new_string.length > 66
+                    print @new_string + "\n"
+                    @new_string = "                   "
+                    @first_line = false
+                end
+                
+            else 
+                if @new_string.length > 85
+                    print @new_string + "\n"
+                    @new_string = "                   "
+                end
+            end
+
+        end
+
+        print @new_string + "\n"
 
     end
 end

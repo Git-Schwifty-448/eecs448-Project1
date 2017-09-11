@@ -17,7 +17,7 @@ can you make this event? (Or enter "24" to change to 24 hour date format)
 }
 
 
-
+    Event            Desc                Date        Time        Attendees
 
 
 ## Model for data for user Model
@@ -32,3 +32,10 @@ List of Events
 -> User goes back to list of events (loops)
 
 -> When finished, user is presented with a confirmation screen showing attended events
+
+
+     ╱
+    ╱       | EECS 448 Project 1
+   ╳        | Team: Git Schwifty
+  ╱         | Alex, Abe, Qualen
+ ╱

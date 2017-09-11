@@ -10,7 +10,7 @@ class Event
             @name = name
             @description = description
             @date = date
-            @timeslots = timeslots
+            @timeslots = Array.new #contains strings with the timeslots to choose from
             @attendees = Array.new #contains strings with the names of attendees
         end
     

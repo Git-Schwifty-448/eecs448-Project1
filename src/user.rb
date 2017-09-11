@@ -30,10 +30,10 @@ class User
         # updates the member variable @user_name with a name given by the user
         def get_user_name
             system "clear"
-            @drive.title_print("User Mode")
+            @drive.title_print_ext("User Mode")
             @drive.sub_title_print("Get User Name")
 
-            print "Please enter a username: "
+            print "\tPlease enter a username: "
             @user_name = gets.chomp
         end
 
@@ -45,10 +45,11 @@ class User
         def get_events
 
             #eventually this will be pulling events from the database based on the time list
-                @e1 = Event.new("e1","new e1","01/02/17",["15:00","23:30"])            
-                @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"]) 
+                @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",["15:00","23:30"])            
+                @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"])
+                @e3 = Event.new("e3","new e3","06/06/17",["12:30"]) 
                 
-                @event_array = [@e1,@e2]
+                @event_array = [@e1,@e2,@e3]
                 @events = true
 
 
@@ -56,14 +57,18 @@ class User
             if @events  == true
 
                 system "clear"
-                @drive.title_print("Events")
+                @drive.title_print_ext("Events")
                 @drive.sub_title_print("Upcoming Events")
-                print "    (use t to toggle 12 or 24 hour time formats)\n"
+                print "\t(use t to toggle 12 or 24 hour time formats)\n"
 
                 # Grab each event
                 for i in 0...@event_array.length
+                    @drive.hr
+
                     # Print each event
                     single_event_printer(@event_array[i])
+
+
                 end
 
                 # event_controller()
@@ -77,7 +82,8 @@ class User
         # Template for printing events
         def single_event_printer(event)
             puts "\n       Event Name: " + event.getName
-            puts "      Description: " + event.getDescription
+            print "      Description: "
+            @drive.desc_printer event.getDescription
             puts "             Date: " + event.getDate
             print "          Time(s)\n"
 
@@ -87,20 +93,23 @@ class User
                 print "           (24hr): "
             end
 
+            # make sure the event was created correctly
             if event.getTimeslots.kind_of?(Array)
-
                 for i in 0...event.getTimeslots.length
                     print event.getTimeslots[i]
                     if i != event.getTimeslots.length-1
                         print ", "
                     end
-
                 end
             else
                 print "Should be an array!\n"
             end
 
-            puts "\n        Attendees: "
+            print "\n        Attendees: "
+
+            if event.getAttendees.empty?
+                print "None yet, be the first to attend!\n"
+            end
 
             if event.getAttendees.kind_of?(Array)
 

@@ -19,14 +19,23 @@ class Controller
 
     def run
 
-
         @drive.title_print("Event Coordinator")
+
+        print "\n\n"
+        puts "\t            \u2513"
+        puts "\t          \u2571"
+        puts "\t        ╱           | EECS 448 Project 1"
+        puts "\t      ╳             | Team: Git Schwifty"
+        puts "\t    ╱               | Alex, Abe, Qualen"
+        puts "\t  ╱"
+        puts "\t\u2516\n\n\n"
 
         menu = Array.new
 
         menu[0] = "1. Admin Mode"
         menu[1] = "2. User Mode"
-        
+        menu[2] = "3. Quit"
+         
         menu_choice = @drive.menu_builder(menu)
 
         case menu_choice
