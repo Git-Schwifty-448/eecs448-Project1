@@ -55,6 +55,11 @@ class DatabaseController
 
 	# returns sorted array of events
 	#
+	# example usage:
+	# events = dbController.get_events
+	# events[0].getName
+	# etc.
+	#
 	# TODO: sort array
 	def get_events()
 		events = []
