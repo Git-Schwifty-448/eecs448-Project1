@@ -147,16 +147,16 @@ class Driver
             @new_string = @new_string + string[i] + " "
 
             if @first_line
-                if @new_string.length > 66
+                if @new_string.length > 60
                     print @new_string + "\n"
-                    @new_string = "                   "
+                    @new_string = "\t\t\t"
                     @first_line = false
                 end
                 
             else 
                 if @new_string.length > 85
                     print @new_string + "\n"
-                    @new_string = "                   "
+                    @new_string = "\t\t\t"
                 end
             end
 

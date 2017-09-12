@@ -7,6 +7,8 @@
 
 =end
 
+require 'date'
+
 require_relative 'event'
 require_relative 'databaseController'
 
@@ -25,9 +27,9 @@ class User
 
         #eventually this will be pulling events from the database based on the time list
         @e1_times = ["15:00","23:30","17:30"]
-        @e1 = Event.new("e1","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing","01/02/17",@e1_times,["Abe"])            
-        @e2 = Event.new("e2","new e2","01/03/17",["12:30","02:00"],["Dick"])
-        @e3 = Event.new("e3","new e3","06/06/17",["12:30"],["Alex"]) 
+        @e1 = Event.new("Awesome PArty","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing",Date.new(2018,3,18),@e1_times,["Abe"])            
+        @e2 = Event.new("Git wrecked","new e2",Date.parse('01-03-2017'),["12:30","02:00"],["Dick"])
+        @e3 = Event.new("heelo","new e3",Date.parse('06-03-2018'),["12:30"],["Alex"]) 
         
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
@@ -47,7 +49,7 @@ class User
 
         get_user_name()
         get_events()
-        #event_controller()
+        event_controller()
 
 
     end
@@ -79,7 +81,7 @@ class User
             # Grab each event
             for i in 0...@event_array.length
                 @drive.hr
-                single_event_printer(@event_array[i])
+                single_event_printer(@event_array[i],i+1)
             end
         else
             print "There are not currently any events in the database\n"
@@ -87,12 +89,15 @@ class User
     end
 
     # Template for printing a single event
-    def single_event_printer(event)
-        puts "\n       Event Name: " + event.getName
-        print "      Description: "
-        @drive.desc_printer event.getDescription
-        puts "             Date: " + event.getDate
-        print "   Time(s)"
+    def single_event_printer(event,id)
+
+        spacer = "        "
+
+        puts "\n\n" + spacer + "Event ID:\t" + id.to_s
+        puts "\n" + spacer + "Event Name:\t" + event.getName
+
+        puts spacer + "Date:\t\t" + event.getDate.strftime("%m/%d/%Y")
+        print spacer + "Time(s)"
 
         if !@military_time
             print " (12hr): "
@@ -112,7 +117,7 @@ class User
             print "Should be an array!\n"
         end
 
-        print "\n        Attendees: "
+        print "\n" + spacer + "Attendees:\t"
 
         if event.getAttendees.empty?
             print "None yet, be the first to attend!\n"
@@ -132,15 +137,16 @@ class User
             print "Should be an array!\n"
         end
 
+        print "\n" + spacer + "Description:\t"
+        @drive.desc_printer event.getDescription
+
 
     end
 
     # outputs each event and returns if the user wants to attend
     def event_controller()
 
-        menu = Array.new
         
-
 
         case @input_char
             when 'y'
@@ -153,7 +159,13 @@ class User
                 else
                     @military_time = false
                 end
+
+                get_events()
+                event_controller()
+
         end
+
+
 
     end
             
