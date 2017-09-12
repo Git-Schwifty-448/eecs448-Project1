@@ -41,13 +41,15 @@ class Controller
                 @user_controller.run
         end
 
+		# sample use of Event, Attendee, and DatabaseController
+		#
 		#dbCont = DatabaseController.new()
 		#e = Event.new("event", "description", Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
 		#a = Attendee.new("Mike", [DateTime.new(2017, 9, 15, 10)])
 		#e.add_attendee(a)
 		#dbCont.persist_event(e)
 
-		#puts dbCont.get_events[0].get_attendees[0].get_timeslots
+		#puts dbCont.get_events[1].get_id
     end
 
 end

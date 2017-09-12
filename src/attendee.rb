@@ -2,7 +2,7 @@
 
     File: attendee.rb
     Author: Alex Shadley
-    Date Created: 9/10/17
+    Date Created: 9/11/17
     Description: stores information about an attendee for a specific event
 
 =end

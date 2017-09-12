@@ -11,7 +11,7 @@ class Event
 
 	# timeslots and attendees must be passed in as arrays, but empty arrays are
 	# are acceptable
-    def initialize(name, description, date, timeslots, attendees)
+    def initialize(name, description, date, timeslots, attendees, id = nil)
 		raise ArgumentError.new("'name' must be a string") if !name.is_a? String
 		raise ArgumentError.new("'description' must be a string") if !description.is_a? String
 		raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
@@ -21,6 +21,10 @@ class Event
 		@date = date
 		@timeslots = timeslots
 		@attendees = attendees # contains attendee objects
+
+		if id
+			@id = id
+		end
     end
 
 	def add_attendee(attendee)
@@ -48,4 +52,7 @@ class Event
 		@attendees
 	end
 
+	def get_id
+		@id
+	end
 end
