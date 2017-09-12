@@ -11,6 +11,7 @@ require_relative "driver"
 require_relative "admin"
 require_relative "user"
 require_relative "event"
+require_relative "attendee"
 require_relative "databaseController"
 
 class Controller
@@ -40,6 +41,16 @@ class Controller
                 @user_controller.run
         end
 
+<<<<<<< HEAD
+=======
+		#dbCont = DatabaseController.new()
+		#e = Event.new("event", "description", Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
+		#a = Attendee.new("Mike", [DateTime.new(2017, 9, 15, 10)])
+		#e.add_attendee(a)
+		#dbCont.persist_event(e)
+
+		#puts dbCont.get_events[0].get_attendees[0].get_timeslots
+>>>>>>> 842a1346632b0c9c761a2e4ba27c134c9d8b6714
     end
 
 end
