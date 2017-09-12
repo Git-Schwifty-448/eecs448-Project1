@@ -97,7 +97,7 @@ class DatabaseController
 	def get_events()
 		events = []
 
-		@DB[:events].each do |event|
+		@DB[:events].order(:date).each do |event|
 			newTimeslots = []
 			@DB[:timeslots].where(parent_table: 'events', parent_id: event[:'id']).each do |timeslot|
 				newTimeslots.push(timeslot[:'time'])
