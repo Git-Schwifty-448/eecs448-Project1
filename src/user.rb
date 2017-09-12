@@ -44,8 +44,8 @@ class User
         @events = true
 
         while @browsing
-        get_events()
-        event_controller()
+            get_events()
+            event_controller()
         end
 
         reminder()
