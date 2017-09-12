@@ -18,11 +18,12 @@ class User
         @user_name = String.new
         @drive = Driver.new
         @events = false
-        @military_time = true;
+        @military_time = true
+        @number_of_events = 0
+        @spacer = "        "
     end
 
     def run
-
         @db = DatabaseController.new
 
         #eventually this will be pulling events from the database based on the time list
@@ -35,23 +36,15 @@ class User
         # @db.persist_event(@e2)
         # @db.persist_event(@e3)
 
-
         # @event_array = @db.get_events
 
         @event_array = [@e1,@e2,@e3]
-
-
+        @number_of_events = @event_array.length
         @events = true
-
-
-
-        @events = true                              # only for testing
 
         get_user_name()
         get_events()
         event_controller()
-
-
     end
 
     # updates the member variable @user_name with a name given by the user
@@ -62,10 +55,6 @@ class User
 
         print "\tPlease enter a username: "
         @user_name = gets.chomp
-    end
-
-    def get_list_events
-    
     end
 
     # If there are events stored in the database, they are grabbed 
@@ -91,13 +80,10 @@ class User
     # Template for printing a single event
     def single_event_printer(event,id)
 
-        spacer = "        "
-
-        puts "\n\n" + spacer + "Event ID:\t" + id.to_s
-        puts "\n" + spacer + "Event Name:\t" + event.getName
-
-        puts spacer + "Date:\t\t" + event.getDate.strftime("%m/%d/%Y")
-        print spacer + "Time(s)"
+        puts "\n\n#{@spacer}Event ID:\t" + id.to_s
+        puts "\n#{@spacer}Event Name:\t" + event.getName
+        puts "#{@spacer}Date:\t\t" + event.getDate.strftime("%m/%d/%Y")
+        print "#{@spacer}Time(s)"
 
         if !@military_time
             print " (12hr): "
@@ -117,7 +103,7 @@ class User
             print "Should be an array!\n"
         end
 
-        print "\n" + spacer + "Attendees:\t"
+        print "\n#{@spacer}Attendees:\t"
 
         if event.getAttendees.empty?
             print "None yet, be the first to attend!\n"
@@ -137,21 +123,46 @@ class User
             print "Should be an array!\n"
         end
 
-        print "\n" + spacer + "Description:\t"
+        print "\n#{@spacer}Description:\t"
         @drive.desc_printer event.getDescription
-
 
     end
 
     # outputs each event and returns if the user wants to attend
     def event_controller()
 
-        
+        @drive.hr
 
-        case @input_char
-            when 'y'
+        puts "\n\n#{@spacer}If you wish to attend an event, enter the Event's ID number otherwise enter t to toggle time"
+        puts "#{@spacer}format or \"Quit\" to end the application\n"
+
+        # set up the user input and create the array of acceptable responces
+        @user_input = ""
+        @acceptable_input = Array.new
+        @acceptable_input.push(*['t','q',"quit","Quit"])
+
+        for i in 1...@number_of_events+1
+            @acceptable_input.push(i.to_s)
+        end
+
+        # get user input
+        while !@acceptable_input.include? @user_input
+            print "\n#{@spacer}Choice: "
+            @user_input = gets.chomp
+        end
+
+        if @user_input.match(/\d/)
+            @user_input = @user_input.to_i
+        end
+
+        # handle input
+        case @user_input
+            when 1...@number_of_events+1
+                attend_event(@user_input)
+                exit
             when 'n'
                 # go grab the next entry
+                exit
             when 't'
                 #repring the event with military time flipped
                 if !@military_time
@@ -162,62 +173,11 @@ class User
 
                 get_events()
                 event_controller()
-
+                exit
         end
-
-
-
     end
-            
+    
+    def attend_event(event_id)
+        puts "hello from attend event!"
     end
-
-=begin GARBAGE
-
-
-            puts "\n    Event Name: " + data[0]
-            puts "          Date: " + data[1]
-            print "       Time(s)\n"
-            if !@military_time
-                print "        (12hr): "
-            else
-                print "        (24hr): "
-            end
-            
-            
-            if data[2].kind_of?(Array)
-                for i in 0...data[2].length
-
-                    # converter for standard time
-                    if !@military_time 
-                        
-                        @standard_time = String.new
-
-                        @temp_time = data[2][i].split(":")
-                        @temp_time[0] = @temp_time[0].to_i
-
-                        if @temp_time[0] > 12
-                            @temp_time[0] = @temp_time[0] - 12
-                            @temp_time[0] = @temp_time[0].to_s
-
-                            @standard_time = @temp_time[0] + ':' + @temp_time[1] + "pm"
-                        else
-                            @standard_time = @temp_time[0] + ':' + @temp_time[1] + "am"
-                        end
-
-                        print @standard_time
-                    else
-                        print data[2][i]
-                    end
-
-                        if i != data[2].length-1
-                            print ", "
-                        end
-                end
-                print "\n"
-            else
-                print data[2] + "\n"
-            end
-
-            puts "     Attendees: " + data[3]
-
-=end
+end
