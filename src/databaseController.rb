@@ -61,11 +61,27 @@ class DatabaseController
 			end
 
 			event.get_attendees.each do |attendee|
-				attendeeid = @DB[:attendees].insert(:name => attendee.get_name, :parent_id => id)
+				persist_attendee(attendee, id)
+			end
+		end
+	end
 
-				attendee.get_timeslots.each do |timeslot|
-					@DB[:timeslots].insert(:time => timeslot, :parent_table => 'attendees', :parent_id => attendeeid)
-				end
+	def persist_attendee(attendee, parentid)
+		id = @DB[:attendees].insert(:name => attendee.get_name, :parent_id => parentid)
+
+		attendee.get_timeslots.each do |timeslot|
+			@DB[:timeslots].insert(:time => timeslot, :parent_table => 'attendees', :parent_id => id)
+		end
+	end
+
+	def update_event(event)
+		eventDataset = @DB[:events].where(id: event.get_id)
+		attendeeDataset = @DB[:attendees].where(parent_id: event.get_id)
+
+		#if there are any missing attendees from the attendee table, add them
+		event.get_attendees.each do |attendee|
+			if attendeeDataset.where(name: attendee.get_name).empty?
+				persist_attendee(attendee, event.get_id)
 			end
 		end
 	end
