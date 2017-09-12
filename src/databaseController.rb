@@ -1,9 +1,9 @@
 =begin
 
     File: databaseController.rb
-    Author:
+    Author: Alex Shadley
     Date Created: 9/8/17
-    Description:
+    Description: controller class to encapsulate all database calls
 
 =end
 
@@ -32,12 +32,14 @@ class DatabaseController
 		if(!@DB.table_exists?(:timeslots))
 			@DB.create_table :timeslots do
 				String :time
+				String :parent_table
 				String :parent_id
 			end
 		end
 
 		if(!@DB.table_exists?(:attendees))
 			@DB.create_table :attendees do
+				primary_key :id
 				String :name
 				String :parent_id
 			end
@@ -55,11 +57,15 @@ class DatabaseController
 			id = @DB[:events].insert(:name => event.get_name, :description => event.get_description, :date => event.get_date)
 
 			event.get_timeslots.each do |timeslot|
-				@DB[:timeslots].insert(:time => timeslot, :parent_id => id)
+				@DB[:timeslots].insert(:time => timeslot, :parent_table => 'events', :parent_id => id)
 			end
 
 			event.get_attendees.each do |attendee|
-				@DB[:attendees].insert(:name => attendee, :parent_id => id)
+				attendeeid = @DB[:attendees].insert(:name => attendee.get_name, :parent_id => id)
+
+				attendee.get_timeslots.each do |timeslot|
+					@DB[:timeslots].insert(:time => timeslot, :parent_table => 'attendees', :parent_id => attendeeid)
+				end
 			end
 		end
 	end
@@ -77,16 +83,22 @@ class DatabaseController
 
 		@DB[:events].each do |event|
 			newTimeslots = []
-			@DB[:timeslots].where(parent_id: event[:"id"]).each do |timeslot|
-				newTimeslots.push(timeslot[:"time"])
+			@DB[:timeslots].where(parent_table: 'events', parent_id: event[:'id']).each do |timeslot|
+				newTimeslots.push(timeslot[:'time'])
 			end
 
 			newAttendees = []
-			@DB[:attendees].where(parent_id: event[:"id"]).each do |attendee|
-				newAttendees.push(attendee[:"name"])
+			@DB[:attendees].where(parent_id: event[:'id']).each do |attendee|
+				attendeeTimeslots = []
+				@DB[:timeslots].where(parent_table: 'attendees', parent_id: attendee[:'id']).each do |timeslot|
+					attendeeTimeslots.push(timeslot[:'time'])
+				end
+
+				newAttendee = Attendee.new(attendee[:'name'], attendeeTimeslots)
+				newAttendees.push(newAttendee)
 			end
 
-			newEvent = Event.new(event[:"name"], event[:"description"], event[:"date"], newTimeslots, newAttendees)
+			newEvent = Event.new(event[:'name'], event[:'description'], event[:'date'], newTimeslots, newAttendees)
 			events.push(newEvent)
 		end
 
