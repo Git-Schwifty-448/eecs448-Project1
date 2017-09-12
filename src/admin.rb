@@ -8,6 +8,7 @@
 =end
 
 require_relative "driver"
+require_relative "attendee"
 require 'date'
 
 class Admin
@@ -15,10 +16,12 @@ class Admin
         def initialize
           @fName = " "
           @lName = " "
+          @event_name = " "
+          @description = " "
           @drive = Driver.new
           @military_time = true;
           @event_date = Date.new
-          @event_date_time = DateTime.new
+          @timeslots_array = Array.new
         end
 
         def run                                                                 #Main method that calls other methods
@@ -29,6 +32,15 @@ class Admin
           while yesNo
             create_date
             create_date_time
+
+
+            #Creating of new attendee
+            #admin_name = get_f_name + get_l_name
+            #admin_attendee = Attendee.new(admin_name, timeslots_array)
+
+            #Temp array for the attendee array for the event
+            #attendee_array = Array.new
+            #attendee_array[0] = admin_attendee
 
             yesNo = get_validation                                              #Asks user if they want to create another event.
           end
@@ -43,12 +55,20 @@ class Admin
           @lName
         end
 
+        def get_event_name
+          @event_name
+        end
+
+        def get_description
+          @description
+        end
+
         def get_event_date
           @event_date
         end
 
-        def get_event_date_time
-          @event_date_time
+        def get_timeslots_array
+          @timeslots_array
         end
 
         #Setter method
@@ -60,12 +80,20 @@ class Admin
           @lName = theLName
         end
 
+        def set_event_name(event_name)
+          @event_name = event_name
+        end
+
+        def set_event_description(event_description)
+          @description = event_description
+        end
+
         def set_event_date(date)
           @event_date = date
         end
 
-        def set_event_date_time(date_time)
-          @event_date_time = date_time
+        def set_timeslot_array(timeslots)
+          @timeslots_array = timeslots
         end
 
         #Receive admin's information
@@ -103,9 +131,11 @@ class Admin
 
             print "Enter a name for the event: "
             eventName = gets.chomp
+            set_event_name(eventName)
 
             print "Give a description of the event: "
             eventDescription = gets.chomp
+            set_event_description(eventDescription)
 
           while invalid_date
             #Retrieves the event's year from the user.                          Event's Year.
@@ -173,7 +203,8 @@ class Admin
 
 
         def create_date_time
-
+          @drive.title_print("Time setup")
+          #TODO create array for military and 12 hour
         end
 
 
