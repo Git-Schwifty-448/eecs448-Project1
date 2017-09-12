@@ -15,6 +15,7 @@ require_relative 'databaseController'
 class User
     
     def initialize
+        @browsing = true
         @user_name = String.new
         @drive = Driver.new
         @events = false
@@ -42,9 +43,12 @@ class User
         @number_of_events = @event_array.length
         @events = true
 
-        get_user_name()
+        while @browsing
         get_events()
         event_controller()
+        end
+
+        reminder()
     end
 
     # updates the member variable @user_name with a name given by the user
@@ -70,7 +74,7 @@ class User
             # Grab each event
             for i in 0...@event_array.length
                 @drive.hr
-                single_event_printer(@event_array[i],i+1)
+                single_event_printer(@event_array[i],i+1,false)
             end
         else
             print "There are not currently any events in the database\n"
@@ -78,9 +82,14 @@ class User
     end
 
     # Template for printing a single event
-    def single_event_printer(event,id)
+    # takes an event object, and id number, and a true/false if this is for printing in a list
+    # or printing a single event
+    def single_event_printer(event,id,single)
 
-        puts "\n\n#{@spacer}Event ID:\t" + id.to_s
+        if !single
+            puts "\n\n#{@spacer}Event ID:\t" + id.to_s
+        end
+
         puts "\n#{@spacer}Event Name:\t" + event.getName
         puts "#{@spacer}Date:\t\t" + event.getDate.strftime("%m/%d/%Y")
         print "#{@spacer}Time(s)"
@@ -151,6 +160,7 @@ class User
             @user_input = gets.chomp
         end
 
+        # if user wants to attend an event, convert it to an integer for easier handling
         if @user_input.match(/\d/)
             @user_input = @user_input.to_i
         end
@@ -158,9 +168,9 @@ class User
         # handle input
         case @user_input
             when 1...@number_of_events+1
-                attend_event(@user_input)
+                attend_event(@event_array[@user_input-1],@user_input)
                 exit
-            when 'n'
+            when ['q',"quit","Quit"]
                 # go grab the next entry
                 exit
             when 't'
@@ -177,7 +187,27 @@ class User
         end
     end
     
-    def attend_event(event_id)
-        puts "hello from attend event!"
+    # takes an event given by the event_controller method
+    def attend_event(event,id)
+        system "clear"
+        @drive.title_print_ext("Events")
+        @drive.sub_title_print("Attend an Event")
+
+        single_event_printer(event,id,true)
+
+        get_user_name()
+        
+        if event.getTimeslots.length > 1
+            print "\n\n#{@spacer}Which time(s) would you like to go?: "
+        else
+            print "Your were added to the list!"
+        end
+
+    end
+
+    def reminder
+        system "clear"
+        @drive.title_print_ext("Reminders")
+        @drive.sub_title_print("List of Events for #{@user_name}")
     end
 end
