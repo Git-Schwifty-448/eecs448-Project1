@@ -33,9 +33,35 @@ class Event
         def getTimeslots
             @timeslots
         end
+
+        def getTimeslots12hrs
+            #create the new array
+            @timeslots_12hrs = Array.new
+
+
+            for i in 0...@timeslots.length
+
+                @temp_holder = @timeslots[i].split(':')
+                @temp_holder[0] = @temp_holder[0].to_i
+
+                if @temp_holder[0] > 12  
+                    @temp_holder[0] = @temp_holder[0] - 12
+                    @timeslots_12hrs.push(@temp_holder[0].to_s + ":" + @temp_holder[1] + "pm")
+                else
+                    @timeslots_12hrs.push(@timeslots[i] + "am")
+                end
+            end
+
+            return @timeslots_12hrs
+
+        end
     
         def getAttendees
             @attendees
+        end
+
+        def addAttendees(to_add)
+            @attendees.push(to_add)
         end
     
     end
