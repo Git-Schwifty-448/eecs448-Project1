@@ -50,9 +50,7 @@ class Event
         #create the new array
         @timeslots_12hrs = Array.new
 
-
         for i in 0...@timeslots.length
-
             @temp_holder = @timeslots[i].split(':')
             @temp_holder[0] = @temp_holder[0].to_i
 
@@ -67,7 +65,6 @@ class Event
         end
 
         return @timeslots_12hrs
-
     end
 
     def get_attendees

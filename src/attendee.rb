@@ -28,10 +28,7 @@ class Attendee
         def getTimeslots12hrs
             #create the new array
             @timeslots_12hrs = Array.new
-            
-            
                     for i in 0...@timeslots.length
-            
                         @temp_holder = @timeslots[i].split(':')
                         @temp_holder[0] = @temp_holder[0].to_i
             
@@ -44,9 +41,7 @@ class Attendee
                             @timeslots_12hrs.push(@timeslots[i] + "am")
                         end
                     end
-            
                     return @timeslots_12hrs
-    
         end
     
     end

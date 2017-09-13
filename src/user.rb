@@ -64,9 +64,9 @@ class User
         # @at5 = Attendee.new("Zyke",["12:30"])
         # @at6 = Attendee.new("Myke",["12:30"])
 
-        # @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03/18/2017",["15:00","23:30","17:30"],[@at1],1)            
-        # @e2 = Event.new("Git wrecked","new e2","01-03-2017",["12:30","02:00"],[@at2,@at3],25)
-        # @e3 = Event.new("heelo","new e3","06-03-2018",["12:30"],[@at4,@at5,@at6],40) 
+        # @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03-18-2017",["15:00","23:30","17:30"],[@at1])            
+        # @e2 = Event.new("Git wrecked","new e2","01-03-2017",["12:30","02:00"],[@at2,@at3])
+        # @e3 = Event.new("heelo","new e3","06-03-2018",["12:30"],[@at4,@at5,@at6]) 
 
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
@@ -187,8 +187,6 @@ class User
     end
 
     # outputs each event and returns if the user wants to attend
-
-    ##THIS IS WHERE DATABASE UPDATE MODEL NEEDS TO CONTINUE
     def event_controller()
 
         @drive.hr
@@ -221,16 +219,11 @@ class User
             @user_input = STDIN.gets.chomp
         end
 
-        # if user wants to attend an event, convert it to an integer for easier handling
-        if @user_input.match(/\d/)
-            @user_input = @user_input.to_i
-        end
-
         # handle input
         case @user_input
             when *@list_ids
                 @username = get_user_name()
-                @browsing = attend_event(@event_array[@user_input-1],@user_input,@username)
+                @browsing = attend_event(get_event_by_id(@user_input),@username)
                 return @browsing
             when 'q',"quit","Quit"
                 @browsing = false
@@ -249,13 +242,13 @@ class User
     end
     
     # takes an event given by the event_controller method, the id of that event
-    def attend_event(event,id,username)
+    def attend_event(event,username)
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
 
         # reprint the details of only the specific event the user is interested in
-        single_event_printer(event,id,true)
+        single_event_printer(event,true)
 
         # check to see how many timeslots are availiable and proceed 
         if event.getTimeslots.length > 1
@@ -426,6 +419,14 @@ class User
         return @user_name
     end
 
+    def get_event_by_id(id_number)
+        for i in 0...@event_array.length
+            if(@event_array[i].get_id == id_number.to_i)
+                return @event_array[i]
+            end
+        end
+    end
+
 
 
 end
@@ -440,4 +441,10 @@ end
                         for i in 0...@sub_acceptable_input.length
                             puts @sub_acceptable_input[i]
                         end
+
+                        # Converts input to an integer
+                         if user wants to attend an event, convert it to an integer for easier handling
+                         if @user_input.match(/\d/)
+                             @user_input = @user_input.to_i
+                         end
 =end
