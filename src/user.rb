@@ -57,8 +57,8 @@ class User
 
         ### DEBUG CODE RUN ONCE
         # creates a test database
-        #
-        # @at1 = Attendee.new("Abe",["15:00,23:30,17:30"])
+        
+        # @at1 = Attendee.new("Abe",["15:00","23:30","17:30"])
         # @at2 = Attendee.new("Zach",["12:30","02:00"])
         # @at3 = Attendee.new("Ryan",["12:30","02:00"])
         # @at4 = Attendee.new("Mike",["12:30"])
@@ -76,6 +76,7 @@ class User
         ### END RUN ONCE
 
         @event_array = @db.get_events
+        # @event_array = [@e1,@e2,@e3]
         @number_of_events = @event_array.length
 
         @events = true
@@ -95,6 +96,11 @@ class User
             print "#{@spacer}Please use admin mode and add an event first!\n\n"
         end
 
+        if !@attending_events.empty?
+            for i in 0...@attending_events.length
+                @db.update_event(@attending_events[i])
+            end
+        end
 
     end
 
@@ -175,7 +181,12 @@ class User
                     print event.get_attendees[i].get_name() + " ("
 
                     for j in 0...event.get_attendees[i].get_timeslots.length
-                        print event.get_attendees[i].get_timeslots[j]
+
+                        if @military_time
+                            print event.get_attendees[i].get_timeslots[j]
+                        else
+                            print event.get_attendees[i].get_timeslots_12hrs[j]
+                        end
 
                         if j != event.get_attendees[i].get_timeslots.length-1
                             print ", "
@@ -187,6 +198,7 @@ class User
                 else
                     print event.get_attendees[i].get_name()
                 end
+
 
                 if i != event.get_attendees.length-1
                     print ", "
@@ -226,11 +238,6 @@ class User
 
         @acceptable_input += @list_ids
 
-            # DEBUG USE ONLY
-            for i in 0...@acceptable_input.length
-                puts @acceptable_input[i]
-            end
-
         # get user input
         while !@acceptable_input.include? @user_input
             print "\n#{@spacer}Choice: "
@@ -258,25 +265,21 @@ class User
                 event_controller()
         end
     end
-
-=begin getuser name
-        # first create an attendee object since the user has showed interest in attending a specific event
-        if !@military_time
-            @standardized = convert_to_military_time(@user_input)
-            @new_user = create_user([@standardized])
-        else
-            @new_user = create_user([@user_input])
-        end
-=end
     
     # takes an event given by the event_controller method, the id of that event
     def attend_event(event)
 
+        # If the user has already created an attendee object
         if !@attendee_created
             @new_user = create_user([])
             @attendee_created = true
+
+        # If they selected an event, their timeslots for that event need to be cleared out
+        else 
+            @new_user = clean_attendee(@new_user)
         end
 
+        # Print the terminal graphics
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
@@ -287,132 +290,69 @@ class User
         # check to see how many timeslots are availiable and proceed 
         if event.get_timeslots.length > 1
 
-            print "\n\n#{@spacer}To cancel enter \"Cancel\"\n"
-            print "#{@spacer}To toggle time enter 't'\n"
-            print "\n#{@spacer}To attend the entire event enter \"All\"\n"
-            print "\n#{@spacer}Otherwise select times, one at a time, that you would like to attend\n"
-            print "#{@spacer}by entering the time exactly as show above\n"
+            @drive.hr
+            print "\n#{@spacer}For each time slot of an event, indicate with 'y' or 'n' if you wish to attend\n\n"
 
-            # Create the list of acceptable input
-            @acceptable_input = Array.new
-
-            if @military_time
-                for i in 0...event.get_timeslots.length
-                    @acceptable_input.push(event.get_timeslots[i])
-                end
-            else
-                for i in 0...event.get_timeslots_12hrs.length
-                    @acceptable_input.push(event.get_timeslots_12hrs[i])
-                end
-            end
-
-            @available_time_slots = @acceptable_input.clone
-
-            @acceptable_input.push(*["all",
-                                    "All", 
-                                    'a',
-                                    't',
-                                    "return",
-                                    "nevermind",
-                                    'c',
-                                    "cancel",
-                                    "Cancel"])
-
-                        # DEBUG USE ONLY
-                        for i in 0...@acceptable_input.length
-                            puts @acceptable_input[i]
-                        end
-
-            # get user input
-            @user_input = ""
-
-            while !@acceptable_input.include? @user_input
-                print "\n#{@spacer}Choice: "
-                @user_input = STDIN.gets.chomp
-            end
-
-            # process user input
-            case @user_input
-
-                # when a time slot is chosen
-                when *@available_time_slots
-
-                    @continue_picking = true
-                    @slots_chosen = Array.new
-                    @slots_chosen.push(@user_input)
-
-                    while @continue_picking
-                        
-                        # Loop to get more input
-
-                        @sub_input = ""
-
-                        @sub_default_input = ["end",
-                                                "End"]
-                        @remaining_slots = @available_time_slots - @slots_chosen
-                        @sub_acceptable_input = @sub_default_input + @remaining_slots
-
-                        # If the user chooses all availaible time slots
-                        if @remaining_slots.length == 0
-                            print "\n\n#{@spacer}All slots chosen, added to the list!"
+            # get user responce and if the user wants to attend a specific time, add it to the array of attending events
+            for i in 0...event.get_timeslots.length
+                @acceptable_input = Array.new
+                @acceptable_input.push(*["y",
+                                        "Y",
+                                        "yes",
+                                        "Yes",
+                                        "n",
+                                        "N",
+                                        "No",
+                                        "no",
+                                        "a",
+                                        "A",
+                                        "all",
+                                        "All"])
 
 
-                            event.addAttendees(username)
-                            @attending_events.push(event)
-                            @continue_picking = false
-                            sleep 2
-                            break
-                        end
+                @user_input = ""
 
-                        while !@sub_acceptable_input.include? @sub_input 
-                            print "\n#{@spacer}Choose another timeslot or enter \"end\": "
-                            @sub_input = STDIN.gets.chomp
-                        end
-
-                        case @sub_input
-                            # When a time slot is chosen
-                            when *@remaining_slots
-                                @slots_chosen.push(@sub_input)
-
-                            # When the user choses end
-                            when *@sub_default_input
-                                for i in 0...@slots_chosen.length
-                                    @new_user.add_timeslot(@slots_chosen[i])
-                                end
-
-                                event.add_attendee(@new_user)
-                                @attending_events.push(event)
-
-                                print "\n\n#{@spacer}Your were added to the list!"
-                                sleep 2
-                                @continue_picking = false
-                        end
-
-                    end
-
-                # when all time slots are chosen
-                when "all","All",'a'
-                    @picking_out_times = false
-                    @new_user.add_timeslot(event.get_timeslots)
-                    event.add_attendee(@new_user)
-                    @attending_events.push(event)
-                    print "\n\n#{@spacer}Your were added to the list!"
-                    sleep 2
-                
-                # toggle the time format
-                when 't'
-                    #repring the event with military time flipped
-                    if !@military_time
-                        @military_time = true
+                while (!@acceptable_input.include? @user_input)
+                    if @military_time
+                        print "#{@spacer}#{event.get_timeslots[i]}, attend?: "
                     else
-                        @military_time = false
+                        print "#{@spacer}#{event.get_timeslots_12hrs[i]}, attend?: "
                     end
-                        attend_event(event)
+                    @user_input = STDIN.gets.chomp
+                end
+
+                case @user_input
+                    when @user_input = "y","Y","yes","Yes"
+                        @new_user.add_timeslot(event.get_timeslots[i])
+                    when @user_input = "n","N","no","No"
+                        # do nothing
+                    when @user_input = "a","A","all","All"
+                        @new_user.clear_timeslot
+                        
+                        for j in 0...event.get_timeslots.length
+                            @new_user.add_timeslot(event.get_timeslots[j])
+                        end
+
+                        break
+
+                end
+
+
+            end
+
+            if @new_user.get_timeslots.empty?
+                print "\n\n#{@spacer}No times selected, returning to event list."
+                sleep 2
+            else
+                event.add_attendee(@new_user)
+                @attending_events.push(event)
+                print "\n\n#{@spacer}Your selections have beens saved!"
+                sleep 2
             end
 
 
+        # Otherwise, assume that the event has only one timeslot
         else
-
             @new_user.add_timeslot(event.get_timeslots)
             event.add_attendee(@new_user)
             @attending_events.push(event)
@@ -493,14 +433,15 @@ class User
 
     end
 
+    # Resets with the same username to go to multiple events
+    def clean_attendee(attendee)
+        @name = attendee.get_name
+        clean_attendee = Attendee.new(@name,[])
+        return clean_attendee
+    end
 
 
 end
-
-
-
-
-
 
 =begin GARBAGE                        
                         # DEBUG USE ONLY
