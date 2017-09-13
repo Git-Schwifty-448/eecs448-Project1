@@ -1,0 +1,6 @@
+Events need to have an attendee in the intializer as an array with only the creators naem
+
+
+when grabbing events from the list, need to sort by date
+
+Dates will be a date object from the date class built into ruby

@@ -1,10 +1,8 @@
 =begin
-
     File: databaseController.rb
     Author: Alex Shadley
     Date Created: 9/8/17
     Description: controller class to encapsulate all database calls
-
 =end
 
 require 'sequel'
