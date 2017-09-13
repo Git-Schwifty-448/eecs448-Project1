@@ -1,9 +1,9 @@
 =begin
 
     File: admin.rb
-    Author:
+    Author: Qualen Pollard
     Date Created: 9/8/17
-    Description:
+    Description: Models the admins controls over creating events.
 
 =end
 
@@ -139,10 +139,10 @@ class Admin
 
           while invalid_date
             #Retrieves the event's year from the user.                          Event's Year.
-            print "Input the year you'd like to make the event for: "
+            print "Input the year you'd like to make the event for(YYYY): "
             event_year = gets.chomp
             while !(event_year =~ /[[:digit:]]/)
-              print "Invalid input, please enter a year"
+              print "Invalid input, please enter a year: "
               eventy_year = gets.chomp
             end
 
@@ -153,7 +153,6 @@ class Admin
 
             #Creates array of months for user to select from for events months
             monthMenu = Array.new
-
             monthMenu[0] = "1. January"
             monthMenu[1] = "2. February"
             monthMenu[2] = "3. March"
@@ -204,7 +203,31 @@ class Admin
 
         def create_date_time
           @drive.title_print("Time setup")
-          #TODO create array for military and 12 hour
+          start_time_match = true
+
+          print "(12hr) or (24hr)?: "
+          hour_rep = gets.chomp
+          while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
+            print "I'm sorry, please enter either 12 or 24: "
+            hour_ rep = gets.chomp
+          end
+
+          temp_array = create_time_array(hour_rep)
+
+          #Retreives the start time from the user.
+          print "Enter a start time (i.e., 7:30 P.M.):"
+          start_time = gets.chomp
+
+          #Checks to see if the time is valid throughout the array.
+          start_time_match = time_check(start_time, temp_array)
+          while start_time_match
+            print "Must enter a valid time: "
+            start_time = gets.chomp
+            start_time_match = time_check(start_time, temp_array)
+          end
+
+
+
         end
 
 
@@ -230,6 +253,104 @@ class Admin
           elsif ((response.casecmp("no")) == 0)
             return false
           end
+        end
+
+        #Creates an array based on the time representation that the user choses.
+        def create_time_array(hr)
+          if hr == "12"                                                   #12Hr time
+            hour_counter = 1
+
+            #Creates an array with 12 hour time slots.
+            twelve_hr_array = Array.new
+            twelve_hr_array[0] = "12:00 A.M."
+            twelve_hr_array[1] = "12:30 A.M."
+
+            #Fills the array with the hourly time slots
+            for i in 2...48
+              if i % 2 == 0
+                if i < 24
+                  if i <= 19
+                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                  elsif i > 19
+                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                  end
+                elsif i >= 24
+                  twelve_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                end
+              elsif i % 2 == 1
+                if i < 24
+                  if i <= 19
+                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                  elsif i > 19
+                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                  end
+                elsif i >= 24
+                  twelve_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                end
+              end
+
+              if i % 2 == 1
+                hour_counter += 1
+              end
+
+              #Resets hour_counter to 0 once it reaches 1 o'clock.
+              if hour_counter == 13
+                hour_counter = 1
+              end
+            end
+
+            return twelve_hr_array
+          elsif hr == "24"                                                #24Hr time
+            hour_counter = 0
+
+            #Creates an array with 24 hour time slots.
+            twentyfour_hr_array = Array.new
+
+            #Fills the array with the hourly time slots
+            for i in 0...48
+              if i % 2 == 0
+                if i < 24
+                  if i <= 19
+                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
+                  elsif i > 19
+                    twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                  end
+                elsif i >= 24
+                  twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                end
+              elsif i % 2 == 1
+                if i < 24
+                  if i <= 19
+                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
+                  elsif i > 19
+                    twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                  end
+                elsif i >= 24
+                  twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                end
+              end
+
+              if i % 2 == 1
+                hour_counter += 1
+              end
+            end
+
+            return twentyfour_hr_array
+          end
+        end
+
+        #Checks to see if the time matches any in the array.
+        def time_check(time, array)
+          for i in 0...48
+            if time.casecmp(array[i]) == 0
+              match = false
+              break
+            else
+              match = true
+            end
+          end
+
+          return match
         end
 
 end
