@@ -25,6 +25,10 @@ class Attendee
             @timeslots
         end
 
+        def add_timeslot(new_slot)
+            @timeslots.push(new_slot)
+        end
+
         def getTimeslots12hrs
             #create the new array
             @timeslots_12hrs = Array.new

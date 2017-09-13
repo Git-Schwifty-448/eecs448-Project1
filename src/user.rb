@@ -222,8 +222,8 @@ class User
         # handle input
         case @user_input
             when *@list_ids
-                @username = get_user_name()
-                @browsing = attend_event(get_event_by_id(@user_input),@username)
+                # @username = get_user_name()
+                @browsing = attend_event(get_event_by_id(@user_input))
                 return @browsing
             when 'q',"quit","Quit"
                 @browsing = false
@@ -242,7 +242,7 @@ class User
     end
     
     # takes an event given by the event_controller method, the id of that event
-    def attend_event(event,username)
+    def attend_event(event)
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
@@ -251,7 +251,7 @@ class User
         single_event_printer(event,true)
 
         # check to see how many timeslots are availiable and proceed 
-        if event.getTimeslots.length > 1
+        if event.get_timeslots.length > 1
 
             print "\n\n#{@spacer}To cancel enter \"Cancel\"\n"
             print "#{@spacer}To toggle time enter 't'\n"
@@ -263,12 +263,12 @@ class User
             @acceptable_input = Array.new
 
             if @military_time
-                for i in 0...event.getTimeslots.length
-                    @acceptable_input.push(event.getTimeslots[i])
+                for i in 0...event.get_timeslots.length
+                    @acceptable_input.push(event.get_timeslots[i])
                 end
             else
-                for i in 0...event.getTimeslots12hrs.length
-                    @acceptable_input.push(event.getTimeslots12hrs[i])
+                for i in 0...event.get_timeslots_12hrs.length
+                    @acceptable_input.push(event.get_timeslots_12hrs[i])
                 end
             end
 
@@ -292,11 +292,20 @@ class User
                 @user_input = STDIN.gets.chomp
             end
 
+            
+
             # process user input
             case @user_input
 
                 # when a time slot is chosen
                 when *@available_time_slots
+
+                    if !military_time
+
+                    else
+                        @new_user = create_user([@user_input])
+                    end
+                    
 
                     @continue_picking = true
                     @slots_chosen = Array.new
@@ -316,6 +325,9 @@ class User
                         # If the user chooses all availaible time slots
                         if @remaining_slots.length == 0
                             print "\n\n#{@spacer}All slots chosen, added to the list!"
+
+
+
                             event.addAttendees(username)
                             @attending_events.push(event)
                             @continue_picking = false
@@ -377,12 +389,15 @@ class User
 
 
         else
-            event.addAttendees(username)
+
+            @new_user = create_user(event.get_timeslots)
+            event.add_attendee(@new_user)
             @attending_events.push(event)
             print "\n\n#{@spacer}Your were added to the list!"
             sleep 2
         end
 
+        # return true, that program should continue to loop
         return true
 
     end
@@ -407,8 +422,8 @@ class User
     end
 
 
-    # updates the member variable @user_name with a name given by the user
-    def get_user_name
+    # Creates an attendee object to be added to the event
+    def create_user(origin_time_slot)
         system "clear"
         @drive.title_print_ext("User Mode")
         @drive.sub_title_print("Get User Name")
@@ -416,15 +431,43 @@ class User
         print "\tPlease enter a username: "
         @user_name = STDIN.gets.chomp
 
-        return @user_name
+        @new_attendee = Attendee.new(@user_name,origin_time_slot)
+
+        return @new_attendee
     end
 
+    # returns an event object that matches the id passed in, if none found, throws an error
     def get_event_by_id(id_number)
         for i in 0...@event_array.length
             if(@event_array[i].get_id == id_number.to_i)
                 return @event_array[i]
             end
         end
+
+        raise ArgumentError, 'The ID does not match an in the database'
+
+    end
+
+    #converts a single time to military time for use with creating attendee
+    def convert_to_military_time(standard_time)
+
+        if standard_time[5] == 'p'
+            standard_time.chop
+            standard_time.chop
+            @temp_holder = @standardtime.split(':')
+            @temp_holder[0] = @temp_holder[0].to_i + 12
+            @temp_holder[0].to_s
+            @mt = @temp_holder[0] + ":" _ @temp_holder[1]
+
+            return @mt
+        else
+            standard_time.chop
+            standard_time.chop
+            return standard_time
+        end
+
+        raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mmam or hh:mmpm'
+
     end
 
 
