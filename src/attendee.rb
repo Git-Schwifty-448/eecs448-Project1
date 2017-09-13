@@ -11,7 +11,7 @@ class Attendee
         # are acceptable
         def initialize(name, timeslots)
             raise ArgumentError.new("'name' must be a string") if !name.is_a? String
-            raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
+            # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
     
             @name = name
             @timeslots = timeslots

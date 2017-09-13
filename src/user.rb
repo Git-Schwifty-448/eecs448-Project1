@@ -38,6 +38,7 @@ class User
         @military_time = true
         @number_of_events = 0
         @spacer = "        "
+        @attendee_created = false
         @attending_events = Array.new
     end
 
@@ -240,9 +241,25 @@ class User
                 event_controller()
         end
     end
+
+=begin getuser name
+        # first create an attendee object since the user has showed interest in attending a specific event
+        if !@military_time
+            @standardized = convert_to_military_time(@user_input)
+            @new_user = create_user([@standardized])
+        else
+            @new_user = create_user([@user_input])
+        end
+=end
     
     # takes an event given by the event_controller method, the id of that event
     def attend_event(event)
+
+        if !@attendee_created
+            @new_user = create_user([])
+            @attendee_created = true
+        end
+
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
@@ -284,6 +301,11 @@ class User
                                     "cancel",
                                     "Cancel"])
 
+                        # DEBUG USE ONLY
+                        for i in 0...@acceptable_input.length
+                            puts @acceptable_input[i]
+                        end
+
             # get user input
             @user_input = ""
 
@@ -292,20 +314,11 @@ class User
                 @user_input = STDIN.gets.chomp
             end
 
-            
-
             # process user input
             case @user_input
 
                 # when a time slot is chosen
                 when *@available_time_slots
-
-                    if !military_time
-
-                    else
-                        @new_user = create_user([@user_input])
-                    end
-                    
 
                     @continue_picking = true
                     @slots_chosen = Array.new
@@ -327,7 +340,6 @@ class User
                             print "\n\n#{@spacer}All slots chosen, added to the list!"
 
 
-
                             event.addAttendees(username)
                             @attending_events.push(event)
                             @continue_picking = false
@@ -344,26 +356,19 @@ class User
                             # When a time slot is chosen
                             when *@remaining_slots
                                 @slots_chosen.push(@sub_input)
+
                             # When the user choses end
                             when *@sub_default_input
-                                #post to event the times that were added
-
-                                @username_time_string = username + "("
                                 for i in 0...@slots_chosen.length
-                                    @username_time_string = @username_time_string + @slots_chosen[i]
-                                    if i != @slots_chosen.length-1
-                                        @username_time_string = @username_time_string + ", "
-                                    end
+                                    @new_user.add_timeslot(@slots_chosen[i])
                                 end
-                                @username_time_string = @username_time_string + ")"
 
-                                event.addAttendees(@username_time_string)
+                                event.add_attendee(@new_user)
                                 @attending_events.push(event)
 
                                 print "\n\n#{@spacer}Your were added to the list!"
                                 sleep 2
                                 @continue_picking = false
-
                         end
 
                     end
@@ -371,7 +376,8 @@ class User
                 # when all time slots are chosen
                 when "all","All",'a'
                     @picking_out_times = false
-                    event.addAttendees(username)
+                    @new_user.add_timeslot(event.get_timeslots)
+                    event.add_attendee(@new_user)
                     @attending_events.push(event)
                     print "\n\n#{@spacer}Your were added to the list!"
                     sleep 2
@@ -384,13 +390,13 @@ class User
                     else
                         @military_time = false
                     end
-                        attend_event(event,id,username)
+                        attend_event(event)
             end
 
 
         else
 
-            @new_user = create_user(event.get_timeslots)
+            @new_user.add_timeslot(event.get_timeslots)
             event.add_attendee(@new_user)
             @attending_events.push(event)
             print "\n\n#{@spacer}Your were added to the list!"
@@ -412,7 +418,7 @@ class User
             # Grab each event that the user is going to and print it
             for i in 0...@attending_events.length
                 @drive.hr
-                single_event_printer(@attending_events[i],i+1,false)
+                single_event_printer(@attending_events[i],false)
             end
         else
             @drive.title_print("Thanks for using, goodbye!")
@@ -457,7 +463,7 @@ class User
             @temp_holder = @standardtime.split(':')
             @temp_holder[0] = @temp_holder[0].to_i + 12
             @temp_holder[0].to_s
-            @mt = @temp_holder[0] + ":" _ @temp_holder[1]
+            @mt = @temp_holder[0] + ":" + @temp_holder[1]
 
             return @mt
         else
