@@ -194,8 +194,10 @@ class User
         # handle input
         case @user_input
             when 1...@number_of_events+1
-                attend_event(@event_array[@user_input-1],@user_input)
-            when ['q',"quit","Quit"]
+                @username = get_user_name()
+                @browsing = attend_event(@event_array[@user_input-1],@user_input,@username)
+                return @browsing
+            when 'q',"quit","Quit"
                 @browsing = false
                 return @browsing
             when 't'
@@ -212,11 +214,7 @@ class User
     end
     
     # takes an event given by the event_controller method
-    def attend_event(event,id)
-
-        # First get the user's name
-        @username = get_user_name()
-
+    def attend_event(event,id,username)
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
@@ -229,10 +227,9 @@ class User
 
             print "\n\n#{@spacer}To cancel enter \"Cancel\"\n"
             print "#{@spacer}To toggle time enter 't'\n"
-            print "\n\n#{@spacer}Otherwise select times, one at a time, that you would like to attend\n"
+            print "\n#{@spacer}To attend the entire event enter \"All\"\n"
+            print "\n#{@spacer}Otherwise select times, one at a time, that you would like to attend\n"
             print "#{@spacer}by entering the time exactly as show above\n"
-
-            @user_input = ""
 
             # Create the list of acceptable input
             @acceptable_input = Array.new
@@ -245,32 +242,111 @@ class User
                 @acceptable_input.push(event.getTimeslots12hrs[i])
             end
 
+            @availiable_time_slots = @acceptable_input.clone
+
             @acceptable_input.push(*["all",
                                     "All", 
+                                    'a',
                                     't',
-                                     "return",
-                                     "nevermind",
-                                     'c',
-                                     "cancel",
-                                     "Cancel"])
+                                    "return",
+                                    "nevermind",
+                                    'c',
+                                    "cancel",
+                                    "Cancel"])
 
-
+            # DEBUG USE ONLY
             for i in 0...@acceptable_input.length
                 puts @acceptable_input[i]
             end
 
             # get user input
+            @user_input = ""
+
             while !@acceptable_input.include? @user_input
                 print "\n#{@spacer}Choice: "
                 @user_input = STDIN.gets.chomp
             end
 
+            # process user input
+            case @user_input
+                
+    ### Write function for picking out timeslots using an aray to keep track
+    ### Then add the list as a string to the end of the name
+    ### Unless the user adds all of the timeslots, then just add their name to the list
+    ### Return the event to the list of attending events
+
+                # when a time slot is chosen
+                when *@availiable_time_slots
+
+                    @picking_out_times = true
+                    @array_of_times = Array.new
+        
+                    while @picking_out_times
+
+                        @sub_input = ""
+
+                        @yes = ['y',
+                                'Y',
+                                'yes',
+                                "Yes"]
+                        
+                        @no = ['n',
+                               "N",
+                               'no',
+                               "No",]
+
+                        @sub_acceptable_input = @yes|@no
+                                                 
+                        # DEBUG USE ONLY
+                        for i in 0...@sub_acceptable_input.length
+                            puts @sub_acceptable_input[i]
+                        end
+
+                        while !@sub_acceptable_input.include? @sub_input 
+                            print "#{@spacer}Add another event: (y/n)?:  "
+                            @sub_input = STDIN.gets.chomp
+                        end
+
+                        case @sub_input
+                            when  *@yes
+                                puts "yes"
+                            when  *@no
+                                puts "no"
+                                @picking_out_times = false
+                        end
+                    
+
+
+                    end
+
+                # when all time slots are chosen
+                when "all","All",'a'
+                    @picking_out_times = false
+                    event.addAttendees(username)
+                    @attending_events.push(event)
+                    print "\n\n#{@spacer}Your were added to the list!"
+                    sleep 2
+                
+                # toggle the time format
+                when 't'
+                    #repring the event with military time flipped
+                    if !@military_time
+                        @military_time = true
+                    else
+                        @military_time = false
+                    end
+                        attend_event(event,id,username)
+            end
+
+
         else
-            event.addAttendees(@username)
+            event.addAttendees(username)
             @attending_events.push(event)
             print "\n\n#{@spacer}Your were added to the list!"
             sleep 2
         end
+
+        return true
 
     end
 
