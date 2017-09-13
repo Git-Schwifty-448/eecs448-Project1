@@ -12,15 +12,15 @@
 
 ### TODOS ###
 
-1) Username needs to be global for each session (must include first name and last name plus validation)
+1) Username must include first name and last name plus validation)
 x) When a current user has added themselves to the list of events, they should no longer be able to accept it
-2) Clean up attend_event ... :/
 3) Fix scoping issues (public v private)
 4) Connect database model
 DONE -- 5) Fix time model - 12:30 is 12:30 pm not AM; 00:30 is 12:30am
 
-***Attending events array is an array of the events that will be pushed back to the database to be updated,
-    assuming all others will be unchanged
+Add features
+1) Only show events in which the user is not attending in the viewer list. Make this switchable
+    or otherwise disallow the user from going to an event twice
 
 =end
 
@@ -40,6 +40,7 @@ class User
         @spacer = "        "
         @attendee_created = false
         @attending_events = Array.new
+        @view_all = false
     end
 
     def testing
@@ -115,10 +116,11 @@ class User
             print "\t(use t to toggle 12 or 24 hour time formats)\n"
 
             # Grab each event
-            for i in 0...@event_array.length
-                @drive.hr
-                single_event_printer(@event_array[i],false)
-            end
+                for i in 0...@event_array.length
+                    @drive.hr
+                    single_event_printer(@event_array[i],false)
+                end
+ 
         else
             print "There are not currently any events in the database\n"
         end
@@ -322,28 +324,27 @@ class User
                 end
 
                 case @user_input
+                    # Add the user
                     when @user_input = "y","Y","yes","Yes"
                         @new_user.add_timeslot(event.get_timeslots[i])
+                    # Do nothing
                     when @user_input = "n","N","no","No"
-                        # do nothing
+                        # unused
+                    # Add all of the timeslots to the user
                     when @user_input = "a","A","all","All"
                         @new_user.clear_timeslot
-                        
                         for j in 0...event.get_timeslots.length
                             @new_user.add_timeslot(event.get_timeslots[j])
                         end
-
                         break
-
                 end
-
-
             end
 
+            # if no events were chosen
             if @new_user.get_timeslots.empty?
                 print "\n\n#{@spacer}No times selected, returning to event list."
                 sleep 2
-            else
+            else # Add the user to the event and then add the event to the update table
                 event.add_attendee(@new_user)
                 @attending_events.push(event)
                 print "\n\n#{@spacer}Your selections have beens saved!"
