@@ -13,15 +13,18 @@ require_relative 'event'
 require_relative 'databaseController'
 
 class User
+
+
     
     def initialize
-        @browsing = true
+
         @user_name = String.new
         @drive = Driver.new
         @events = false
         @military_time = true
         @number_of_events = 0
         @spacer = "        "
+        @attending_events = Array.new
     end
 
     def run
@@ -31,7 +34,7 @@ class User
         @e1_times = ["15:00","23:30","17:30"]
         @e1 = Event.new("Awesome PArty","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing",Date.new(2018,3,18),@e1_times,["Abe"])            
         @e2 = Event.new("Git wrecked","new e2",Date.parse('01-03-2017'),["12:30","02:00"],["Dick"])
-        @e3 = Event.new("heelo","new e3",Date.parse('06-03-2018'),["12:30"],["Alex"]) 
+        @e3 = Event.new("heelo","new e3",Date.parse('06-03-2018'),["12:30"],["Alex","ARD","LAMO"]) 
         
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
@@ -43,9 +46,13 @@ class User
         @number_of_events = @event_array.length
         @events = true
 
+        puts "Browsing is #{@browsing.to_s}"
+
+        @browsing = true
+
         while @browsing
             get_events()
-            event_controller()
+            @browsing = event_controller()
         end
 
         reminder()
@@ -58,7 +65,9 @@ class User
         @drive.sub_title_print("Get User Name")
 
         print "\tPlease enter a username: "
-        @user_name = gets.chomp
+        @user_name = STDIN.gets.chomp
+
+        return @user_name
     end
 
     # If there are events stored in the database, they are grabbed 
@@ -96,21 +105,35 @@ class User
 
         if !@military_time
             print " (12hr): "
-        else
-            print " (24hr): "
-        end
 
-        # make sure the event was created correctly
-        if event.getTimeslots.kind_of?(Array)
-            for j in 0...event.getTimeslots.length
-                print event.getTimeslots[j]
-                if j != event.getTimeslots.length-1
-                    print ", "
+            # make sure the event was created correctly
+            if event.getTimeslots12hrs.kind_of?(Array)
+                for j in 0...event.getTimeslots12hrs.length
+                    print event.getTimeslots12hrs[j]
+                    if j != event.getTimeslots12hrs.length-1
+                        print ", "
+                    end
                 end
+            else
+                print "Should be an array!\n"
             end
         else
-            print "Should be an array!\n"
+            print " (24hr): "
+
+            # make sure the event was created correctly
+            if event.getTimeslots.kind_of?(Array)
+                for j in 0...event.getTimeslots.length
+                    print event.getTimeslots[j]
+                    if j != event.getTimeslots.length-1
+                        print ", "
+                    end
+                end
+            else
+                print "Should be an array!\n"
+            end
         end
+
+
 
         print "\n#{@spacer}Attendees:\t"
 
@@ -148,7 +171,10 @@ class User
         # set up the user input and create the array of acceptable responces
         @user_input = ""
         @acceptable_input = Array.new
-        @acceptable_input.push(*['t','q',"quit","Quit"])
+        @acceptable_input.push(*['t',
+                                 'q',
+                                 "quit",
+                                 "Quit"])
 
         for i in 1...@number_of_events+1
             @acceptable_input.push(i.to_s)
@@ -157,7 +183,7 @@ class User
         # get user input
         while !@acceptable_input.include? @user_input
             print "\n#{@spacer}Choice: "
-            @user_input = gets.chomp
+            @user_input = STDIN.gets.chomp
         end
 
         # if user wants to attend an event, convert it to an integer for easier handling
@@ -169,10 +195,9 @@ class User
         case @user_input
             when 1...@number_of_events+1
                 attend_event(@event_array[@user_input-1],@user_input)
-                exit
             when ['q',"quit","Quit"]
-                # go grab the next entry
-                exit
+                @browsing = false
+                return @browsing
             when 't'
                 #repring the event with military time flipped
                 if !@military_time
@@ -183,31 +208,88 @@ class User
 
                 get_events()
                 event_controller()
-                exit
         end
     end
     
     # takes an event given by the event_controller method
     def attend_event(event,id)
+
+        # First get the user's name
+        @username = get_user_name()
+
         system "clear"
         @drive.title_print_ext("Events")
         @drive.sub_title_print("Attend an Event")
 
+        # reprint the details of only the specific event the user is interested in
         single_event_printer(event,id,true)
 
-        get_user_name()
-        
+        # check to see how many timeslots are availiable and proceed 
         if event.getTimeslots.length > 1
-            print "\n\n#{@spacer}Which time(s) would you like to go?: "
+
+            print "\n\n#{@spacer}To cancel enter \"Cancel\"\n"
+            print "#{@spacer}To toggle time enter 't'\n"
+            print "\n\n#{@spacer}Otherwise select times, one at a time, that you would like to attend\n"
+            print "#{@spacer}by entering the time exactly as show above\n"
+
+            @user_input = ""
+
+            # Create the list of acceptable input
+            @acceptable_input = Array.new
+
+            for i in 0...event.getTimeslots.length
+                @acceptable_input.push(event.getTimeslots[i])
+            end
+
+            for i in 0...event.getTimeslots12hrs.length
+                @acceptable_input.push(event.getTimeslots12hrs[i])
+            end
+
+            @acceptable_input.push(*["all",
+                                    "All", 
+                                    't',
+                                     "return",
+                                     "nevermind",
+                                     'c',
+                                     "cancel",
+                                     "Cancel"])
+
+
+            for i in 0...@acceptable_input.length
+                puts @acceptable_input[i]
+            end
+
+            # get user input
+            while !@acceptable_input.include? @user_input
+                print "\n#{@spacer}Choice: "
+                @user_input = STDIN.gets.chomp
+            end
+
         else
-            print "Your were added to the list!"
+            event.addAttendees(@username)
+            @attending_events.push(event)
+            print "\n\n#{@spacer}Your were added to the list!"
+            sleep 2
         end
 
     end
 
     def reminder
         system "clear"
-        @drive.title_print_ext("Reminders")
-        @drive.sub_title_print("List of Events for #{@user_name}")
+
+        if @attending_events.any?
+            @drive.title_print_ext("Reminders")
+            @drive.sub_title_print("List of Events for #{@user_name}")
+
+            # Grab each event that the user is going to and print it
+            for i in 0...@attending_events.length
+                @drive.hr
+                single_event_printer(@attending_events[i],i+1,false)
+            end
+        else
+            @drive.title_print("Thanks for using, goodbye!")
+        end
+
+        print "\n\n"
     end
 end

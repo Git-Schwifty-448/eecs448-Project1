@@ -119,7 +119,7 @@ class Driver
 
         while (choice < low || choice > high)
             print "Please make a selection: "
-            choice = gets.to_i
+            choice = STDIN.gets.to_i
         end
 
         return choice
