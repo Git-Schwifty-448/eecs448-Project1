@@ -2,11 +2,7 @@
     File: event.rb
     Author:
     Date Created: 9/10/17
-<<<<<<< HEAD
     Description: Models an event.
-=======
-    Description:
->>>>>>> 9e2b8d5b2f88627338a8e31614a3d296a12c5142
 =end
 
 class Event
