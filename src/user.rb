@@ -95,6 +95,11 @@ class User
             print "#{@spacer}Please use admin mode and add an event first!\n\n"
         end
 
+        if !@attending_events.empty?
+            for i in 0...@attending_events.length
+                @db.update_event(@attending_events[i])
+            end
+        end
 
     end
 
