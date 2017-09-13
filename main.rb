@@ -11,8 +11,7 @@ require "./src/controller.rb"
 require "./src/event.rb"
 
 def run
-    puts "Run"
-
+    system "clear"
     co = Controller.new
 
     co.run

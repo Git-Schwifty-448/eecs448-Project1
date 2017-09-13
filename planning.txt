@@ -18,7 +18,7 @@ Modes
 
 
 Using SQLite
-  -> Fields { Name of event, Date, Time slots (CSV,  24hrs), Attendees (CSV) } 
+  -> Fields { Name of event, Descripton, Date, Time slots (CSV,  24hrs), Attendees (CSV) } 
 
 Ruby Classes
   -> Main.rb
@@ -28,3 +28,10 @@ Ruby Classes
 
   -> databaseController.rb
   -> driver.rb
+
+
+     Event: 1    |      Event Name: e2
+                 |     Description: new e2 
+                 |            Date: 03/01/2017
+                 |  Time(s) (24hr): 12:30, 02:00
+                 |       Attendees: Dick
