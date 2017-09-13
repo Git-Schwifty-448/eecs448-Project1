@@ -1,7 +1,7 @@
 =begin
 
     File: user.rb
-    Author:
+    Author: Abraham Dick
     Date Created: 9/8/17
     Description: 
 
@@ -13,18 +13,22 @@
 ### TODOS ###
 
 1) Username needs to be global for each session (must include first name and last name plus validation)
+x) When a current user has added themselves to the list of events, they should no longer be able to accept it
 2) Clean up attend_event ... :/
 3) Fix scoping issues (public v private)
 4) Connect database model
+5) Fix time model - 12:30 is 12:30 pm not AM; 00:30 is 12:30am
 
+***Attending events array is an array of the events that will be pushed back to the database to be updated,
+    assuming all others will be unchanged
 
 =end
-
 
 require 'date'
 
 require_relative 'event'
 require_relative 'databaseController'
+require_relative 'attendee'
 
 class User
     def initialize
@@ -37,47 +41,60 @@ class User
         @attending_events = Array.new
     end
 
-    def run
+    def testing
+        @at1 = Attendee.new("Abe",["15:00,23:30,17:30"])
+        @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03/18/2017",["15:00,23:30,17:30"],[@at1],1) 
         @db = DatabaseController.new
+        @db.persist_event(@e1)
+        @event_array = @db.get_events
+    end
 
-        #eventually this will be pulling events from the database based on the time list
-        @e1_times = ["15:00","23:30","17:30"]
-        @e1 = Event.new("Awesome PArty","This is the desc of the first of the events in a series of 3 events that will be here to demonstrate how this works and how it will continue to work for as long as there are characters in the string that still need printing",Date.new(2018,3,18),@e1_times,["Abe"])            
-        @e2 = Event.new("Git wrecked","new e2",Date.parse('01-03-2017'),["12:30","02:00"],["Dick"])
-        @e3 = Event.new("heelo","new e3",Date.parse('06-03-2018'),["12:30"],["Alex","ARD","LAMO"]) 
+    def run
+
+        @db = DatabaseController.new
         
+
+        ### DEBUG CODE RUN ONCE
+        # creates a test database
+        #
+        # @at1 = Attendee.new("Abe",["15:00,23:30,17:30"])
+        # @at2 = Attendee.new("Zach",["12:30","02:00"])
+        # @at3 = Attendee.new("Ryan",["12:30","02:00"])
+        # @at4 = Attendee.new("Mike",["12:30"])
+        # @at5 = Attendee.new("Zyke",["12:30"])
+        # @at6 = Attendee.new("Myke",["12:30"])
+
+        # @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03/18/2017",["15:00","23:30","17:30"],[@at1],1)            
+        # @e2 = Event.new("Git wrecked","new e2","01-03-2017",["12:30","02:00"],[@at2,@at3],25)
+        # @e3 = Event.new("heelo","new e3","06-03-2018",["12:30"],[@at4,@at5,@at6],40) 
+
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
         # @db.persist_event(@e3)
 
-        # @event_array = @db.get_events
+        ### END RUN ONCE
 
-        @event_array = [@e1,@e2,@e3]
+        @event_array = @db.get_events
         @number_of_events = @event_array.length
+
         @events = true
-
-        puts "Browsing is #{@browsing.to_s}"
-
         @browsing = true
 
-        while @browsing
-            get_events()
-            @browsing = event_controller()
+        if @number_of_events > 0
+
+            while @browsing
+                get_events()
+                @browsing = event_controller()
+            end
+
+            reminder()
+        else
+            @drive.title_print("Error")
+            print "\n\n#{@spacer}There are not currently any events in the database\n"
+            print "#{@spacer}Please use admin mode and add an event first!\n\n"
         end
 
-        reminder()
-    end
 
-    # updates the member variable @user_name with a name given by the user
-    def get_user_name
-        system "clear"
-        @drive.title_print_ext("User Mode")
-        @drive.sub_title_print("Get User Name")
-
-        print "\tPlease enter a username: "
-        @user_name = STDIN.gets.chomp
-
-        return @user_name
     end
 
     # If there are events stored in the database, they are grabbed 
@@ -93,7 +110,7 @@ class User
             # Grab each event
             for i in 0...@event_array.length
                 @drive.hr
-                single_event_printer(@event_array[i],i+1,false)
+                single_event_printer(@event_array[i],false)
             end
         else
             print "There are not currently any events in the database\n"
@@ -101,26 +118,26 @@ class User
     end
 
     # Template for printing a single event
-    # takes an event object, and id number, and a true/false if this is for printing in a list
+    # takes an event object and a true/false if this is for printing in a list
     # or printing a single event
-    def single_event_printer(event,id,single)
+    def single_event_printer(event,single)
 
         if !single
-            puts "\n\n#{@spacer}Event ID:\t" + id.to_s
+            puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
         end
 
-        puts "\n#{@spacer}Event Name:\t" + event.getName
-        puts "#{@spacer}Date:\t\t" + event.getDate.strftime("%m/%d/%Y")
+        puts "\n#{@spacer}Event Name:\t" + event.get_name
+        puts "#{@spacer}Date:\t\t" + event.get_date                 #.strftime("%m/%d/%Y")
         print "#{@spacer}Time(s)"
 
         if !@military_time
             print " (12hr): "
 
             # make sure the event was created correctly
-            if event.getTimeslots12hrs.kind_of?(Array)
-                for j in 0...event.getTimeslots12hrs.length
-                    print event.getTimeslots12hrs[j]
-                    if j != event.getTimeslots12hrs.length-1
+            if event.get_timeslots_12hrs.kind_of?(Array)
+                for j in 0...event.get_timeslots_12hrs.length
+                    print event.get_timeslots_12hrs[j]
+                    if j != event.get_timeslots_12hrs.length-1
                         print ", "
                     end
                 end
@@ -131,10 +148,10 @@ class User
             print " (24hr): "
 
             # make sure the event was created correctly
-            if event.getTimeslots.kind_of?(Array)
-                for j in 0...event.getTimeslots.length
-                    print event.getTimeslots[j]
-                    if j != event.getTimeslots.length-1
+            if event.get_timeslots.kind_of?(Array)
+                for j in 0...event.get_timeslots.length
+                    print event.get_timeslots[j]
+                    if j != event.get_timeslots.length-1
                         print ", "
                     end
                 end
@@ -143,19 +160,17 @@ class User
             end
         end
 
-
-
         print "\n#{@spacer}Attendees:\t"
 
-        if event.getAttendees.empty?
+        if event.get_attendees.empty?
             print "None yet, be the first to attend!\n"
         end
 
-        if event.getAttendees.kind_of?(Array)
+        if event.get_attendees.kind_of?(Array)
 
-            for i in 0...event.getAttendees.length
-                print event.getAttendees[i]
-                if i != event.getAttendees.length-1
+            for i in 0...event.get_attendees.length
+                print event.get_attendees[i].get_name()
+                if i != event.get_attendees.length-1
                     print ", "
                 end
 
@@ -166,11 +181,14 @@ class User
         end
 
         print "\n#{@spacer}Description:\t"
-        @drive.desc_printer event.getDescription
+        @drive.desc_printer event.get_description
+        print "\n"
 
     end
 
     # outputs each event and returns if the user wants to attend
+
+    ##THIS IS WHERE DATABASE UPDATE MODEL NEEDS TO CONTINUE
     def event_controller()
 
         @drive.hr
@@ -185,10 +203,17 @@ class User
                                  'q',
                                  "quit",
                                  "Quit"])
-
-        for i in 1...@number_of_events+1
-            @acceptable_input.push(i.to_s)
+        @list_ids = Array.new
+        for i in 0...@number_of_events
+            @list_ids.push(@event_array[i].get_id.to_s)
         end
+
+        @acceptable_input += @list_ids
+
+            # DEBUG USE ONLY
+            for i in 0...@acceptable_input.length
+                puts @acceptable_input[i]
+            end
 
         # get user input
         while !@acceptable_input.include? @user_input
@@ -203,7 +228,7 @@ class User
 
         # handle input
         case @user_input
-            when 1...@number_of_events+1
+            when *@list_ids
                 @username = get_user_name()
                 @browsing = attend_event(@event_array[@user_input-1],@user_input,@username)
                 return @browsing
@@ -223,7 +248,7 @@ class User
         end
     end
     
-    # takes an event given by the event_controller method
+    # takes an event given by the event_controller method, the id of that event
     def attend_event(event,id,username)
         system "clear"
         @drive.title_print_ext("Events")
@@ -387,7 +412,26 @@ class User
 
         print "\n\n"
     end
+
+
+    # updates the member variable @user_name with a name given by the user
+    def get_user_name
+        system "clear"
+        @drive.title_print_ext("User Mode")
+        @drive.sub_title_print("Get User Name")
+
+        print "\tPlease enter a username: "
+        @user_name = STDIN.gets.chomp
+
+        return @user_name
+    end
+
+
+
 end
+
+
+
 
 
 

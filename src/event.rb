@@ -46,7 +46,7 @@ class Event
         @timeslots
     end
 
-    def getTimeslots12hrs
+    def get_timeslots_12hrs
         #create the new array
         @timeslots_12hrs = Array.new
 
@@ -58,6 +58,8 @@ class Event
 
             if @temp_holder[0] > 12  
                 @temp_holder[0] = @temp_holder[0] - 12
+                @timeslots_12hrs.push(@temp_holder[0].to_s + ":" + @temp_holder[1] + "pm")
+            elsif @temp_holder[0] == 12
                 @timeslots_12hrs.push(@temp_holder[0].to_s + ":" + @temp_holder[1] + "pm")
             else
                 @timeslots_12hrs.push(@timeslots[i] + "am")

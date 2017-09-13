@@ -1,10 +1,8 @@
 =begin
-
     File: databaseController.rb
-    Author:
+    Author: Alex Shadley
     Date Created: 9/8/17
-    Description:
-
+    Description: controller class to encapsulate all database calls
 =end
 
 require 'sequel'
@@ -29,8 +27,17 @@ class DatabaseController
 			end
 		end
 
+		if(!@DB.table_exists?(:timeslots))
+			@DB.create_table :timeslots do
+				String :time
+				String :parent_table
+				String :parent_id
+			end
+		end
+
 		if(!@DB.table_exists?(:attendees))
 			@DB.create_table :attendees do
+				primary_key :id
 				String :name
 				String :parent_id
 			end
@@ -45,10 +52,34 @@ class DatabaseController
 	# attendee belongs to
 	def persist_event(event)
 		@DB.transaction do
-			id = @DB[:events].insert(:name => event.getName, :description => event.getDescription, :date => event.getDate, :timeslots => event.getTimeslots)
+			id = @DB[:events].insert(:name => event.get_name, :description => event.get_description, :date => event.get_date)
 
-			event.getAttendees.each do |attendee|
-				@DB[:attendees].insert(:name => attendee, :parent_id => id)
+			event.get_timeslots.each do |timeslot|
+				@DB[:timeslots].insert(:time => timeslot, :parent_table => 'events', :parent_id => id)
+			end
+
+			event.get_attendees.each do |attendee|
+				persist_attendee(attendee, id)
+			end
+		end
+	end
+
+	def persist_attendee(attendee, parentid)
+		id = @DB[:attendees].insert(:name => attendee.get_name, :parent_id => parentid)
+
+		attendee.get_timeslots.each do |timeslot|
+			@DB[:timeslots].insert(:time => timeslot, :parent_table => 'attendees', :parent_id => id)
+		end
+	end
+
+	def update_event(event)
+		eventDataset = @DB[:events].where(id: event.get_id)
+		attendeeDataset = @DB[:attendees].where(parent_id: event.get_id)
+
+		#if there are any missing attendees from the attendee table, add them
+		event.get_attendees.each do |attendee|
+			if attendeeDataset.where(name: attendee.get_name).empty?
+				persist_attendee(attendee, event.get_id)
 			end
 		end
 	end
@@ -64,13 +95,24 @@ class DatabaseController
 	def get_events()
 		events = []
 
-		@DB[:events].each do |event|
-			newEvent = Event.new(event[:"name"], event[:"description"], event[:"date"], event[:"timeslots"])
-
-			@DB[:attendees].where(parent_id: event[:"id"]).each do |attendee|
-				newEvent.addAttendee(attendee[:"name"])
+		@DB[:events].order(:date).each do |event|
+			newTimeslots = []
+			@DB[:timeslots].where(parent_table: 'events', parent_id: event[:'id']).each do |timeslot|
+				newTimeslots.push(timeslot[:'time'])
 			end
 
+			newAttendees = []
+			@DB[:attendees].where(parent_id: event[:'id']).each do |attendee|
+				attendeeTimeslots = []
+				@DB[:timeslots].where(parent_table: 'attendees', parent_id: attendee[:'id']).each do |timeslot|
+					attendeeTimeslots.push(timeslot[:'time'])
+				end
+
+				newAttendee = Attendee.new(attendee[:'name'], attendeeTimeslots)
+				newAttendees.push(newAttendee)
+			end
+
+			newEvent = Event.new(event[:'name'], event[:'description'], event[:'date'], newTimeslots, newAttendees, event[:'id'])
 			events.push(newEvent)
 		end
 
