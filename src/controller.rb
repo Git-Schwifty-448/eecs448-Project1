@@ -44,8 +44,8 @@ class Controller
 #<<<<<<< HEAD
 #=======
 		#dbCont = DatabaseController.new()
-		#e = Event.new("event", "description", Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
-		#a = Attendee.new("Mike", [DateTime.new(2017, 9, 15, 10)])
+		#e = Event.new('event', 'description', Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
+		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
 		#e.add_attendee(a)
 		#dbCont.persist_event(e)
 

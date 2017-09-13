@@ -9,6 +9,7 @@
 
 require_relative "driver"
 require_relative "attendee"
+require_relative "databasecontroller"
 require 'date'
 
 class Admin
@@ -16,12 +17,14 @@ class Admin
         def initialize
           @fName = " "
           @lName = " "
+          @event_counter = 0
           @event_name = " "
           @description = " "
           @drive = Driver.new
           @military_time = true;
           @event_date = Date.new
           @timeslots_array = Array.new
+          @DB = DatabaseController.new
         end
 
         def run                                                                 #Main method that calls other methods
@@ -31,19 +34,24 @@ class Admin
 
           while yesNo
             create_date
-            create_date_time
+            create_date_time(get_event_counter)
 
-
-            #Creating of new attendee
+            #Creation of new attendee
             #admin_name = get_f_name + get_l_name
-            #admin_attendee = Attendee.new(admin_name, timeslots_array)
+            #admin_attendee = Attendee.new(admin_name, get_timeslots_array)
 
             #Temp array for the attendee array for the event
             #attendee_array = Array.new
             #attendee_array[0] = admin_attendee
 
+            #Creation of the event.
+            #event = Event.new(get_event_name, get_description, get_event_date, get_timeslots_array, attendee_array)
+            #@DB.persist_event(event)
+
+            set_event_counter(1)
             yesNo = get_validation                                              #Asks user if they want to create another event.
           end
+
         end
 
         #Accessor method
@@ -53,6 +61,10 @@ class Admin
 
         def get_l_name
           @lName
+        end
+
+        def get_event_counter
+          @event_counter
         end
 
         def get_event_name
@@ -80,6 +92,10 @@ class Admin
           @lName = theLName
         end
 
+        def set_event_counter(increase_number)
+          @event_counter += increase_number
+        end
+
         def set_event_name(event_name)
           @event_name = event_name
         end
@@ -92,28 +108,29 @@ class Admin
           @event_date = date
         end
 
-        def set_timeslot_array(timeslots)
-          @timeslots_array = timeslots
+        def set_timeslot_array(timeslots, i)
+          @timeslots_array[i] = timeslots[i]
+
         end
 
         #Receive admin's information
-        def set_admin_info
+        def set_admin_info                                                      #Getting admin's info.
           print "Enter your First Name: "
-          firstName = gets.chomp
+          firstName = STDIN.gets.chomp
 
           #Using Regexp class
           while !(firstName =~ /[[:alpha:]]/)
             print "Not a valid input. Enter your First Name: "
-            firstName = gets.chomp
+            firstName = STDIN.gets.chomp
           end
 
           print "Enter your Last Name: "
-          lastName = gets.chomp
+          lastName = STDIN.gets.chomp
 
           #Using Regexp class
           while !(lastName =~ /[[:alpha:]]/)
             print "Not a valid input. Enter your Last Name: "
-            lastName = gets.chomp
+            lastName = STDIN.gets.chomp
           end
 
           set_f_name(firstName)
@@ -121,7 +138,7 @@ class Admin
         end
 
         #Method in charge of getting information of events and creating them.
-        def create_date
+        def create_date                                                         #Creation of date.
           invalid_date = true
 
           #Temperary date of todays date.
@@ -130,25 +147,25 @@ class Admin
             @drive.title_print("Date Formation")
 
             print "Enter a name for the event: "
-            eventName = gets.chomp
+            eventName = STDIN.gets.chomp
             set_event_name(eventName)
 
             print "Give a description of the event: "
-            eventDescription = gets.chomp
+            eventDescription = STDIN.gets.chomp
             set_event_description(eventDescription)
 
           while invalid_date
             #Retrieves the event's year from the user.                          Event's Year.
             print "Input the year you'd like to make the event for(YYYY): "
-            event_year = gets.chomp
+            event_year = STDIN.gets.chomp
             while !(event_year =~ /[[:digit:]]/)
               print "Invalid input, please enter a year: "
-              eventy_year = gets.chomp
+              eventy_year = STDIN.gets.chomp
             end
 
             while (event_year < date.year.to_s) || (event_year > "2100")
               print "Invalid year, please input a reasonable year: "
-              event_year = gets.chomp
+              event_year = STDIN.gets.chomp
             end
 
             #Creates array of months for user to select from for events months
@@ -170,7 +187,7 @@ class Admin
             puts "Please choose a month for the event: "
             month_choice = @drive.menu_builder(monthMenu)
             while (month_choice < 1) || (month_choice > 12)
-              month_choice = gets.chomp
+              month_choice = STDIN.gets.chomp
             end
 
             #Creates a new array based on the days of the month. Range (1-31)
@@ -183,7 +200,7 @@ class Admin
             puts "Please choose a day for the event: "
             day_choice = @drive.menu_builder(dayMenu)
             while (day_choice < 1) || (day_choice > 31)
-              day_choice = gets.chomp
+              day_choice = STDIN.gets.chomp
             end
 
             #Verifies if the date is a valid date for the event.
@@ -192,8 +209,13 @@ class Admin
               puts "Date is not valid."
             else
               d = Date.new(event_year.to_i, month_choice.to_i, day_choice.to_i)
-              set_event_date(d)
-              invalid_date = false
+              if d < Date.today
+                invalid_date = true
+                puts "Date is not valid."
+              else
+                set_event_date(d)
+                invalid_date = false
+              end
             end
 
           end
@@ -201,50 +223,108 @@ class Admin
         end
 
 
-        def create_date_time
+        def create_date_time(event_number)                                      #Creation of time.
           @drive.title_print("Time setup")
           start_time_match = true
 
           print "(12hr) or (24hr)?: "
-          hour_rep = gets.chomp
+          hour_rep = STDIN.gets.chomp
           while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
             print "I'm sorry, please enter either 12 or 24: "
-            hour_ rep = gets.chomp
+            hour_ rep = STDIN.gets.chomp
           end
 
           temp_array = create_time_array(hour_rep)
 
-          #Retreives the start time from the user.
-          print "Enter a start time (i.e., 7:30 P.M.):"
-          start_time = gets.chomp
+          if hour_rep == "12"
+            time_choice = @drive.menu_builder(temp_array)
 
-          #Checks to see if the time is valid throughout the array.
-          start_time_match = time_check(start_time, temp_array)
-          while start_time_match
-            print "Must enter a valid time: "
-            start_time = gets.chomp
+            print "How many time slots would you like to take for this event?(1-48):"
+            time_amount = STDIN.gets.chomp
+            while time_amount > "48" || time_amount.to_i < "1"
+              print "That's not a valid amount of slots, input a reasonable amount(1-48): "
+              time_amount = STDIN.gets.chomp
+            end
+
+            #Retreives the start time from the user.
+            print "Enter a start time (i.e., ):"
+            start_time = STDIN.gets.chomp
+
+            #Checks to see if the time is valid throughout the array.
             start_time_match = time_check(start_time, temp_array)
+            while start_time_match
+              print "Must enter a valid time: "
+              start_time = STDIN.gets.chomp
+              start_time_match = time_check(start_time, temp_array)
+            end
+
+            #Retreives the end time from the user.
+            print "Enter an end time (i.e., 8:30 P.M.): "
+            end_time = STDIN.gets.chomp
+
+            end_time_match = time_check(end_time, temp_array)
+            while end_time_match
+              print "Must enter a valid time: "
+              end_time = STDIN.gets.chomp
+              end_time_match = time_check(end_time, temp_array)
+            end
+
+            #Checking to see if the start time is after the end time.
+            while (end_time.casecmp(start_time) == -1)
+              print "The end time can't be before the start time, try again: "
+              end_time = STDIN.gets.chomp
+            end
+          elsif hour_rep == "24"
+            #Retreives the start time from the user.
+            print "Enter a start time (i.e., 07:30 A.M. or 19:30 P.M.):"
+            start_time = STDIN.gets.chomp
+
+            #Checks to see if the time is valid throughout the array.
+            start_time_match = time_check(start_time, temp_array)
+            while start_time_match
+              print "Must enter a valid time: "
+              start_time = STDIN.gets.chomp
+              start_time_match = time_check(start_time, temp_array)
+            end
+
+            #Retreives the end time from the user.
+            print "Enter an end time (i.e., 08:30 A.M. or 20:30 P.M.): "
+            end_time = STDIN.gets.chomp
+
+            end_time_match = time_check(end_time, temp_array)
+            while end_time_match
+              print "Must enter a valid time: "
+              end_time = STDIN.gets.chomp
+              end_time_match = time_check(end_time, temp_array)
+            end
+
+            #Checking to see if the start time is after the end time.
+            while (end_time.casecmp(start_time) == -1)
+              print "The end time can't be before the start time, try again: "
+              end_time = STDIN.gets.chomp
+            end
           end
 
-
+          temp_array[get_event_counter] = start_time + "-" + end_time
+          set_timeslot_array(temp_array, get_event_counter)
 
         end
 
 
         def get_validation
           print "Would you like to create another event?(Yes/No): "
-          response = gets.chomp
+          response = STDIN.gets.chomp
 
           #Check for Alphetical characters
           while !(response =~ /[[:alpha:]]/)
             print "Not a valid input. Enter Yes/No: "
-            response = gets.chomp
+            response = STDIN.gets.chomp
           end
 
           #Check for if the answer is yes or no.
           while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
             print "Not a valid input. Enter Yes/No: "
-            response = gets.chomp
+            response = STDIN.gets.chomp
           end
 
           #Sets a temp variable to return to call.
