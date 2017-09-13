@@ -7,17 +7,27 @@
 
 =end
 
+=begin
+
+
+### TODOS ###
+
+1) Username needs to be global for each session (must include first name and last name plus validation)
+2) Clean up attend_event ... :/
+3) Fix scoping issues (public v private)
+4) Connect database model
+
+
+=end
+
+
 require 'date'
 
 require_relative 'event'
 require_relative 'databaseController'
 
 class User
-
-
-    
     def initialize
-
         @user_name = String.new
         @drive = Driver.new
         @events = false
@@ -234,15 +244,17 @@ class User
             # Create the list of acceptable input
             @acceptable_input = Array.new
 
-            for i in 0...event.getTimeslots.length
-                @acceptable_input.push(event.getTimeslots[i])
+            if @military_time
+                for i in 0...event.getTimeslots.length
+                    @acceptable_input.push(event.getTimeslots[i])
+                end
+            else
+                for i in 0...event.getTimeslots12hrs.length
+                    @acceptable_input.push(event.getTimeslots12hrs[i])
+                end
             end
 
-            for i in 0...event.getTimeslots12hrs.length
-                @acceptable_input.push(event.getTimeslots12hrs[i])
-            end
-
-            @availiable_time_slots = @acceptable_input.clone
+            @available_time_slots = @acceptable_input.clone
 
             @acceptable_input.push(*["all",
                                     "All", 
@@ -254,11 +266,6 @@ class User
                                     "cancel",
                                     "Cancel"])
 
-            # DEBUG USE ONLY
-            for i in 0...@acceptable_input.length
-                puts @acceptable_input[i]
-            end
-
             # get user input
             @user_input = ""
 
@@ -269,53 +276,65 @@ class User
 
             # process user input
             case @user_input
-                
-    ### Write function for picking out timeslots using an aray to keep track
-    ### Then add the list as a string to the end of the name
-    ### Unless the user adds all of the timeslots, then just add their name to the list
-    ### Return the event to the list of attending events
 
                 # when a time slot is chosen
-                when *@availiable_time_slots
+                when *@available_time_slots
 
-                    @picking_out_times = true
-                    @array_of_times = Array.new
-        
-                    while @picking_out_times
+                    @continue_picking = true
+                    @slots_chosen = Array.new
+                    @slots_chosen.push(@user_input)
+
+                    while @continue_picking
+                        
+                        # Loop to get more input
 
                         @sub_input = ""
 
-                        @yes = ['y',
-                                'Y',
-                                'yes',
-                                "Yes"]
-                        
-                        @no = ['n',
-                               "N",
-                               'no',
-                               "No",]
+                        @sub_default_input = ["end",
+                                                "End"]
+                        @remaining_slots = @available_time_slots - @slots_chosen
+                        @sub_acceptable_input = @sub_default_input + @remaining_slots
 
-                        @sub_acceptable_input = @yes|@no
-                                                 
-                        # DEBUG USE ONLY
-                        for i in 0...@sub_acceptable_input.length
-                            puts @sub_acceptable_input[i]
+                        # If the user chooses all availaible time slots
+                        if @remaining_slots.length == 0
+                            print "\n\n#{@spacer}All slots chosen, added to the list!"
+                            event.addAttendees(username)
+                            @attending_events.push(event)
+                            @continue_picking = false
+                            sleep 2
+                            break
                         end
 
                         while !@sub_acceptable_input.include? @sub_input 
-                            print "#{@spacer}Add another event: (y/n)?:  "
+                            print "\n#{@spacer}Choose another timeslot or enter \"end\": "
                             @sub_input = STDIN.gets.chomp
                         end
 
                         case @sub_input
-                            when  *@yes
-                                puts "yes"
-                            when  *@no
-                                puts "no"
-                                @picking_out_times = false
-                        end
-                    
+                            # When a time slot is chosen
+                            when *@remaining_slots
+                                @slots_chosen.push(@sub_input)
+                            # When the user choses end
+                            when *@sub_default_input
+                                #post to event the times that were added
 
+                                @username_time_string = username + "("
+                                for i in 0...@slots_chosen.length
+                                    @username_time_string = @username_time_string + @slots_chosen[i]
+                                    if i != @slots_chosen.length-1
+                                        @username_time_string = @username_time_string + ", "
+                                    end
+                                end
+                                @username_time_string = @username_time_string + ")"
+
+                                event.addAttendees(@username_time_string)
+                                @attending_events.push(event)
+
+                                print "\n\n#{@spacer}Your were added to the list!"
+                                sleep 2
+                                @continue_picking = false
+
+                        end
 
                     end
 
@@ -369,3 +388,12 @@ class User
         print "\n\n"
     end
 end
+
+
+
+=begin GARBAGE                        
+                        # DEBUG USE ONLY
+                        for i in 0...@sub_acceptable_input.length
+                            puts @sub_acceptable_input[i]
+                        end
+=end
