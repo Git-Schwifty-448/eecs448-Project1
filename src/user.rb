@@ -17,7 +17,7 @@ x) When a current user has added themselves to the list of events, they should n
 2) Clean up attend_event ... :/
 3) Fix scoping issues (public v private)
 4) Connect database model
-5) Fix time model - 12:30 is 12:30 pm not AM; 00:30 is 12:30am
+DONE -- 5) Fix time model - 12:30 is 12:30 pm not AM; 00:30 is 12:30am
 
 ***Attending events array is an array of the events that will be pushed back to the database to be updated,
     assuming all others will be unchanged
@@ -170,7 +170,24 @@ class User
         if event.get_attendees.kind_of?(Array)
 
             for i in 0...event.get_attendees.length
-                print event.get_attendees[i].get_name()
+
+                if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
+                    print event.get_attendees[i].get_name() + " ("
+
+                    for j in 0...event.get_attendees[i].get_timeslots.length
+                        print event.get_attendees[i].get_timeslots[j]
+
+                        if j != event.get_attendees[i].get_timeslots.length-1
+                            print ", "
+                        end
+                    end
+
+                    print "),"
+
+                else
+                    print event.get_attendees[i].get_name()
+                end
+
                 if i != event.get_attendees.length-1
                     print ", "
                 end
