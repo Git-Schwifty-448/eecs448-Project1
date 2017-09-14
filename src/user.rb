@@ -14,8 +14,6 @@
 
 x) When a current user has added themselves to the list of events, they should no longer be able to accept it
 3) Fix scoping issues (public v private)
-4) Connect database model
-DONE -- 5) Fix time model - 12:30 is 12:30 pm not AM; 00:30 is 12:30am
 
 Add features
 1) Only show events in which the user is not attending in the viewer list. Make this switchable
@@ -58,16 +56,16 @@ class User
         ### DEBUG CODE RUN ONCE
         # creates a test database
         
-        # @at1 = Attendee.new("Abe",["15:00","23:30","17:30"])
-        # @at2 = Attendee.new("Zach",["12:30","02:00"])
-        # @at3 = Attendee.new("Ryan",["12:30","02:00"])
-        # @at4 = Attendee.new("Mike",["12:30"])
-        # @at5 = Attendee.new("Zyke",["12:30"])
-        # @at6 = Attendee.new("Myke",["12:30"])
+        # @at1 = Attendee.new("Abe Dick",["15:00","23:30","17:30"])
+        # @at2 = Attendee.new("Zach Jones",["12:30","02:00"])
+        # @at3 = Attendee.new("Ryan Martin",["12:30"])
+        # @at4 = Attendee.new("Mike Kitchen",["12:30"])
+        # @at5 = Attendee.new("Zyke Joynes",["12:30"])
+        # @at6 = Attendee.new("Myke Tyson",["12:30"])
 
-        # @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03-18-2017",["15:00","23:30","17:30"],[@at1])            
-        # @e2 = Event.new("Git wrecked","new e2","01-03-2017",["12:30","02:00"],[@at2,@at3])
-        # @e3 = Event.new("heelo","new e3","06-03-2018",["12:30"],[@at4,@at5,@at6]) 
+        # @e1 = Event.new("A large gathering","A typical large gathering of friends for an hour and a half in March","18-11-2017",["15:00","23:30","17:30"],[@at1])            
+        # @e2 = Event.new("Coffee Break","Let's take coffee sometime?","01-12-2017",["12:30","02:00"],[@at2,@at3])
+        # @e3 = Event.new("Lunch Beer","Who doesn't love a lunch beer?","15-12-2017",["12:30"],[@at4,@at5,@at6]) 
 
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
@@ -135,7 +133,10 @@ class User
         end
 
         puts "\n#{@spacer}Event Name:\t" + event.get_name
-        puts "#{@spacer}Date:\t\t" + event.get_date                 #.strftime("%m/%d/%Y")
+
+        d = Date.parse(event.get_date)
+
+        puts "#{@spacer}Date:\t\t" + d.strftime('%A %B %d, %Y')
         print "#{@spacer}Time(s)"
 
         if !@military_time
@@ -175,7 +176,6 @@ class User
         end
 
         if event.get_attendees.kind_of?(Array)
-
             for i in 0...event.get_attendees.length
 
                 if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
@@ -194,7 +194,8 @@ class User
                         end
                     end
 
-                    print "),"
+                    print ")"
+
 
                 else
                     print event.get_attendees[i].get_name()
