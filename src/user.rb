@@ -12,7 +12,6 @@
 
 ### TODOS ###
 
-1) Username must include first name and last name plus validation)
 x) When a current user has added themselves to the list of events, they should no longer be able to accept it
 3) Fix scoping issues (public v private)
 4) Connect database model
@@ -392,10 +391,35 @@ class User
         @drive.title_print_ext("User Mode")
         @drive.sub_title_print("Get User Name")
 
-        print "\tPlease enter a username: "
-        @user_name = STDIN.gets.chomp
+        @temp_name = String.new
 
-        @new_attendee = Attendee.new(@user_name,origin_time_slot)
+        loop do
+            print "\n\n#{@spacer}Please enter your first name: "
+            @temp_name = STDIN.gets.chomp
+
+            if @temp_name.match(/^[[:alpha:]]+$/)
+                break
+            else
+                print "\n#{@spacer}Only letters are allowed"
+            end
+            
+        end
+
+        loop do
+            print "\n\n#{@spacer}Please enter your last name: "
+            @temp_l_name = STDIN.gets.chomp
+
+            if @temp_l_name.match(/^[[:alpha:]]+$/)
+                @temp_name = @temp_name + " " + @temp_l_name
+                break
+            else
+                print "\n#{@spacer}Only letters are allowed"
+            end
+            
+        end
+
+
+        @new_attendee = Attendee.new(@temp_name,origin_time_slot)
 
         return @new_attendee
     end
@@ -456,3 +480,5 @@ end
                              @user_input = @user_input.to_i
                          end
 =end
+
+# username checking from https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
