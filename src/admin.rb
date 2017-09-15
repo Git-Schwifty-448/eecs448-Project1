@@ -25,6 +25,7 @@ class Admin
           @event_date = Date.new
           @timeslots_array = Array.new
           @DB = DatabaseController.new
+          @hour_counter = 0
         end
 
         def run                                                                 #Main method that calls other methods
@@ -237,11 +238,17 @@ class Admin
           temp_array = create_time_array(hour_rep)
 
           if hour_rep == "12"
-            time_choice = @drive.menu_builder(temp_array)
 
-            print "How many time slots would you like to take for this event?(1-48):"
+            puts "How many time slots would you like to take for this event? \n"
+            print "(30 min increments):"
             time_amount = STDIN.gets.chomp
-            while time_amount > "48" || time_amount.to_i < "1"
+
+            slot_choices = Array.new
+            for(int i = 0; i < 48; i++)
+              slot_choices = (i + 1)
+            end
+            
+            while time_amount.casecmp("48") || time_amount.casecmp
               print "That's not a valid amount of slots, input a reasonable amount(1-48): "
               time_amount = STDIN.gets.chomp
             end
@@ -338,7 +345,7 @@ class Admin
         #Creates an array based on the time representation that the user choses.
         def create_time_array(hr)
           if hr == "12"                                                   #12Hr time
-            hour_counter = 1
+            @hour_counter = 1
 
             #Creates an array with 12 hour time slots.
             twelve_hr_array = Array.new
@@ -350,38 +357,38 @@ class Admin
               if i % 2 == 0
                 if i < 24
                   if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   end
                 elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                  twelve_hr_array[i] = (@hour_counter.to_s + ":00 P.M.")
                 end
               elsif i % 2 == 1
                 if i < 24
                   if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   end
                 elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                  twelve_hr_array[i] = (@hour_counter.to_s + ":30 P.M.")
                 end
               end
 
               if i % 2 == 1
-                hour_counter += 1
+                @hour_counter += 1
               end
 
               #Resets hour_counter to 0 once it reaches 1 o'clock.
-              if hour_counter == 13
-                hour_counter = 1
+              if @hour_counter == 13
+                @hour_counter = 1
               end
             end
 
             return twelve_hr_array
           elsif hr == "24"                                                #24Hr time
-            hour_counter = 0
+            @hour_counter = 0
 
             #Creates an array with 24 hour time slots.
             twentyfour_hr_array = Array.new
@@ -391,27 +398,27 @@ class Admin
               if i % 2 == 0
                 if i < 24
                   if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
+                    twentyfour_hr_array[i] = ("0" + @hour_counter.to_s + ":00 A.M.")
                   elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twentyfour_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   end
                 elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                  twentyfour_hr_array[i] = (@hour_counter.to_s + ":00 P.M.")
                 end
               elsif i % 2 == 1
                 if i < 24
                   if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
+                    twentyfour_hr_array[i] = ("0" + @hour_counter.to_s + ":30 A.M.")
                   elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twentyfour_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   end
                 elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                  twentyfour_hr_array[i] = (@hour_counter.to_s + ":30 P.M.")
                 end
               end
 
               if i % 2 == 1
-                hour_counter += 1
+                @hour_counter += 1
               end
             end
 
