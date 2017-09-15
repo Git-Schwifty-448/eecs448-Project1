@@ -9,15 +9,10 @@
 
 =begin
 
-
 ### TODOS ###
 
-x) When a current user has added themselves to the list of events, they should no longer be able to accept it
+x) When a current user has added themselves to the list of events, they should no longer be able to add themselves to it again
 3) Fix scoping issues (public v private)
-
-Add features
-1) Only show events in which the user is not attending in the viewer list. Make this switchable
-    or otherwise disallow the user from going to an event twice
 
 =end
 
@@ -67,6 +62,9 @@ class User
         # @e2 = Event.new("Coffee Break","Let's take coffee sometime?","01-12-2017",["12:30","02:00"],[@at2,@at3])
         # @e3 = Event.new("Lunch Beer","Who doesn't love a lunch beer?","15-12-2017",["12:30"],[@at4,@at5,@at6]) 
 
+        # @e4 = Event.new("Emergency Meeting","Holy mother, we gotta take care of this right now!","15-09-2017",["12:30"],[@at5,@at6])
+        # @db.persist_event(@e4)
+
         # @db.persist_event(@e1)
         # @db.persist_event(@e2)
         # @db.persist_event(@e3)
@@ -81,12 +79,10 @@ class User
         @browsing = true
 
         if @number_of_events > 0
-
             while @browsing
                 get_events()
                 @browsing = event_controller()
             end
-
             reminder()
         else
             @drive.title_print("Error")
@@ -99,7 +95,6 @@ class User
                 @db.update_event(@attending_events[i])
             end
         end
-
     end
 
     # If there are events stored in the database, they are grabbed 
@@ -110,14 +105,13 @@ class User
             system "clear"
             @drive.title_print_ext("Events")
             @drive.sub_title_print("Upcoming Events")
-            print "\t(use t to toggle 12 or 24 hour time formats)\n"
+            print "\n"
 
             # Grab each event
                 for i in 0...@event_array.length
                     @drive.hr
                     single_event_printer(@event_array[i],false)
                 end
- 
         else
             print "There are not currently any events in the database\n"
         end
@@ -177,12 +171,10 @@ class User
 
         if event.get_attendees.kind_of?(Array)
             for i in 0...event.get_attendees.length
-
                 if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
                     print event.get_attendees[i].get_name() + " ("
 
                     for j in 0...event.get_attendees[i].get_timeslots.length
-
                         if @military_time
                             print event.get_attendees[i].get_timeslots[j]
                         else
@@ -193,14 +185,10 @@ class User
                             print ", "
                         end
                     end
-
                     print ")"
-
-
                 else
                     print event.get_attendees[i].get_name()
                 end
-
 
                 if i != event.get_attendees.length-1
                     print ", "
@@ -215,14 +203,11 @@ class User
         print "\n#{@spacer}Description:\t"
         @drive.desc_printer event.get_description
         print "\n"
-
     end
 
     # outputs each event and returns if the user wants to attend
     def event_controller()
-
         @drive.hr
-
         puts "\n\n#{@spacer}If you wish to attend an event, enter the Event's ID number otherwise enter t to toggle time"
         puts "#{@spacer}format or \"Quit\" to end the application\n"
 
@@ -233,24 +218,37 @@ class User
                                  'q',
                                  "quit",
                                  "Quit"])
+        # get all of the ID's in the database array
         @list_ids = Array.new
         for i in 0...@number_of_events
             @list_ids.push(@event_array[i].get_id.to_s)
         end
 
-        @acceptable_input += @list_ids
+        # get id's of events that the user is attending already
+        @already_attending = Array.new
+        for i in 0...@attending_events.length
+            @already_attending.push(@attending_events[i].get_id.to_s)
+        end
 
+        @acceptable_input += @list_ids
+        
         # get user input
         while !@acceptable_input.include? @user_input
             print "\n#{@spacer}Choice: "
             @user_input = STDIN.gets.chomp
         end
 
+        @list_ids -= @already_attending
+        
         # handle input
         case @user_input
             when *@list_ids
                 # @username = get_user_name()
                 @browsing = attend_event(get_event_by_id(@user_input))
+                return @browsing
+            when *@already_attending
+                print "#{@spacer}You are already attending this event!"
+                sleep 2
                 return @browsing
             when 'q',"quit","Quit"
                 @browsing = false
@@ -310,8 +308,6 @@ class User
                                         "A",
                                         "all",
                                         "All"])
-
-
                 @user_input = ""
 
                 while (!@acceptable_input.include? @user_input)
@@ -351,7 +347,6 @@ class User
                 sleep 2
             end
 
-
         # Otherwise, assume that the event has only one timeslot
         else
             @new_user.add_timeslot(event.get_timeslots)
@@ -363,7 +358,6 @@ class User
 
         # return true, that program should continue to loop
         return true
-
     end
 
     def reminder
@@ -384,7 +378,6 @@ class User
 
         print "\n\n"
     end
-
 
     # Creates an attendee object to be added to the event
     def create_user(origin_time_slot)
@@ -419,9 +412,7 @@ class User
             
         end
 
-
         @new_attendee = Attendee.new(@temp_name,origin_time_slot)
-
         return @new_attendee
     end
 
@@ -434,7 +425,6 @@ class User
         end
 
         raise ArgumentError, 'The ID does not match an in the database'
-
     end
 
     #converts a single time to military time for use with creating attendee
@@ -465,8 +455,6 @@ class User
         clean_attendee = Attendee.new(@name,[])
         return clean_attendee
     end
-
-
 end
 
 =begin GARBAGE                        
@@ -474,12 +462,6 @@ end
                         for i in 0...@sub_acceptable_input.length
                             puts @sub_acceptable_input[i]
                         end
-
-                        # Converts input to an integer
-                         if user wants to attend an event, convert it to an integer for easier handling
-                         if @user_input.match(/\d/)
-                             @user_input = @user_input.to_i
-                         end
 =end
 
 # username checking from https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
