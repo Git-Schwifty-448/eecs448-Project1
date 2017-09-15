@@ -6,7 +6,7 @@
 =end
 
 class Attendee
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
     def initialize(name, timeslots)
 		raise ArgumentError.new("'name' must be a string") if !name.is_a? String
@@ -14,22 +14,22 @@ class Attendee
 
 		@name = name
 		@timeslots = timeslots
-=======
-    
+#=======
+
         # timeslots and attendees must be passed in as arrays, but empty arrays are
         # are acceptable
         def initialize(name, timeslots)
             raise ArgumentError.new("'name' must be a string") if !name.is_a? String
             # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
-    
+
             @name = name
             @timeslots = timeslots
         end
-    
+
         def get_name
             @name
         end
-    
+
         def get_timeslots
             @timeslots
         end
@@ -44,8 +44,8 @@ class Attendee
                     for i in 0...@timeslots.length
                         @temp_holder = @timeslots[i].split(':')
                         @temp_holder[0] = @temp_holder[0].to_i
-            
-                        if @temp_holder[0] > 12  
+
+                        if @temp_holder[0] > 12
                             @temp_holder[0] = @temp_holder[0] - 12
                             @timeslots_12hrs.push(@temp_holder[0].to_s + ":" + @temp_holder[1] + "pm")
                         elsif @temp_holder[0] == 12
@@ -56,6 +56,7 @@ class Attendee
                     end
                     return @timeslots_12hrs
         end
-    
->>>>>>> 9e2b8d5b2f88627338a8e31614a3d296a12c5142
+
+#>>>>>>> 9e2b8d5b2f88627338a8e31614a3d296a12c5142
     end
+end
