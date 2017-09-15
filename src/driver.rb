@@ -163,4 +163,35 @@ class Driver
         print @new_string + "\n"
 
     end
+
+    # Takes a string (message) and validates user input to only allow
+    # responses that only contain upper and lowercase letters
+    def get_alpha(message)
+        loop do
+            print message
+            @input = STDIN.gets.chomp
+
+            if @input.match(/^[[:alpha:]]+$/)
+                break
+            else
+                print "\n#{@spacer}Only letters are allowed"
+            end
+            
+        end
+
+        return @input
+    end
+
+    # takes an array of acceptable answers and only allows the user to
+    # choose from that list
+    def validate_input(acceptable_input)
+        @user_input = ""
+
+        while !acceptable_input.include? @user_input
+            print "\n#{@spacer}Choice: "
+            @user_input = STDIN.gets.chomp
+        end
+
+        return @user_input
+    end
 end
