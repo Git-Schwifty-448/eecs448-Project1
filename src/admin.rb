@@ -9,7 +9,7 @@
 
 require_relative "driver"
 require_relative "attendee"
-require_relative "databasecontroller"
+require_relative "databaseController"
 require 'date'
 
 class Admin
