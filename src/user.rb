@@ -10,8 +10,6 @@
 =begin
 
 ### TODOS ###
-
-x) When a current user has added themselves to the list of events, they should no longer be able to add themselves to it again
 3) Fix scoping issues (public v private)
 
 =end
@@ -365,7 +363,7 @@ class User
 
         if @attending_events.any?
             @drive.title_print_ext("Reminders")
-            @drive.sub_title_print("List of Events for #{@user_name}")
+            @drive.sub_title_print("List of Selected Events")
 
             # Grab each event that the user is going to and print it
             for i in 0...@attending_events.length
