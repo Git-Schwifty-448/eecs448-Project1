@@ -174,7 +174,7 @@ class Driver
             if @input.match(/^[[:alpha:]]+$/)
                 break
             else
-                print "\n#{@spacer}Only letters are allowed"
+                print "\n        Only letters are allowed"
             end
             
         end
@@ -188,7 +188,7 @@ class Driver
         @user_input = ""
 
         while !acceptable_input.include? @user_input
-            print "\n#{@spacer}Choice: "
+            print "\n        Choice: "
             @user_input = STDIN.gets.chomp
         end
 

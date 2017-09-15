@@ -30,15 +30,6 @@ class User
         @spacer = "        "
         @attendee_created = false
         @attending_events = Array.new
-        @view_all = false
-    end
-
-    def testing
-        @at1 = Attendee.new("Abe",["15:00,23:30,17:30"])
-        @e1 = Event.new("Awesome PArty","This isrks and how it wilg","03/18/2017",["15:00,23:30,17:30"],[@at1],1) 
-        @db = DatabaseController.new
-        @db.persist_event(@e1)
-        @event_array = @db.get_events
     end
 
     def run
@@ -73,8 +64,10 @@ class User
         # @event_array = [@e1,@e2,@e3]
         @number_of_events = @event_array.length
 
-        @events = true
-        @browsing = true
+        if @number_of_events > 0
+            @events = true
+            @browsing = true
+        end
 
         if @number_of_events > 0
             while @browsing
@@ -385,17 +378,20 @@ class User
 
         @temp_name = String.new
 
-        loop do
-            print "\n\n#{@spacer}Please enter your first name: "
-            @temp_name = STDIN.gets.chomp
+        # loop do
+        #     print "\n\n#{@spacer}Please enter your first name: "
+        #     @temp_name = STDIN.gets.chomp
 
-            if @temp_name.match(/^[[:alpha:]]+$/)
-                break
-            else
-                print "\n#{@spacer}Only letters are allowed"
-            end
+        #     if @temp_name.match(/^[[:alpha:]]+$/)
+        #         break
+        #     else
+        #         print "\n#{@spacer}Only letters are allowed"
+        #     end
+
             
-        end
+        # end
+
+        @temp_name = @drive.get_alpha("\n\n#{@spacer}Please enter your first name:")
 
         loop do
             print "\n\n#{@spacer}Please enter your last name: "
