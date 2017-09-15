@@ -5,6 +5,7 @@
     Description:
 =end
 
+# in charge of printing headers and menus to temrinal
 class Driver
 
     def initialize
@@ -168,7 +169,7 @@ class Driver
     # responses that only contain upper and lowercase letters
     def get_alpha(message)
         loop do
-            print message
+            print message + " "
             @input = STDIN.gets.chomp
 
             if @input.match(/^[[:alpha:]]+$/)
