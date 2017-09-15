@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Attendee - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-add_timeslot">#add_timeslot</a>
+    
+    <li ><a href="#method-i-clear_timeslot">#clear_timeslot</a>
+    
+    <li ><a href="#method-i-get_name">#get_name</a>
+    
+    <li ><a href="#method-i-get_timeslots">#get_timeslots</a>
+    
+    <li ><a href="#method-i-get_timeslots_12hrs">#get_timeslots_12hrs</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Attendee">
+  <h1 id="class-Attendee" class="class">
+    class Attendee
+  </h1>
+
+  <section class="description">
+    
+<p>File: attendee.rb Author: Alex Shadley Date Created: 9/11/17 Description:
+stores information about an attendee for a specific event</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(name, timeslots)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>timeslots and attendees must be passed in as arrays, but empty arrays are
+are acceptable</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">timeslots</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;name&#39; must be a string&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+    <span class="ruby-comment"># raise ArgumentError.new(&quot;&#39;timeslots&#39; must not be empty&quot;) if timeslots.length == 0</span>
+    
+    <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
+    <span class="ruby-ivar">@timeslots</span> = <span class="ruby-identifier">timeslots</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_timeslot" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_timeslot</span><span
+            class="method-args">(new_slot)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add_timeslot-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_timeslot</span>(<span class="ruby-identifier">new_slot</span>)
+    <span class="ruby-ivar">@timeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">new_slot</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-clear_timeslot" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_timeslot</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="clear_timeslot-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_timeslot</span>
+    <span class="ruby-ivar">@timeslots</span> = []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_name-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_name</span>
+    <span class="ruby-ivar">@name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_timeslots" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_timeslots</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_timeslots-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots</span>
+    <span class="ruby-ivar">@timeslots</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_timeslots_12hrs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_timeslots_12hrs</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_timeslots_12hrs-source">
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots_12hrs</span>
+<span class="ruby-comment">#create the new array</span>
+<span class="ruby-ivar">@timeslots_12hrs</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@timeslots</span>.<span class="ruby-identifier">length</span>
+            <span class="ruby-ivar">@temp_holder</span> = <span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
+            <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
+
+            <span class="ruby-keyword">if</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">12</span>  
+                <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-value">12</span>
+                <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
+            <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value">12</span>
+                <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
+            <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;am&quot;</span>)
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@timeslots_12hrs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
