@@ -8,7 +8,6 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
-  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -102,7 +101,8 @@
 
   <section class="description">
     
-<p>File: event.rb Author: Date Created: 9/10/17 Description: Models an event.</p>
+<p>File: event.rb Author: Alex Shadley Date Created: 9/10/17 Description:
+Models an event.</p>
 
   </section>
 
@@ -129,7 +129,7 @@
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(name, description, date, timeslots, attendees, id = nil)</span>
+            class="method-args">(name, description, timeslots, attendees, id = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -138,22 +138,40 @@
 
         <div class="method-description">
           
-          <p>timeslots and attendees must be passed in as arrays, but empty arrays are
-are acceptable</p>
+          <p>Params:</p>
+<dl class="rdoc-list note-list"><dt><code>name</code>
+<dd>
+<p>string containing the name of the event</p>
+</dd><dt>+description
+<dd>
+<p>string containing the description of the event</p>
+</dd><dt><code>timeslots</code>
+<dd>
+<p>array of DateTime objects giving the timeslots occupied by the event</p>
+</dd><dt><code>attendees</code>
+<dd>
+<p>array of <a href="Attendee.html">Attendee</a> objects attending the event</p>
+</dd><dt><code>id</code>
+<dd>
+<p>optional parameter, unique identifier for the event; provided by the <a
+href="DatabaseController.html">DatabaseController</a> class</p>
+</dd></dl>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 12</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">description</span>, <span class="ruby-identifier">date</span>, <span class="ruby-identifier">timeslots</span>, <span class="ruby-identifier">attendees</span>, <span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>)
+            <pre><span class="ruby-comment"># File src/event.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">description</span>, <span class="ruby-identifier">timeslots</span>, <span class="ruby-identifier">attendees</span>, <span class="ruby-identifier">id</span> = <span class="ruby-keyword">nil</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;name&#39; must be a string&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;description&#39; must be a string&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">description</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;timeslots&#39; must not be empty&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">timeslots</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 
+            <span class="ruby-identifier">timeslots</span>.<span class="ruby-identifier">sort!</span>
+
     <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
     <span class="ruby-ivar">@description</span> = <span class="ruby-identifier">description</span>
-    <span class="ruby-ivar">@date</span> = <span class="ruby-identifier">date</span>
+    <span class="ruby-ivar">@date</span> = <span class="ruby-identifier">timeslots</span>[<span class="ruby-value">0</span>]
     <span class="ruby-ivar">@timeslots</span> = <span class="ruby-identifier">timeslots</span>
     <span class="ruby-ivar">@attendees</span> = <span class="ruby-identifier">attendees</span> <span class="ruby-comment"># contains attendee objects</span>
 
@@ -198,7 +216,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="add_attendee-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 28</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_attendee</span>(<span class="ruby-identifier">attendee</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;must be passed an attendee object&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">attendee</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Attendee</span>
     <span class="ruby-ivar">@attendees</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">attendee</span>)
@@ -232,7 +250,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_attendees-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 70</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_attendees</span>
     <span class="ruby-ivar">@attendees</span>
 <span class="ruby-keyword">end</span></pre>
@@ -265,7 +283,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_date-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 41</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_date</span>
     <span class="ruby-ivar">@date</span>
 <span class="ruby-keyword">end</span></pre>
@@ -298,7 +316,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_description-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 37</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_description</span>
     <span class="ruby-ivar">@description</span>
 <span class="ruby-keyword">end</span></pre>
@@ -331,7 +349,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_id-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 74</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_id</span>
     <span class="ruby-ivar">@id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -364,7 +382,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_name-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 33</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_name</span>
     <span class="ruby-ivar">@name</span>
 <span class="ruby-keyword">end</span></pre>
@@ -397,7 +415,7 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_timeslots-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 45</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots</span>
     <span class="ruby-ivar">@timeslots</span>
 <span class="ruby-keyword">end</span></pre>
@@ -430,26 +448,26 @@ are acceptable</p>
 
           
           <div class="method-source-code" id="get_timeslots_12hrs-source">
-            <pre><span class="ruby-comment"># File src/event.rb, line 49</span>
+            <pre><span class="ruby-comment"># File src/event.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots_12hrs</span>
     <span class="ruby-comment">#create the new array</span>
-    <span class="ruby-ivar">@timeslots_12hrs</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">timeslots_12hrs</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
 
     <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@timeslots</span>.<span class="ruby-identifier">length</span>
-        <span class="ruby-ivar">@temp_holder</span> = <span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
-        <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-identifier">temp_holder</span> = <span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
+        <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
 
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">12</span>  
-            <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-value">12</span>
-            <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
-        <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value">12</span>
-            <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">12</span>
+            <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-value">12</span>
+            <span class="ruby-identifier">timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value">12</span>
+            <span class="ruby-identifier">timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
         <span class="ruby-keyword">else</span>
-            <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;am&quot;</span>)
+            <span class="ruby-identifier">timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;am&quot;</span>)
         <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-keyword">return</span> <span class="ruby-ivar">@timeslots_12hrs</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">timeslots_12hrs</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -469,7 +487,7 @@ are acceptable</p>
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

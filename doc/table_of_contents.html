@@ -8,7 +8,6 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
-  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -66,29 +65,9 @@
 <ul>
 
   <li class="method">
-    <a href="User.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
     <a href="Admin.html#method-c-new">::new</a>
     &mdash;
     <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Event.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">Event</span>
-
-  <li class="method">
-    <a href="DatabaseController.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">DatabaseController</span>
-
-  <li class="method">
-    <a href="Controller.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">Controller</span>
 
   <li class="method">
     <a href="Attendee.html#method-c-new">::new</a>
@@ -96,9 +75,29 @@
     <span class="container">Attendee</span>
 
   <li class="method">
+    <a href="Controller.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Controller</span>
+
+  <li class="method">
+    <a href="DatabaseController.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">DatabaseController</span>
+
+  <li class="method">
     <a href="Driver.html#method-c-new">::new</a>
     &mdash;
     <span class="container">Driver</span>
+
+  <li class="method">
+    <a href="Event.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Event</span>
+
+  <li class="method">
+    <a href="User.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">User</span>
 
   <li class="method">
     <a href="Event.html#method-i-add_attendee">#add_attendee</a>
@@ -166,6 +165,11 @@
     <span class="container">User</span>
 
   <li class="method">
+    <a href="Driver.html#method-i-get_alpha">#get_alpha</a>
+    &mdash;
+    <span class="container">Driver</span>
+
+  <li class="method">
     <a href="Event.html#method-i-get_attendees">#get_attendees</a>
     &mdash;
     <span class="container">Event</span>
@@ -176,14 +180,14 @@
     <span class="container">Event</span>
 
   <li class="method">
-    <a href="Event.html#method-i-get_description">#get_description</a>
-    &mdash;
-    <span class="container">Event</span>
-
-  <li class="method">
     <a href="Admin.html#method-i-get_description">#get_description</a>
     &mdash;
     <span class="container">Admin</span>
+
+  <li class="method">
+    <a href="Event.html#method-i-get_description">#get_description</a>
+    &mdash;
+    <span class="container">Event</span>
 
   <li class="method">
     <a href="User.html#method-i-get_event_by_id">#get_event_by_id</a>
@@ -231,17 +235,12 @@
     <span class="container">Admin</span>
 
   <li class="method">
-    <a href="Event.html#method-i-get_name">#get_name</a>
-    &mdash;
-    <span class="container">Event</span>
-
-  <li class="method">
     <a href="Attendee.html#method-i-get_name">#get_name</a>
     &mdash;
     <span class="container">Attendee</span>
 
   <li class="method">
-    <a href="Event.html#method-i-get_timeslots">#get_timeslots</a>
+    <a href="Event.html#method-i-get_name">#get_name</a>
     &mdash;
     <span class="container">Event</span>
 
@@ -251,7 +250,7 @@
     <span class="container">Attendee</span>
 
   <li class="method">
-    <a href="Event.html#method-i-get_timeslots_12hrs">#get_timeslots_12hrs</a>
+    <a href="Event.html#method-i-get_timeslots">#get_timeslots</a>
     &mdash;
     <span class="container">Event</span>
 
@@ -259,6 +258,11 @@
     <a href="Attendee.html#method-i-get_timeslots_12hrs">#get_timeslots_12hrs</a>
     &mdash;
     <span class="container">Attendee</span>
+
+  <li class="method">
+    <a href="Event.html#method-i-get_timeslots_12hrs">#get_timeslots_12hrs</a>
+    &mdash;
+    <span class="container">Event</span>
 
   <li class="method">
     <a href="Admin.html#method-i-get_timeslots_array">#get_timeslots_array</a>
@@ -306,6 +310,11 @@
     <span class="container">Object</span>
 
   <li class="method">
+    <a href="Admin.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">Admin</span>
+
+  <li class="method">
     <a href="Controller.html#method-i-run">#run</a>
     &mdash;
     <span class="container">Controller</span>
@@ -314,11 +323,6 @@
     <a href="User.html#method-i-run">#run</a>
     &mdash;
     <span class="container">User</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-run">#run</a>
-    &mdash;
-    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Admin.html#method-i-set_admin_info">#set_admin_info</a>
@@ -394,13 +398,18 @@
     <a href="DatabaseController.html#method-i-update_event">#update_event</a>
     &mdash;
     <span class="container">DatabaseController</span>
+
+  <li class="method">
+    <a href="Driver.html#method-i-validate_input">#validate_input</a>
+    &mdash;
+    <span class="container">Driver</span>
 </ul>
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 
