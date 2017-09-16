@@ -232,87 +232,70 @@ class Admin
           hour_rep = STDIN.gets.chomp
           while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
             print "I'm sorry, please enter either 12 or 24: "
-            hour_ rep = STDIN.gets.chomp
+            hour_rep = STDIN.gets.chomp
           end
 
           temp_array = create_time_array(hour_rep)
 
           if hour_rep == "12"
+            #Creates Temporary array for slot validation.
+            slot_choices = Array.new
+            for i in 0...48
+              num = i + 1
+              slot_choices[i] = num.to_s
+            end
 
             puts "How many time slots would you like to take for this event? \n"
             print "(30 min increments):"
-            time_amount = STDIN.gets.chomp
 
-            slot_choices = Array.new
-            for(int i = 0; i < 48; i++)
-              slot_choices = (i + 1)
-            end
-            
-            while time_amount.casecmp("48") || time_amount.casecmp
-              print "That's not a valid amount of slots, input a reasonable amount(1-48): "
-              time_amount = STDIN.gets.chomp
-            end
+            #Receive the amount of slots they want to take up then convert.
+            slot_choice_s = @drive.validate_input(slot_choices)
+            slot_choice_i = slot_choice_s.to_i
 
-            #Retreives the start time from the user.
-            print "Enter a start time (i.e., ):"
-            start_time = STDIN.gets.chomp
+            slot_counter = 0
+            temp_timeslot_array = Array.new
+            array_increment = 0
+            while slot_counter != slot_choice_i
+                #Retreives the time from the user.
+                print "Enter a time (i.e., 7:30 P.M.):"
+                time = STDIN.gets.chomp
 
-            #Checks to see if the time is valid throughout the array.
-            start_time_match = time_check(start_time, temp_array)
-            while start_time_match
-              print "Must enter a valid time: "
-              start_time = STDIN.gets.chomp
-              start_time_match = time_check(start_time, temp_array)
-            end
+                #Checks to see if the time is valid throughout the array.
+                time_match = time_check(time, temp_array)
+                while time_match
+                  print "Must enter a valid time: "
+                  time = STDIN.gets.chomp
+                  time_match = time_check(time, temp_array)
+                end
 
-            #Retreives the end time from the user.
-            print "Enter an end time (i.e., 8:30 P.M.): "
-            end_time = STDIN.gets.chomp
-
-            end_time_match = time_check(end_time, temp_array)
-            while end_time_match
-              print "Must enter a valid time: "
-              end_time = STDIN.gets.chomp
-              end_time_match = time_check(end_time, temp_array)
-            end
-
-            #Checking to see if the start time is after the end time.
-            while (end_time.casecmp(start_time) == -1)
-              print "The end time can't be before the start time, try again: "
-              end_time = STDIN.gets.chomp
+                #Add the time in the temp_array to the temp_timeslot_array.
+                temp_timeslot_array[array_increment] = temp_array[get_index(temp_array, time)]
+                array_increment += 1
             end
           elsif hour_rep == "24"
+
+            puts "How many time slots would you like to take for this event? \n"
+            print "(30 min increments):"
+
             #Retreives the start time from the user.
-            print "Enter a start time (i.e., 07:30 A.M. or 19:30 P.M.):"
-            start_time = STDIN.gets.chomp
+            print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+            time = STDIN.gets.chomp
 
-            #Checks to see if the time is valid throughout the array.
-            start_time_match = time_check(start_time, temp_array)
-            while start_time_match
-              print "Must enter a valid time: "
-              start_time = STDIN.gets.chomp
-              start_time_match = time_check(start_time, temp_array)
+                #Checks to see if the time is valid throughout the array.
+                time_match = time_check(time, temp_array)
+                while time_match
+                  print "Must enter a valid time: "
+                  time = STDIN.gets.chomp
+                  time_match = time_check(time, temp_array)
+                end
+
+                the_start_hour = get_hour(temp_array, start_time)
+
+              end
+              slot_counter += 1
             end
 
-            #Retreives the end time from the user.
-            print "Enter an end time (i.e., 08:30 A.M. or 20:30 P.M.): "
-            end_time = STDIN.gets.chomp
-
-            end_time_match = time_check(end_time, temp_array)
-            while end_time_match
-              print "Must enter a valid time: "
-              end_time = STDIN.gets.chomp
-              end_time_match = time_check(end_time, temp_array)
-            end
-
-            #Checking to see if the start time is after the end time.
-            while (end_time.casecmp(start_time) == -1)
-              print "The end time can't be before the start time, try again: "
-              end_time = STDIN.gets.chomp
-            end
-          end
-
-          temp_array[get_event_counter] = start_time + "-" + end_time
+          temp_array[get_event_counter] = start_time
           set_timeslot_array(temp_array, get_event_counter)
 
         end
@@ -423,6 +406,15 @@ class Admin
             end
 
             return twentyfour_hr_array
+          end
+        end
+
+        #Returns the index in which a specified time is located.
+        def get_index(array, time)
+          for i in 0...48
+            if time.casecmp(array[i]) == 0
+              return (i)
+            end
           end
         end
 
