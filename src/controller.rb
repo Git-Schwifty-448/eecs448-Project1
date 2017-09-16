@@ -38,7 +38,7 @@ class Controller
         menu[0] = "1. Admin Mode"
         menu[1] = "2. User Mode"
         menu[2] = "3. Quit"
-         
+
         menu_choice = @drive.menu_builder(menu)
 
         case menu_choice
@@ -50,8 +50,6 @@ class Controller
                 @user_controller.run
         end
 
-#<<<<<<< HEAD
-#=======
 		#dbCont = DatabaseController.new()
 		#e = Event.new('event', 'description', Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
 		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
@@ -59,7 +57,6 @@ class Controller
 		#dbCont.persist_event(e)
 
 		#puts dbCont.get_events[0].get_attendees[0].get_timeslots
-#>>>>>>> 842a1346632b0c9c761a2e4ba27c134c9d8b6714
     end
 
 end
