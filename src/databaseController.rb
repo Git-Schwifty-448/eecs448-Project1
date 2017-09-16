@@ -64,6 +64,10 @@ class DatabaseController
 		end
 	end
 
+	# persists a single attendee to the database, for use within the class only
+	# Params:
+	# +attendee+:: Attendee object to be persisted
+	# +parentid+:: id of the database entry the attendee is attached to
 	def persist_attendee(attendee, parentid)
 		id = @DB[:attendees].insert(:name => attendee.get_name, :parent_id => parentid)
 
