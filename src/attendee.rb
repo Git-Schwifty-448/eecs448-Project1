@@ -11,7 +11,7 @@ class Attendee
         # are acceptable
         def initialize(name, timeslots)
             raise ArgumentError.new("'name' must be a string") if !name.is_a? String
-			raise ArgumentError.new("'timeslots' must be an array") if !name.is_a? Array
+            # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
 
             @name = name
             @timeslots = timeslots.sort!
@@ -53,5 +53,9 @@ class Attendee
 
                 return @timeslots_12hrs
         end
+<<<<<<< HEAD
 
     end
+=======
+end
+>>>>>>> 0b86d132984e9d754b6e0064ac8917a58a89fa88

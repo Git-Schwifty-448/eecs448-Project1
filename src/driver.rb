@@ -43,7 +43,7 @@ class Driver
 
     #for use with sub title print onyl
     def title_print_ext(title)
-        
+
         title_size = title.length
 
         # top line
@@ -77,7 +77,7 @@ class Driver
     end
 
     def sub_title_print(title)
-        
+
         title_size = title.length
 
         # title line
@@ -101,18 +101,18 @@ class Driver
 
     def menu_builder(option_array)
 
-        
-    option_array.each do |option|            
+
+    option_array.each do |option|
         puts " \u21E8 #{option}"
     end
 
     menu_choice = choice_getter(1,option_array.length)
     return menu_choice
-    
+
     end
-        
+
     def choice_getter(low,high)
-        
+
         choice = 0
 
         while (choice < low || choice > high)
@@ -123,6 +123,7 @@ class Driver
         return choice
 
     end
+
 
     def hr
         for i in 0...@size+2
@@ -150,8 +151,8 @@ class Driver
                     @new_string = "\t\t\t"
                     @first_line = false
                 end
-                
-            else 
+
+            else
                 if @new_string.length > 85
                     print @new_string + "\n"
                     @new_string = "\t\t\t"

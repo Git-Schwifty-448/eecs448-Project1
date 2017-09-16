@@ -25,6 +25,7 @@ class Admin
           @event_date = Date.new
           @timeslots_array = Array.new
           @DB = DatabaseController.new
+          @hour_counter = 0
         end
 
         def run                                                                 #Main method that calls other methods
@@ -231,81 +232,70 @@ class Admin
           hour_rep = STDIN.gets.chomp
           while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
             print "I'm sorry, please enter either 12 or 24: "
-            hour_ rep = STDIN.gets.chomp
+            hour_rep = STDIN.gets.chomp
           end
 
           temp_array = create_time_array(hour_rep)
 
           if hour_rep == "12"
-            time_choice = @drive.menu_builder(temp_array)
-
-            print "How many time slots would you like to take for this event?(1-48):"
-            time_amount = STDIN.gets.chomp
-            while time_amount > "48" || time_amount.to_i < "1"
-              print "That's not a valid amount of slots, input a reasonable amount(1-48): "
-              time_amount = STDIN.gets.chomp
+            #Creates Temporary array for slot validation.
+            slot_choices = Array.new
+            for i in 0...48
+              num = i + 1
+              slot_choices[i] = num.to_s
             end
 
-            #Retreives the start time from the user.
-            print "Enter a start time (i.e., ):"
-            start_time = STDIN.gets.chomp
+            puts "How many time slots would you like to take for this event? \n"
+            print "(30 min increments):"
 
-            #Checks to see if the time is valid throughout the array.
-            start_time_match = time_check(start_time, temp_array)
-            while start_time_match
-              print "Must enter a valid time: "
-              start_time = STDIN.gets.chomp
-              start_time_match = time_check(start_time, temp_array)
-            end
+            #Receive the amount of slots they want to take up then convert.
+            slot_choice_s = @drive.validate_input(slot_choices)
+            slot_choice_i = slot_choice_s.to_i
 
-            #Retreives the end time from the user.
-            print "Enter an end time (i.e., 8:30 P.M.): "
-            end_time = STDIN.gets.chomp
+            slot_counter = 0
+            temp_timeslot_array = Array.new
+            array_increment = 0
+            while slot_counter != slot_choice_i
+                #Retreives the time from the user.
+                print "Enter a time (i.e., 7:30 P.M.):"
+                time = STDIN.gets.chomp
 
-            end_time_match = time_check(end_time, temp_array)
-            while end_time_match
-              print "Must enter a valid time: "
-              end_time = STDIN.gets.chomp
-              end_time_match = time_check(end_time, temp_array)
-            end
+                #Checks to see if the time is valid throughout the array.
+                time_match = time_check(time, temp_array)
+                while time_match
+                  print "Must enter a valid time: "
+                  time = STDIN.gets.chomp
+                  time_match = time_check(time, temp_array)
+                end
 
-            #Checking to see if the start time is after the end time.
-            while (end_time.casecmp(start_time) == -1)
-              print "The end time can't be before the start time, try again: "
-              end_time = STDIN.gets.chomp
+                #Add the time in the temp_array to the temp_timeslot_array.
+                temp_timeslot_array[array_increment] = temp_array[get_index(temp_array, time)]
+                array_increment += 1
             end
           elsif hour_rep == "24"
+
+            puts "How many time slots would you like to take for this event? \n"
+            print "(30 min increments):"
+
             #Retreives the start time from the user.
-            print "Enter a start time (i.e., 07:30 A.M. or 19:30 P.M.):"
-            start_time = STDIN.gets.chomp
+            print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+            time = STDIN.gets.chomp
 
-            #Checks to see if the time is valid throughout the array.
-            start_time_match = time_check(start_time, temp_array)
-            while start_time_match
-              print "Must enter a valid time: "
-              start_time = STDIN.gets.chomp
-              start_time_match = time_check(start_time, temp_array)
+                #Checks to see if the time is valid throughout the array.
+                time_match = time_check(time, temp_array)
+                while time_match
+                  print "Must enter a valid time: "
+                  time = STDIN.gets.chomp
+                  time_match = time_check(time, temp_array)
+                end
+
+                the_start_hour = get_hour(temp_array, start_time)
+
+              end
+              slot_counter += 1
             end
 
-            #Retreives the end time from the user.
-            print "Enter an end time (i.e., 08:30 A.M. or 20:30 P.M.): "
-            end_time = STDIN.gets.chomp
-
-            end_time_match = time_check(end_time, temp_array)
-            while end_time_match
-              print "Must enter a valid time: "
-              end_time = STDIN.gets.chomp
-              end_time_match = time_check(end_time, temp_array)
-            end
-
-            #Checking to see if the start time is after the end time.
-            while (end_time.casecmp(start_time) == -1)
-              print "The end time can't be before the start time, try again: "
-              end_time = STDIN.gets.chomp
-            end
-          end
-
-          temp_array[get_event_counter] = start_time + "-" + end_time
+          temp_array[get_event_counter] = start_time
           set_timeslot_array(temp_array, get_event_counter)
 
         end
@@ -338,7 +328,7 @@ class Admin
         #Creates an array based on the time representation that the user choses.
         def create_time_array(hr)
           if hr == "12"                                                   #12Hr time
-            hour_counter = 1
+            @hour_counter = 1
 
             #Creates an array with 12 hour time slots.
             twelve_hr_array = Array.new
@@ -350,38 +340,38 @@ class Admin
               if i % 2 == 0
                 if i < 24
                   if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   end
                 elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                  twelve_hr_array[i] = (@hour_counter.to_s + ":00 P.M.")
                 end
               elsif i % 2 == 1
                 if i < 24
                   if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twelve_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   end
                 elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                  twelve_hr_array[i] = (@hour_counter.to_s + ":30 P.M.")
                 end
               end
 
               if i % 2 == 1
-                hour_counter += 1
+                @hour_counter += 1
               end
 
               #Resets hour_counter to 0 once it reaches 1 o'clock.
-              if hour_counter == 13
-                hour_counter = 1
+              if @hour_counter == 13
+                @hour_counter = 1
               end
             end
 
             return twelve_hr_array
           elsif hr == "24"                                                #24Hr time
-            hour_counter = 0
+            @hour_counter = 0
 
             #Creates an array with 24 hour time slots.
             twentyfour_hr_array = Array.new
@@ -391,31 +381,40 @@ class Admin
               if i % 2 == 0
                 if i < 24
                   if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
+                    twentyfour_hr_array[i] = ("0" + @hour_counter.to_s + ":00 A.M.")
                   elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                    twentyfour_hr_array[i] = (@hour_counter.to_s + ":00 A.M.")
                   end
                 elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                  twentyfour_hr_array[i] = (@hour_counter.to_s + ":00 P.M.")
                 end
               elsif i % 2 == 1
                 if i < 24
                   if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
+                    twentyfour_hr_array[i] = ("0" + @hour_counter.to_s + ":30 A.M.")
                   elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                    twentyfour_hr_array[i] = (@hour_counter.to_s + ":30 A.M.")
                   end
                 elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                  twentyfour_hr_array[i] = (@hour_counter.to_s + ":30 P.M.")
                 end
               end
 
               if i % 2 == 1
-                hour_counter += 1
+                @hour_counter += 1
               end
             end
 
             return twentyfour_hr_array
+          end
+        end
+
+        #Returns the index in which a specified time is located.
+        def get_index(array, time)
+          for i in 0...48
+            if time.casecmp(array[i]) == 0
+              return (i)
+            end
           end
         end
 
