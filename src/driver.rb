@@ -177,7 +177,7 @@ class Driver
             else
                 print "\n#{@spacer}Only letters are allowed"
             end
-            
+
         end
 
         return @input

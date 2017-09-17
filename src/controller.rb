@@ -56,7 +56,7 @@ class Controller
 		e.add_attendee(a)
 		#dbCont.persist_event(e)
 
-		puts e.get_date
+		#puts e.get_date
     end
 
 end

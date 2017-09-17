@@ -20,97 +20,74 @@ class Admin
           @event_counter = 0
           @event_name = " "
           @description = " "
+          @events = true
+          @military_time = true
           @drive = Driver.new
-          @event_date = Date.new
+          @event_year = 0
+          @event_month = 0
+          @event_day = 0
+          @event_hour = 0
+          @event_minute = 0
           @timeslots_array = Array.new
           @DB = DatabaseController.new
+
+          #-----------------------------------------
+          @number_of_events = 0
+          @spacer = "        "
+          @attendee_created = false
+          @attending_events = Array.new
+          @view_all = false
         end
 
         def run                                                                 #Main method that calls other methods
           yesNo = true
           @drive.title_print("Admin Mode")
           set_admin_info
+          menuone_choice = Array.new
+          menuone_choice[0] = "1. Create Event"
+          menuone_choice[1] = "2. See Attendees"
 
+          puts "Would you like to create an event or see attendees?(1 or 2): "
+          atten_event = @drive.menu_builder(menuone_choice)
 
-          while yesNo
-            create_date
-            create_date_time
+          if atten_event == 1
+            while yesNo
+              create_date
+              create_date_time
 
-            #Creation of new attendee
-            admin_name = get_f_name + " " + get_l_name
-            admin_attendee = Attendee.new(admin_name, get_timeslots_array)
+              #Creation of new attendee
+              admin_name = @fName + " " + @lName
+              admin_attendee = Attendee.new(admin_name, @timeslots_array)
 
-            #Temp array for the attendee array for the event
-            attendee_array = Array.new
-            attendee_array[0] = admin_attendee
+              #Temp array for the attendee array for the event
+              attendee_array = Array.new
+              attendee_array[0] = admin_attendee
 
-            #Creation of the event.
-            event = Event.new(get_event_name, get_description, get_event_date, get_timeslots_array, attendee_array)
-            @DB.persist_event(event)
+              #Creation of the event.
+              event = Event.new(@event_name, @description, @timeslots_array, attendee_array)
+              @DB.persist_event(event)
 
-            set_event_counter(1)
-            yesNo = get_validation                                              #Asks user if they want to create another event.
+              set_event_counter(1)
+              yesNo = get_validation                                              #Asks user if they want to create another event.
+            end
+          elsif atten_event == 2
+            run2
           end
 
         end
 
         #Accessor methods
-        def get_f_name
-          @fName
-        end
-
-        def get_l_name
-          @lName
-        end
-
         def get_event_counter
           @event_counter
-        end
-
-        def get_event_name
-          @event_name
-        end
-
-        def get_description
-          @description
         end
 
         def get_event_date
           @event_date
         end
 
-        def get_timeslots_array
-          @timeslots_array
-        end
-
         #Setter methods
-        def set_f_name(theFName)
-          @fName = theFName;
-        end
-
-        def set_l_name(theLName)
-          @lName = theLName
-        end
-
         def set_event_counter(increase_number)
           @event_counter += increase_number
-        end
-
-        def set_event_name(event_name)
-          @event_name = event_name
-        end
-
-        def set_event_description(event_description)
-          @description = event_description
-        end
-
-        def set_event_date(date)
-          @event_date = date
-        end
-
-        def set_timeslot_array(timeslots)
-          @timeslots_array = timeslots
-
         end
 
         #Pre: User chooses admin from homepage.
@@ -135,8 +112,8 @@ class Admin
             lastName = STDIN.gets.chomp
           end
 
-          set_f_name(firstName)
-          set_l_name(lastName)
+          @fName = firstName
+          @lName = lastName
         end
 
         #Pre: An admin was created.
@@ -145,32 +122,34 @@ class Admin
         def create_date                                                         #Creation of date.
           invalid_date = true
 
-          #Temperary date of todays date.
+          #Temporary date of todays date.
           date = Date.today
 
             @drive.title_print("Date Formation")
 
             print "Enter a name for the event: "
             eventName = STDIN.gets.chomp
-            set_event_name(eventName)
+            @event_name = eventName
 
             print "Give a description of the event: "
             eventDescription = STDIN.gets.chomp
-            set_event_description(eventDescription)
+            @descripton = eventDescription
 
           while invalid_date
             #Retrieves the event's year from the user.                          Event's Year.
             print "Input the year you'd like to make the event for(YYYY): "
-            event_year = STDIN.gets.chomp
-            while !(event_year =~ /[[:digit:]]/)
+            events_year = STDIN.gets.chomp
+            while !(events_year =~ /[[:digit:]]/)
               print "Invalid input, please enter a year: "
-              eventy_year = STDIN.gets.chomp
+              events_year = STDIN.gets.chomp
             end
 
-            while (event_year < date.year.to_s) || (event_year > "2100")
+            while (events_year < date.year.to_s) || (events_year > "2100")
               print "Invalid year, please input a reasonable year: "
-              event_year = STDIN.gets.chomp
+              events_year = STDIN.gets.chomp
             end
+
+            @event_year = events_year.to_i
 
             #Creates array of months for user to select from for events months
             monthMenu = Array.new
@@ -194,6 +173,8 @@ class Admin
               month_choice = STDIN.gets.chomp
             end
 
+            @event_month = month_choice.to_i
+
             #Creates a new array based on the days of the month. Range (1-31)
             dayMenu = Array.new
             for i in 0...31
@@ -207,17 +188,18 @@ class Admin
               day_choice = STDIN.gets.chomp
             end
 
+            @event_day = day_choice.to_i
+
             #Verifies if the date is a valid date for the event.
-            if !(Date.valid_date?(event_year.to_i, month_choice.to_i, day_choice.to_i))
+            if !(Date.valid_date?(@event_year, @event_month, @event_day))
               invalid_date = true
               puts "Date is not valid."
             else
-              d = Date.new(event_year.to_i, month_choice.to_i, day_choice.to_i)
+              d = Date.new(@event_year, @event_month, @event_day)
               if d < Date.today
                 invalid_date = true
                 puts "Date is not valid."
               else
-                set_event_date(d)
                 invalid_date = false
               end
             end
@@ -241,7 +223,6 @@ class Admin
           end
 
           temp_array = create_time_array(hour_rep)
-          dummy_array = create_time_array("24")
 
           if hour_rep == "12"
             #Creates Temporary array for slot validation.
@@ -274,13 +255,19 @@ class Admin
                   time_match = time_check(time, temp_array)
                 end
 
+                time = time.split(':')
+
+                @event_hour = convert_to_military_time(time)
+
+                minute = time[1].slice(0...1)
+                @event_minute = minute.to_i
+
                 #Add the time in the temp_array to the temp_timeslot_array.
-                temp_timeslot_array[array_increment] = dummy_array[get_index(temp_array, time)]
+                @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
                 array_increment += 1
                 slot_counter += 1
             end
 
-              set_timeslot_array(temp_timeslot_array)
           elsif hour_rep == "24"
             #Creates Temporary array for slot validation.
             slot_choices = Array.new
@@ -311,41 +298,60 @@ class Admin
                 time_match = time_check(time, temp_array)
               end
 
-              #Add the time in the dummy_array to the temp_timeslot_array.
-              temp_timeslot_array[array_increment] = dummy_array[get_index(temp_array, time)]
+              time = time.split(':')
+
+              @event_hour = time[0].to_i
+
+              minute = time[1].first 2
+              @event_minute = minute.to_i
+
+              @timeslot_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
               array_increment += 1
               slot_counter += 1
             end
-
-            set_timeslot_array(temp_timeslot_array)
           end
+        end
+
+        #Pre: A time was given by the user and was then split by a character.
+        #Post: Takes the 12 hr time array and converts it to military time.
+        #Return: An int representing the hour of the day in military time.s
+        def convert_to_military_time(standard_time)
+            temp_holder = standard_time[0]
+            temp_holder2 = standard_time[1]
+            if temp_holder2[4].casecmp('p') == 0
+                return (temp_holder.to_i + 12)
+            else
+                return (temp_holder.to_i)
+            end
+
+            raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
         end
 
         #Pre: An event was created and persisted to the data base with correct info.
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
         def get_validation
-          print "Would you like to create another event?(Yes/No): "
-          response = STDIN.gets.chomp
-
-          #Check for Alphetical characters
-          while !(response =~ /[[:alpha:]]/)
-            print "Not a valid input. Enter Yes/No: "
+            print "Are you done?(Yes/No): "
             response = STDIN.gets.chomp
-          end
 
-          #Check for if the answer is yes or no.
-          while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
-            print "Not a valid input. Enter Yes/No: "
-            response = STDIN.gets.chomp
-          end
+            #Check for Alphetical characters
+            while !(response =~ /[[:alpha:]]/)
+                print "Not a valid input. Enter Yes/No: "
+                response = STDIN.gets.chomp
+            end
 
-          #Sets a temp variable to return to call.
-          if ((response.casecmp("yes")) == 0)
-            return true
-          elsif ((response.casecmp("no")) == 0)
-            return false
-          end
+            #Check for if the answer is yes or no.
+            while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
+                print "Not a valid input. Enter Yes/No: "
+                response = STDIN.gets.chomp
+            end
+
+            #Sets a temp variable to return to call.
+            if ((response.casecmp("no")) == 0)
+                return true
+            elsif ((response.casecmp("yes")) == 0)
+                return false
+            end
         end
 
         #Pre: The user enters a vaild time representation of time.
@@ -434,17 +440,6 @@ class Admin
           end
         end
 
-        #Pre: An array with a time representation was created and a valid time was input by the admin.
-        #Post: Gets the index of the time the user input from the array.
-        #Return: An int where the index of the time passed in rests.
-        def get_index(array, time)
-          for i in 0...48
-            if time.casecmp(array[i]) == 0
-              return (i)
-            end
-          end
-        end
-
         #Pre: A time was input by the user and an array with a time representation was created.
         #Post: The user's input time was checked to see if it was in the time array.
         #Return: If the time IS in the array, then true. If the time IS NOT in the array, then false.
@@ -461,4 +456,142 @@ class Admin
           return match
         end
 
+
+#-------------------------------------------------------------------------------
+#                             Abe's Code
+#-------------------------------------------------------------------------------
+def run2
+    @event_array = @DB.get_events
+    # @event_array = [@e1,@e2,@e3]
+    @number_of_events = @event_array.length
+
+    @events = true
+    @browsing = true
+
+    if @number_of_events > 0
+        while @browsing
+            get_events()
+            @browsing = event_controller()
+        end
+        reminder()
+    else
+        @drive.title_print("Error")
+        print "\n\n#{@spacer}There are not currently any events in the database\n"
+        print "#{@spacer}Please use admin mode and add an event first!\n\n"
+    end
+
+    if !@attending_events.empty?
+        for i in 0...@attending_events.length
+            @db.update_event(@attending_events[i])
+        end
+    end
+end
+
+# If there are events stored in the database, they are grabbed
+# and printed to terminal window (via single_event_printer).
+# If there are no events, a message is printed as such
+def get_events
+    if @events  == true
+        system "clear"
+        @drive.title_print_ext("Events")
+        @drive.sub_title_print("Upcoming Events")
+        print "\n"
+
+        # Grab each event
+            for i in 0...@event_array.length
+                @drive.hr
+                single_event_printer(@event_array[i],false)
+            end
+    else
+        print "There are not currently any events in the database\n"
+    end
+end
+
+# Template for printing a single event
+# takes an event object and a true/false if this is for printing in a list
+# or printing a single event
+def single_event_printer(event,single)
+
+    if !single
+        puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
+    end
+
+    puts "\n#{@spacer}Event Name:\t" + event.get_name
+
+    d = Date.parse(event.get_date)
+
+    puts "#{@spacer}Date:\t\t" + d.strftime('%A %B %d, %Y')
+    print "#{@spacer}Time(s)"
+
+    if !@military_time
+        print " (12hr): "
+
+        # make sure the event was created correctly
+        if event.get_timeslots_12hrs.kind_of?(Array)
+            for j in 0...event.get_timeslots_12hrs.length
+                print event.get_timeslots_12hrs[j]
+                if j != event.get_timeslots_12hrs.length-1
+                    print ", "
+                end
+            end
+        else
+            print "Should be an array!\n"
+        end
+    else
+        print " (24hr): "
+
+        # make sure the event was created correctly
+        if event.get_timeslots.kind_of?(Array)
+            for j in 0...event.get_timeslots.length
+                print event.get_timeslots[j]
+                if j != event.get_timeslots.length-1
+                    print ", "
+                end
+            end
+        else
+            print "Should be an array!\n"
+        end
+    end
+
+    print "\n#{@spacer}Attendees:\t"
+
+    if event.get_attendees.empty?
+        print "None yet, be the first to attend!\n"
+    end
+
+    if event.get_attendees.kind_of?(Array)
+        for i in 0...event.get_attendees.length
+            if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
+                print event.get_attendees[i].get_name() + " ("
+
+                for j in 0...event.get_attendees[i].get_timeslots.length
+                    if @military_time
+                        print event.get_attendees[i].get_timeslots[j]
+                    else
+                        print event.get_attendees[i].get_timeslots_12hrs[j]
+                    end
+
+                    if j != event.get_attendees[i].get_timeslots.length-1
+                        print ", "
+                    end
+                end
+                print ")"
+            else
+                print event.get_attendees[i].get_name()
+            end
+
+            if i != event.get_attendees.length-1
+                print ", "
+            end
+
+        end
+        print "\n"
+    else
+        print "Should be an array!\n"
+    end
+
+    print "\n#{@spacer}Description:\t"
+    @drive.desc_printer event.get_description
+    print "\n"
+end
 end
