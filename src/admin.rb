@@ -109,7 +109,7 @@ class Admin
               else
                   print "\n#{@spacer}Only letters are allowed in your first name."
               end
-              
+
           end
 
           loop do
@@ -121,7 +121,7 @@ class Admin
               else
                   print "\n#{@spacer}Only letters are allowed in your last name."
               end
-              
+
           end
 
 
@@ -189,15 +189,39 @@ class Admin
 
             @event_month = month_choice.to_i
 
-            #Creates a new array based on the days of the month. Range (1-31)
-            dayMenu = Array.new
-            for i in 0...31
-              dayMenu[i] = i + 1
+            #Takes the user's choice and uses a temp variable for event's day.  Event's day.
+            puts "Please choose a day for the event: "
+
+            case month_choice
+            when 1
+                print "Remember there are 31 days in January."
+            when 2
+                print "Remember there are 28 days in February."
+            when 3
+                print "Remember there are 31 days in March."
+            when 4
+                print "Remember there are 30 days in April."
+            when 5
+                print "Remember there are 31 days in May."
+            when 6
+                print "Remember there are 30 days in June."
+            when 7
+                print "Remember there are 31 days in July."
+            when 8
+                print "Remember there are 31 days in August."
+            when 9
+                print "Remember there are 30 days in September."
+            when 10
+                print "Remember there are 31 days in October."
+            when 11
+                print "Remember there are 30 days in November."
+            when 12
+                print "Remember there are 31 days in December."
             end
 
             #Takes the user's choice and uses a temp variable for event's day.  Event's day.
-            puts "\n#{@spacer}Please choose a day for the event(1-31): "
-            day_choice = @drive.menu_builder(dayMenu)
+            puts "\n#{@spacer}Please choose a day for the event: "
+            day_choice = STDIN.gets.chomp
             while (day_choice < 1) || (day_choice > 31)
                 day_choice = STDIN.gets.chomp
             end
@@ -271,7 +295,7 @@ class Admin
 
                     @event_hour = convert_to_military_time(time)
 
-                    minute = time[1].slice(0...1)
+                    minute = time[1].slice(0..1)
                     @event_minute = minute.to_i
 
                     #Add the time in the temp_array to the temp_timeslot_array.
@@ -313,7 +337,7 @@ class Admin
 
                     @event_hour = time[0].to_i
 
-                    minute = time[1].first 2
+                    minute = time[1].slice(0..1)
                     @event_minute = minute.to_i
 
                     @timeslot_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
