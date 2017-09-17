@@ -142,7 +142,7 @@ are acceptable</p>
             <pre><span class="ruby-comment"># File src/attendee.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">timeslots</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;name&#39; must be a string&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
-                <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;timeslots&#39; must be an array&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Array</span>
+    <span class="ruby-comment"># raise ArgumentError.new(&quot;&#39;timeslots&#39; must not be empty&quot;) if timeslots.length == 0</span>
 
     <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
     <span class="ruby-ivar">@timeslots</span> = <span class="ruby-identifier">timeslots</span>.<span class="ruby-identifier">sort!</span>

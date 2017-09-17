@@ -76,8 +76,6 @@
     
     <li ><a href="#method-i-create_date_time">#create_date_time</a>
     
-    <li ><a href="#method-i-create_time_array">#create_time_array</a>
-    
     <li ><a href="#method-i-get_description">#get_description</a>
     
     <li ><a href="#method-i-get_event_counter">#get_event_counter</a>
@@ -91,8 +89,6 @@
     <li ><a href="#method-i-get_l_name">#get_l_name</a>
     
     <li ><a href="#method-i-get_timeslots_array">#get_timeslots_array</a>
-    
-    <li ><a href="#method-i-get_validation">#get_validation</a>
     
     <li ><a href="#method-i-run">#run</a>
     
@@ -111,8 +107,6 @@
     <li ><a href="#method-i-set_l_name">#set_l_name</a>
     
     <li ><a href="#method-i-set_timeslot_array">#set_timeslot_array</a>
-    
-    <li ><a href="#method-i-time_check">#time_check</a>
     
   </ul>
 </div>
@@ -179,6 +173,7 @@
   <span class="ruby-ivar">@event_date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@timeslots_array</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@DB</span> = <span class="ruby-constant">DatabaseController</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@hour_counter</span> = <span class="ruby-value">0</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -217,7 +212,7 @@
 
           
           <div class="method-source-code" id="create_date-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 141</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 142</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_date</span>                                                         <span class="ruby-comment">#Creation of date.</span>
   <span class="ruby-identifier">invalid_date</span> = <span class="ruby-keyword">true</span>
 
@@ -330,7 +325,7 @@
 
           
           <div class="method-source-code" id="create_date_time-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 226</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 227</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_date_time</span>(<span class="ruby-identifier">event_number</span>)                                      <span class="ruby-comment">#Creation of time.</span>
   <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print</span>(<span class="ruby-string">&quot;Time setup&quot;</span>)
   <span class="ruby-identifier">start_time_match</span> = <span class="ruby-keyword">true</span>
@@ -339,196 +334,68 @@
   <span class="ruby-identifier">hour_rep</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
   <span class="ruby-keyword">while</span> (<span class="ruby-identifier">hour_rep</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;12&quot;</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">hour_rep</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;24&quot;</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)
     <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;I&#39;m sorry, please enter either 12 or 24: &quot;</span>
-    <span class="ruby-identifier">hour_</span> <span class="ruby-identifier">rep</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">hour_rep</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">temp_array</span> = <span class="ruby-identifier">create_time_array</span>(<span class="ruby-identifier">hour_rep</span>)
 
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">hour_rep</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;12&quot;</span>
-    <span class="ruby-identifier">time_choice</span> = <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">menu_builder</span>(<span class="ruby-identifier">temp_array</span>)
-
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;How many time slots would you like to take for this event?(1-48):&quot;</span>
-    <span class="ruby-identifier">time_amount</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-    <span class="ruby-keyword">while</span> <span class="ruby-identifier">time_amount</span> <span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;48&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">time_amount</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-string">&quot;1&quot;</span>
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;That&#39;s not a valid amount of slots, input a reasonable amount(1-48): &quot;</span>
-      <span class="ruby-identifier">time_amount</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-comment">#Creates Temporary array for slot validation.</span>
+    <span class="ruby-identifier">slot_choices</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">48</span>
+      <span class="ruby-identifier">num</span> = <span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">slot_choices</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">num</span>.<span class="ruby-identifier">to_s</span>
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-comment">#Retreives the start time from the user.</span>
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter a start time (i.e., ):&quot;</span>
-    <span class="ruby-identifier">start_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;How many time slots would you like to take for this event? \n&quot;</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;(30 min increments):&quot;</span>
 
-    <span class="ruby-comment">#Checks to see if the time is valid throughout the array.</span>
-    <span class="ruby-identifier">start_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">while</span> <span class="ruby-identifier">start_time_match</span>
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
-      <span class="ruby-identifier">start_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-      <span class="ruby-identifier">start_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">#Receive the amount of slots they want to take up then convert.</span>
+    <span class="ruby-identifier">slot_choice_s</span> = <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">validate_input</span>(<span class="ruby-identifier">slot_choices</span>)
+    <span class="ruby-identifier">slot_choice_i</span> = <span class="ruby-identifier">slot_choice_s</span>.<span class="ruby-identifier">to_i</span>
 
-    <span class="ruby-comment">#Retreives the end time from the user.</span>
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter an end time (i.e., 8:30 P.M.): &quot;</span>
-    <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">slot_counter</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">temp_timeslot_array</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">array_increment</span> = <span class="ruby-value">0</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-identifier">slot_counter</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">slot_choice_i</span>
+        <span class="ruby-comment">#Retreives the time from the user.</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter a time (i.e., 7:30 P.M.):&quot;</span>
+        <span class="ruby-identifier">time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
 
-    <span class="ruby-identifier">end_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">end_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">while</span> <span class="ruby-identifier">end_time_match</span>
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
-      <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-      <span class="ruby-identifier">end_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">end_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">end</span>
+        <span class="ruby-comment">#Checks to see if the time is valid throughout the array.</span>
+        <span class="ruby-identifier">time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">temp_array</span>)
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">time_match</span>
+          <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
+          <span class="ruby-identifier">time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+          <span class="ruby-identifier">time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">temp_array</span>)
+        <span class="ruby-keyword">end</span>
 
-    <span class="ruby-comment">#Checking to see if the start time is after the end time.</span>
-    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">end_time</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-identifier">start_time</span>) <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>)
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;The end time can&#39;t be before the start time, try again: &quot;</span>
-      <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+        <span class="ruby-comment">#Add the time in the temp_array to the temp_timeslot_array.</span>
+        <span class="ruby-identifier">temp_timeslot_array</span>[<span class="ruby-identifier">array_increment</span>] = <span class="ruby-identifier">temp_array</span>[<span class="ruby-identifier">get_index</span>(<span class="ruby-identifier">temp_array</span>, <span class="ruby-identifier">time</span>)]
+        <span class="ruby-identifier">array_increment</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">hour_rep</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;24&quot;</span>
+
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;How many time slots would you like to take for this event? \n&quot;</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;(30 min increments):&quot;</span>
+
     <span class="ruby-comment">#Retreives the start time from the user.</span>
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter a start time (i.e., 07:30 A.M. or 19:30 P.M.):&quot;</span>
-    <span class="ruby-identifier">start_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):&quot;</span>
+    <span class="ruby-identifier">time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
 
-    <span class="ruby-comment">#Checks to see if the time is valid throughout the array.</span>
-    <span class="ruby-identifier">start_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">while</span> <span class="ruby-identifier">start_time_match</span>
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
-      <span class="ruby-identifier">start_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-      <span class="ruby-identifier">start_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-comment">#Retreives the end time from the user.</span>
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter an end time (i.e., 08:30 A.M. or 20:30 P.M.): &quot;</span>
-    <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-
-    <span class="ruby-identifier">end_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">end_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">while</span> <span class="ruby-identifier">end_time_match</span>
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
-      <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-      <span class="ruby-identifier">end_time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">end_time</span>, <span class="ruby-identifier">temp_array</span>)
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-comment">#Checking to see if the start time is after the end time.</span>
-    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">end_time</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-identifier">start_time</span>) <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>)
-      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;The end time can&#39;t be before the start time, try again: &quot;</span>
-      <span class="ruby-identifier">end_time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">temp_array</span>[<span class="ruby-identifier">get_event_counter</span>] = <span class="ruby-identifier">start_time</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;-&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_time</span>
-  <span class="ruby-identifier">set_timeslot_array</span>(<span class="ruby-identifier">temp_array</span>, <span class="ruby-identifier">get_event_counter</span>)
-
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-create_time_array" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">create_time_array</span><span
-            class="method-args">(hr)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Creates an array based on the time representation that the user choses.</p>
-          
-          
-
-          
-          <div class="method-source-code" id="create_time_array-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 339</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_time_array</span>(<span class="ruby-identifier">hr</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hr</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;12&quot;</span>                                                   <span class="ruby-comment">#12Hr time</span>
-    <span class="ruby-identifier">hour_counter</span> = <span class="ruby-value">1</span>
-
-    <span class="ruby-comment">#Creates an array with 12 hour time slots.</span>
-    <span class="ruby-identifier">twelve_hr_array</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-    <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-value">0</span>] = <span class="ruby-string">&quot;12:00 A.M.&quot;</span>
-    <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-value">1</span>] = <span class="ruby-string">&quot;12:30 A.M.&quot;</span>
-
-    <span class="ruby-comment">#Fills the array with the hourly time slots</span>
-    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">2</span><span class="ruby-operator">...</span><span class="ruby-value">48</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">24</span>
-          <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 A.M.&quot;</span>)
-          <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 A.M.&quot;</span>)
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">24</span>
-          <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 P.M.&quot;</span>)
+        <span class="ruby-comment">#Checks to see if the time is valid throughout the array.</span>
+        <span class="ruby-identifier">time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">temp_array</span>)
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">time_match</span>
+          <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Must enter a valid time: &quot;</span>
+          <span class="ruby-identifier">time</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+          <span class="ruby-identifier">time_match</span> = <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">temp_array</span>)
         <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">24</span>
-          <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 A.M.&quot;</span>)
-          <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 A.M.&quot;</span>)
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">24</span>
-          <span class="ruby-identifier">twelve_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 P.M.&quot;</span>)
-        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">the_start_hour</span> = <span class="ruby-identifier">get_hour</span>(<span class="ruby-identifier">temp_array</span>, <span class="ruby-identifier">start_time</span>)
+
       <span class="ruby-keyword">end</span>
-
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-        <span class="ruby-identifier">hour_counter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
-      <span class="ruby-keyword">end</span>
-
-      <span class="ruby-comment">#Resets hour_counter to 0 once it reaches 1 o&#39;clock.</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">hour_counter</span> <span class="ruby-operator">==</span> <span class="ruby-value">13</span>
-        <span class="ruby-identifier">hour_counter</span> = <span class="ruby-value">1</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">twelve_hr_array</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">hr</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;24&quot;</span>                                                <span class="ruby-comment">#24Hr time</span>
-    <span class="ruby-identifier">hour_counter</span> = <span class="ruby-value">0</span>
-
-    <span class="ruby-comment">#Creates an array with 24 hour time slots.</span>
-    <span class="ruby-identifier">twentyfour_hr_array</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
-
-    <span class="ruby-comment">#Fills the array with the hourly time slots</span>
-    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">48</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">24</span>
-          <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-string">&quot;0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 A.M.&quot;</span>)
-          <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 A.M.&quot;</span>)
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">24</span>
-          <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:00 P.M.&quot;</span>)
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">24</span>
-          <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-string">&quot;0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 A.M.&quot;</span>)
-          <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">19</span>
-            <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 A.M.&quot;</span>)
-          <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">24</span>
-          <span class="ruby-identifier">twentyfour_hr_array</span>[<span class="ruby-identifier">i</span>] = (<span class="ruby-identifier">hour_counter</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:30 P.M.&quot;</span>)
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">%</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-        <span class="ruby-identifier">hour_counter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">end</span>
-
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">twentyfour_hr_array</span>
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
+      <span class="ruby-identifier">slot_counter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -558,7 +425,7 @@
 
           
           <div class="method-source-code" id="get_description-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 74</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 75</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_description</span>
   <span class="ruby-ivar">@description</span>
 <span class="ruby-keyword">end</span></pre>
@@ -591,7 +458,7 @@
 
           
           <div class="method-source-code" id="get_event_counter-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 66</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_event_counter</span>
   <span class="ruby-ivar">@event_counter</span>
 <span class="ruby-keyword">end</span></pre>
@@ -624,7 +491,7 @@
 
           
           <div class="method-source-code" id="get_event_date-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 78</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_event_date</span>
   <span class="ruby-ivar">@event_date</span>
 <span class="ruby-keyword">end</span></pre>
@@ -657,7 +524,7 @@
 
           
           <div class="method-source-code" id="get_event_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 70</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 71</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_event_name</span>
   <span class="ruby-ivar">@event_name</span>
 <span class="ruby-keyword">end</span></pre>
@@ -690,7 +557,7 @@
 
           
           <div class="method-source-code" id="get_f_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 58</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_f_name</span>
   <span class="ruby-ivar">@fName</span>
 <span class="ruby-keyword">end</span></pre>
@@ -723,7 +590,7 @@
 
           
           <div class="method-source-code" id="get_l_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 62</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_l_name</span>
   <span class="ruby-ivar">@lName</span>
 <span class="ruby-keyword">end</span></pre>
@@ -756,62 +623,9 @@
 
           
           <div class="method-source-code" id="get_timeslots_array-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 82</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 83</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots_array</span>
   <span class="ruby-ivar">@timeslots_array</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-get_validation" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">get_validation</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="get_validation-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 314</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_validation</span>
-  <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Would you like to create another event?(Yes/No): &quot;</span>
-  <span class="ruby-identifier">response</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-
-  <span class="ruby-comment">#Check for Alphetical characters</span>
-  <span class="ruby-keyword">while</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">response</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[[:alpha:]]/</span>)
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Not a valid input. Enter Yes/No: &quot;</span>
-    <span class="ruby-identifier">response</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-comment">#Check for if the answer is yes or no.</span>
-  <span class="ruby-keyword">while</span> (<span class="ruby-identifier">response</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;yes&quot;</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">response</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;no&quot;</span>) <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)
-    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Not a valid input. Enter Yes/No: &quot;</span>
-    <span class="ruby-identifier">response</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-comment">#Sets a temp variable to return to call.</span>
-  <span class="ruby-keyword">if</span> ((<span class="ruby-identifier">response</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;yes&quot;</span>)) <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">elsif</span> ((<span class="ruby-identifier">response</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-string">&quot;no&quot;</span>)) <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
-    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -842,7 +656,7 @@
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 30</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>                                                                 <span class="ruby-comment">#Main method that calls other methods</span>
   <span class="ruby-identifier">yesNo</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print</span>(<span class="ruby-string">&quot;Admin Mode&quot;</span>)
@@ -898,7 +712,7 @@
 
           
           <div class="method-source-code" id="set_admin_info-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 117</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 118</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_admin_info</span>                                                      <span class="ruby-comment">#Getting admin&#39;s info.</span>
   <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter your First Name: &quot;</span>
   <span class="ruby-identifier">firstName</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
@@ -950,7 +764,7 @@
 
           
           <div class="method-source-code" id="set_event_counter-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 95</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_event_counter</span>(<span class="ruby-identifier">increase_number</span>)
   <span class="ruby-ivar">@event_counter</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">increase_number</span>
 <span class="ruby-keyword">end</span></pre>
@@ -983,7 +797,7 @@
 
           
           <div class="method-source-code" id="set_event_date-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 107</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 108</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_event_date</span>(<span class="ruby-identifier">date</span>)
   <span class="ruby-ivar">@event_date</span> = <span class="ruby-identifier">date</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1016,7 +830,7 @@
 
           
           <div class="method-source-code" id="set_event_description-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 103</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_event_description</span>(<span class="ruby-identifier">event_description</span>)
   <span class="ruby-ivar">@description</span> = <span class="ruby-identifier">event_description</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1049,7 +863,7 @@
 
           
           <div class="method-source-code" id="set_event_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 99</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_event_name</span>(<span class="ruby-identifier">event_name</span>)
   <span class="ruby-ivar">@event_name</span> = <span class="ruby-identifier">event_name</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1082,7 +896,7 @@
 
           
           <div class="method-source-code" id="set_f_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 87</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_f_name</span>(<span class="ruby-identifier">theFName</span>)
   <span class="ruby-ivar">@fName</span> = <span class="ruby-identifier">theFName</span>;
 <span class="ruby-keyword">end</span></pre>
@@ -1115,7 +929,7 @@
 
           
           <div class="method-source-code" id="set_l_name-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 91</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_l_name</span>(<span class="ruby-identifier">theLName</span>)
   <span class="ruby-ivar">@lName</span> = <span class="ruby-identifier">theLName</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1148,52 +962,10 @@
 
           
           <div class="method-source-code" id="set_timeslot_array-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 111</span>
+            <pre><span class="ruby-comment"># File src/admin.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_timeslot_array</span>(<span class="ruby-identifier">timeslots</span>, <span class="ruby-identifier">i</span>)
   <span class="ruby-ivar">@timeslots_array</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">timeslots</span>[<span class="ruby-identifier">i</span>]
 
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-time_check" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">time_check</span><span
-            class="method-args">(time, array)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Checks to see if the time matches any in the array.</p>
-          
-          
-
-          
-          <div class="method-source-code" id="time_check-source">
-            <pre><span class="ruby-comment"># File src/admin.rb, line 423</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_check</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">array</span>)
-  <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">48</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">casecmp</span>(<span class="ruby-identifier">array</span>[<span class="ruby-identifier">i</span>]) <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-identifier">match</span> = <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">break</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">match</span> = <span class="ruby-keyword">true</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">match</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
