@@ -9,6 +9,7 @@ class Driver
 
     def initialize
         @size = 95
+        @spacer = "        "
     end
 
     def title_print(title)
@@ -196,7 +197,6 @@ class Driver
             else
                 print "\n#{@spacer}Only letters are allowed"
             end
-
         end
 
         return @input

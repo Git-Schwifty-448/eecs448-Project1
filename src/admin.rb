@@ -224,15 +224,14 @@ class Admin
         #Post: Gets the times that the event will take place and loads them into timeslots_array.
         #Return: None.
         def create_date_time                                                    #Creation of time.
-          system 'clear'
-          @drive.title_print_ext("Admin Mode")
-          @drive.sub_title_print("Set Time")
-            start_time_match = true
 
-            print "(12hr) or (24hr)?: "
+
+            start_time_match = true
+            print "\n#{@spacer}Please specify a time format: "
+            print "\n#{@spacer}'12' for 12 hours or '24' for 24 hour time format?: "
             hour_rep = STDIN.gets.chomp
             while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
-                print "I'm sorry, please enter either 12 or 24: "
+                print "#{@spacer}I'm sorry, please enter either 12 or 24: "
                 hour_rep = STDIN.gets.chomp
             end
 
@@ -246,8 +245,8 @@ class Admin
                     slot_choices[i] = num.to_s
                 end
 
-                puts "How many time slots would you like to take for this event? \n"
-                print "(30 min increments):"
+                puts "\n#{@spacer}How many time slots would you like to take for this event? \n"
+                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous):"
 
                 #Receive the amount of slots they want to take up then convert.
                 slot_choice_s = @drive.validate_input(slot_choices)
@@ -257,13 +256,13 @@ class Admin
                 array_increment = 0
                 while slot_counter != slot_choice_i
                     #Retreives the time from the user.
-                    print "Enter a time (i.e., 7:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 7:30 P.M.):"
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
                     time_match = time_check(time, temp_array)
                     while time_match
-                        print "Must enter a valid time: "
+                        print "#{@spacer}Must enter a valid time: "
                         time = STDIN.gets.chomp
                         time_match = time_check(time, temp_array)
                     end
@@ -289,8 +288,8 @@ class Admin
                     slot_choices[i] = num.to_s
                 end
 
-                puts "How many time slots would you like to take for this event? \n"
-                print "(30 min increments):"
+                puts "\n#{@spacer}How many time slots would you like to take for this event? \n"
+                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous):"
 
                 #Receive the amount of slots they want to take up then convert.
                 slot_choice_s = @drive.validate_input(slot_choices)
@@ -299,13 +298,13 @@ class Admin
                 slot_counter = 0
                 array_increment = 0
                 while slot_counter != slot_choice_i
-                    print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
                     time_match = time_check(time, temp_array)
                     while time_match
-                        print "Must enter a valid time: "
+                        print "#{@spacer}Must enter a valid time: "
                         time = STDIN.gets.chomp
                         time_match = time_check(time, temp_array)
                     end
@@ -336,25 +335,25 @@ class Admin
                 return (temp_holder.to_i)
             end
 
-            raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
+            raise ArgumentError, '#{@spacer}Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
         end
 
         #Pre: An event was created and persisted to the data base with correct info.
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
         def get_validation
-            print "Are you done?(Yes/No): "
+            print "#{@spacer}Create another event?(Yes/No): "
             response = STDIN.gets.chomp
 
             #Check for Alphetical characters
             while !(response =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter Yes/No: "
+                print "#{@spacer}Not a valid input. Enter Yes/No: "
                 response = STDIN.gets.chomp
             end
 
             #Check for if the answer is yes or no.
             while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
-                print "Not a valid input. Enter Yes/No: "
+                print "#{@spacer}Not a valid input. Enter Yes/No: "
                 response = STDIN.gets.chomp
             end
 
