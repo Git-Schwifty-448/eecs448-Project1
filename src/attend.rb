@@ -1,16 +1,9 @@
 =begin
 
-    File: user.rb
+    File: attend.rb
     Author: Abraham Dick
     Date Created: 9/8/17
-    Description: 
-
-=end
-
-=begin
-
-### TODOS ###
-3) Fix scoping issues (public v private)
+    Description: Attend class controls the the interation involved in adding attendees to existing events
 
 =end
 
@@ -20,7 +13,9 @@ require_relative 'event'
 require_relative 'databaseController'
 require_relative 'attendee'
 
-class User
+class Attend
+
+    # sets up the member variables for Attend class
     def initialize
         @user_name = String.new
         @drive = Driver.new
@@ -30,35 +25,17 @@ class User
         @spacer = "        "
         @attendee_created = false
         @attending_events = Array.new
-        @view_all = false
     end
 
-    def setup
-        # @db = DatabaseController.new
-        # @event_array = @db.get_events
-        # @number_of_events = @event_array.length
-        @events = true
-        @browsing = true
-
-
-		dbCont = DatabaseController.new()
-		e = Event.new('event', 'description', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)], [])
-        a = Attendee.new('Mike', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)])
-
-		# e.add_attendee(a)
-		# dbCont.persist_event(e)
-        
-        @event_array = dbCont.get_events
-        @number_of_events = @event_array.length
-        @events = true
-        @browsing = true
-
-        ### END RUN ONCE
-    end
-
+    # @desc: In charge of control of the attend class. Runs the setup to get database data,
+    # runs the program, and then posts the events back to the database
+    # @pre: none
+    # @post: main controller for the program
+    # @return: none
     def run
         setup()
 
+        # if there are events to be retrieved, print the list of them and then begin the controller method
         if @number_of_events > 0
             while @browsing
                 get_events()
@@ -71,6 +48,9 @@ class User
             print "#{@spacer}Please use admin mode and add an event first!\n\n"
         end
 
+        # @pre: none
+        # @post: posts updated events to the database with new attendee information
+        # @return: none
         if !@attending_events.empty?
             for i in 0...@attending_events.length
                 @db.update_event(@attending_events[i])
@@ -79,9 +59,23 @@ class User
     end
 
     private
-        # If there are events stored in the database, they are grabbed 
-        # and printed to terminal window (via single_event_printer). 
-        # If there are no events, a message is printed as such   
+
+        # @pre: none
+        # @post: creates a database controller object retrieves the events, also sets some bool flags depending on what the database returns
+        # @return: none
+        def setup
+            @db = DatabaseController.new
+            @event_array = @db.get_events
+            @number_of_events = @event_array.length
+            @events = true
+            @browsing = true
+        end
+
+        # @pre: none
+        # @post:If there are events stored in the database, they are retrieved 
+        #       and printed to terminal window (via single_event_printer). 
+        #       If there are no events, a message is printed as such  
+        # @return: none 
         def get_events
             if @events  == true
                 system "clear"
@@ -99,9 +93,10 @@ class User
             end
         end
 
-        # Template for printing a single event
-        # takes an event object and a true/false if this is for printing in a list
-        # or printing a single event
+        # @desc: Template for printing a single event
+        # @pre: takes an event and a bool flag to indicate if more than one event will eventually be printed
+        # @post: prints events
+        # @return: none
         def single_event_printer(event,single)
 
             if !single
@@ -138,19 +133,17 @@ class User
                 for i in 0...event.get_attendees.length
                     if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
                         print event.get_attendees[i].get_name() + " ("
-
                         for j in 0...event.get_attendees[i].get_timeslots.length
                             if @military_time
                                 print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
                             else
                                 print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
                             end
-
                             if j != event.get_attendees[i].get_timeslots.length-1
                                 print ", "
                             end
                         end
-                        print ")"
+                        print " )"
                     else
                         print event.get_attendees[i].get_name()
                     end
@@ -162,13 +155,14 @@ class User
             end
             print "\n"
 
-
             print "\n#{@spacer}Description:\t"
             @drive.desc_printer event.get_description
             print "\n"
         end
 
-        # outputs each event and returns if the user wants to attend
+        # @pre: None 
+        # @post: outputs each event and returns if the user wants to attend
+        # @return: None
         def event_controller()
             @drive.hr
             puts "\n\n#{@spacer}If you wish to attend an event, enter the Event's ID number otherwise enter t to toggle time"
@@ -229,7 +223,9 @@ class User
             end
         end
         
-        # takes an event given by the event_controller method, the id of that event
+        # @pre: an event must be passed
+        # @post: the user is guided through adding themselves to an event
+        # @return: true to continue looping
         def attend_event(event)
 
             # If the user has already created an attendee object
@@ -277,7 +273,7 @@ class User
                         if @military_time
                             print "#{@spacer}#{event.get_timeslots[i].strftime('%l:%M%P')}, attend?: "
                         else
-                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%Mg')}, attend?: "
+                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%M')}, attend?: "
                         end
                         @user_input = STDIN.gets.chomp
                     end
@@ -319,10 +315,13 @@ class User
                 sleep 2
             end
 
-            # return true, that program should continue to loop
+            # Keep the program looping
             return true
         end
 
+        # @pre: none
+        # @post: Prints a reminder of the events that the attendee object is attending
+        # @return: none
         def reminder
             system "clear"
 
@@ -342,7 +341,9 @@ class User
             print "\n\n"
         end
 
-        # Creates an attendee object to be added to the event
+        # @pre: takes the time slot of the event the user wishes to attend
+        # @post: gets a first and last name and creates the attendee object
+        # @return: the new attendee for the event
         def create_user(origin_time_slot)
             system "clear"
             @drive.title_print_ext("User Mode")
@@ -357,7 +358,7 @@ class User
                 if @temp_name.match(/^[[:alpha:]]+$/)
                     break
                 else
-                    print "\n#{@spacer}Only letters are allowed"
+                    print "\n#{@spacer}Only letters are allowed in your first name."
                 end
                 
             end
@@ -370,7 +371,7 @@ class User
                     @temp_name = @temp_name + " " + @temp_l_name
                     break
                 else
-                    print "\n#{@spacer}Only letters are allowed"
+                    print "\n#{@spacer}Only letters are allowed in your last name."
                 end
                 
             end
@@ -379,7 +380,8 @@ class User
             return @new_attendee
         end
 
-        # returns an event object that matches the id passed in, if none found, throws an error
+        # pre: takes an int ID number
+        # return: finds and returns the event in the event array in which the passed in id number matches
         def get_event_by_id(id_number)
             for i in 0...@event_array.length
                 if(@event_array[i].get_id == id_number.to_i)
@@ -390,41 +392,13 @@ class User
             raise ArgumentError, 'The ID does not match an in the database'
         end
 
-        #converts a single time to military time for use with creating attendee
-        def convert_to_military_time(standard_time)
-
-            if standard_time[5] == 'p'
-                standard_time.chop
-                standard_time.chop
-                @temp_holder = @standardtime.split(':')
-                @temp_holder[0] = @temp_holder[0].to_i + 12
-                @temp_holder[0].to_s
-                @mt = @temp_holder[0] + ":" + @temp_holder[1]
-
-                return @mt
-            else
-                standard_time.chop
-                standard_time.chop
-                return standard_time
-            end
-
-            raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mmam or hh:mmpm'
-
-        end
-
-        # Resets with the same username to go to multiple events
+        # @desc: Resets with the same username to go to multiple events
+        # @pre: takes an attendee object
+        # @post: removes the timeslots but keeps the username of the attendee passed in
+        # @return: a 'new' attendee with the same name but no timeslots
         def clean_attendee(attendee)
             @name = attendee.get_name
             clean_attendee = Attendee.new(@name,[])
             return clean_attendee
         end
 end
-
-=begin GARBAGE                        
-                        # DEBUG USE ONLY
-                        for i in 0...@sub_acceptable_input.length
-                            puts @sub_acceptable_input[i]
-                        end
-=end
-
-# username checking from https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
