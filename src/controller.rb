@@ -49,7 +49,13 @@ class Controller
                 @user_controller.run
         end
 
+		#dbCont = DatabaseController.new()
+		#e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
+		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
+		#e.add_attendee(a)
+		#dbCont.persist_event(e)
 
+		#sputs dbCont.get_events()[0].get_timeslots[0].hour
     end
 
 end

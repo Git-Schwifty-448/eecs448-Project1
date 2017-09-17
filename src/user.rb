@@ -42,10 +42,11 @@ class User
 
 
 		dbCont = DatabaseController.new()
-		e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
-		a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
-		e.add_attendee(a)
-		dbCont.persist_event(e)
+		e = Event.new('event', 'description', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)], [])
+        a = Attendee.new('Mike', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)])
+
+		# e.add_attendee(a)
+		# dbCont.persist_event(e)
         
         @event_array = dbCont.get_events
         @number_of_events = @event_array.length
@@ -112,32 +113,20 @@ class User
             print "#{@spacer}Time(s)"
 
             if !@military_time
-                print " (12hr): "
-
-                # make sure the event was created correctly
-                if event.get_timeslots_12hrs.kind_of?(Array)
-                    for j in 0...event.get_timeslots_12hrs.length
-                        print event.get_timeslots_12hrs[j]
-                        if j != event.get_timeslots_12hrs.length-1
-                            print ", "
-                        end
-                    end
-                else
-                    print "Should be an array!\n"
-                end
+                print " (12hr):"
             else
                 print " (24hr): "
+            end
 
-                # make sure the event was created correctly
-                if event.get_timeslots.kind_of?(Array)
-                    for j in 0...event.get_timeslots.length
-                        print event.get_timeslots[j]
-                        if j != event.get_timeslots.length-1
-                            print ", "
-                        end
-                    end
+            for j in 0...event.get_timeslots.length
+                if !@military_time
+                    print event.get_timeslots[j].strftime('%l:%M%P')
                 else
-                    print "Should be an array!\n"
+                    print event.get_timeslots[j].strftime('%H:%M')
+                end
+    
+                if j != event.get_timeslots.length-1
+                    print ", "
                 end
             end
 
@@ -145,18 +134,16 @@ class User
 
             if event.get_attendees.empty?
                 print "None yet, be the first to attend!\n"
-            end
-
-            if event.get_attendees.kind_of?(Array)
+            else
                 for i in 0...event.get_attendees.length
                     if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
                         print event.get_attendees[i].get_name() + " ("
 
                         for j in 0...event.get_attendees[i].get_timeslots.length
                             if @military_time
-                                print event.get_attendees[i].get_timeslots[j]
+                                print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
                             else
-                                print event.get_attendees[i].get_timeslots_12hrs[j]
+                                print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
                             end
 
                             if j != event.get_attendees[i].get_timeslots.length-1
@@ -171,12 +158,10 @@ class User
                     if i != event.get_attendees.length-1
                         print ", "
                     end
-
                 end
-                print "\n"
-            else
-                print "Should be an array!\n"
             end
+            print "\n"
+
 
             print "\n#{@spacer}Description:\t"
             @drive.desc_printer event.get_description
@@ -290,9 +275,9 @@ class User
 
                     while (!@acceptable_input.include? @user_input)
                         if @military_time
-                            print "#{@spacer}#{event.get_timeslots[i]}, attend?: "
+                            print "#{@spacer}#{event.get_timeslots[i].strftime('%l:%M%P')}, attend?: "
                         else
-                            print "#{@spacer}#{event.get_timeslots_12hrs[i]}, attend?: "
+                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%Mg')}, attend?: "
                         end
                         @user_input = STDIN.gets.chomp
                     end
