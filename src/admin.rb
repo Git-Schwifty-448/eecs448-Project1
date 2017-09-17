@@ -43,14 +43,17 @@ class Admin
 
             while yesNo
 
-                @drive.title_print("Admin Mode")
                 set_admin_info
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
                 menuone_choice[1] = "2. See Attendees"
 
-                puts "Would you like to create an event or see attendees?(1 or 2): "
-                atten_event = @drive.menu_builder(menuone_choice)
+
+                system 'clear'
+                @drive.title_print_ext("Admin Mode")
+                @drive.sub_title_print("Options")
+                puts "\n#{@spacer}Would you like to create an event or see attendees?(1 or 2): \n"
+                atten_event = @drive.menu_builder_ext(menuone_choice)
 
                 if atten_event == 1
                     create_date
@@ -130,32 +133,33 @@ class Admin
         #Post: A Date object was created with the date of the event.
         #Return: None.
         def create_date                                                         #Creation of date.
+            system 'clear'
+            @drive.title_print_ext("Admin Mode")
+            @drive.sub_title_print("Set Event Information")
             invalid_date = true
 
             #Temporary date of todays date.
             date = Date.today
 
-            @drive.title_print("Date Formation")
-
-            print "Enter a name for the event: "
+            print "\n#{@spacer}Enter a name for the event: "
             eventName = STDIN.gets.chomp
             @event_name = eventName
 
-            print "Give a description of the event: "
+            print "#{@spacer}Give a description of the event: "
             eventDescription = STDIN.gets.chomp
             @descripton = eventDescription
 
             while invalid_date
                 #Retrieves the event's year from the user.                          Event's Year.
-                print "Input the year you'd like to make the event for(YYYY): "
+                print "\n#{@spacer}Input the year you'd like to make the event for(YYYY): "
                 events_year = STDIN.gets.chomp
             while !(events_year =~ /[[:digit:]]/)
-                print "Invalid input, please enter a year: "
+                print "\n#{@spacer}Invalid input, please enter a year: "
                 events_year = STDIN.gets.chomp
             end
 
             while (events_year < date.year.to_s) || (events_year > "2100")
-                print "Invalid year, please input a reasonable year: "
+                print "#{@spacer}Invalid year, please input a reasonable year: "
                 events_year = STDIN.gets.chomp
             end
 
@@ -177,8 +181,8 @@ class Admin
             monthMenu[11] = "12. December"
 
             #Takes the user's choice and uses a temp variable for event's month.Event's month.
-            puts "Please choose a month for the event(1-12): "
-            month_choice = @drive.menu_builder(monthMenu)
+            puts "\n#{@spacer}Please choose a month for the event(1-12): "
+            month_choice = @drive.menu_builder_ext(monthMenu)
             while (month_choice < 1) || (month_choice > 12)
                 month_choice = STDIN.gets.chomp
             end
@@ -192,7 +196,7 @@ class Admin
             end
 
             #Takes the user's choice and uses a temp variable for event's day.  Event's day.
-            puts "Please choose a day for the event(1-31): "
+            puts "\n#{@spacer}Please choose a day for the event(1-31): "
             day_choice = @drive.menu_builder(dayMenu)
             while (day_choice < 1) || (day_choice > 31)
                 day_choice = STDIN.gets.chomp
@@ -203,12 +207,12 @@ class Admin
             #Verifies if the date is a valid date for the event.
             if !(Date.valid_date?(@event_year, @event_month, @event_day))
                 invalid_date = true
-                puts "Date is not valid."
+                puts "#{@spacer}Date is not valid."
             else
                 d = Date.new(@event_year, @event_month, @event_day)
                 if d < Date.today
                     invalid_date = true
-                    puts "Date is not valid."
+                    puts "#{@spacer}Date is not valid."
                 else
                     invalid_date = false
                 end
@@ -220,7 +224,9 @@ class Admin
         #Post: Gets the times that the event will take place and loads them into timeslots_array.
         #Return: None.
         def create_date_time                                                    #Creation of time.
-            @drive.title_print("Time setup")
+          system 'clear'
+          @drive.title_print_ext("Admin Mode")
+          @drive.sub_title_print("Set Time")
             start_time_match = true
 
             print "(12hr) or (24hr)?: "

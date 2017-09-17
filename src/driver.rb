@@ -100,15 +100,12 @@ class Driver
     end
 
     def menu_builder(option_array)
+        option_array.each do |option|
+            puts " \u21E8 #{option}"
+        end
 
-
-    option_array.each do |option|
-        puts " \u21E8 #{option}"
-    end
-
-    menu_choice = choice_getter(1,option_array.length)
-    return menu_choice
-
+        menu_choice = choice_getter(1,option_array.length)
+        return menu_choice
     end
 
     def choice_getter(low,high)
@@ -117,6 +114,28 @@ class Driver
 
         while (choice < low || choice > high)
             print "Please make a selection: "
+            choice = STDIN.gets.to_i
+        end
+
+        return choice
+
+    end
+
+    def menu_builder_ext(option_array)
+        option_array.each do |option|
+            puts "         \u21E8 #{option}"
+        end
+
+        menu_choice = choice_getter_ext(1,option_array.length)
+        return menu_choice
+    end
+
+    def choice_getter_ext(low,high)
+
+        choice = 0
+
+        while (choice < low || choice > high)
+            print "        Please make a selection: "
             choice = STDIN.gets.to_i
         end
 
