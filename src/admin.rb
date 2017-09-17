@@ -40,10 +40,9 @@ class Admin
 
         def run                                                                 #Main method that calls other methods
             yesNo = true
-
+            set_admin_info
             while yesNo
-
-                set_admin_info
+                
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
                 menuone_choice[1] = "2. See Attendees"
