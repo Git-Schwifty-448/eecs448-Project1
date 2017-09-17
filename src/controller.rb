@@ -21,7 +21,7 @@ class Controller
     end
 
     def run
-        @drive.title_print("Event Coordinator")
+        @drive.title_print("Quablex Event Coordinator")
 
         print "\n\n"
         puts "\t            \u2513"
