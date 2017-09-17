@@ -335,11 +335,8 @@ class Attend
                     @drive.hr
                     single_event_printer(@attending_events[i],false)
                 end
-            else
-                @drive.title_print("Thanks for using, goodbye!")
+                sleep 3
             end
-
-            print "\n\n"
         end
 
         # @pre: takes the time slot of the event the user wishes to attend

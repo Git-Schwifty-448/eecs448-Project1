@@ -43,14 +43,17 @@ class Admin
 
             while yesNo
 
-                @drive.title_print("Admin Mode")
                 set_admin_info
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
                 menuone_choice[1] = "2. See Attendees"
 
-                puts "Would you like to create an event or see attendees?(1 or 2): "
-                atten_event = @drive.menu_builder(menuone_choice)
+
+                system 'clear'
+                @drive.title_print_ext("Admin Mode")
+                @drive.sub_title_print("Options")
+                puts "\n#{@spacer}Would you like to create an event or see attendees?(1 or 2): \n"
+                atten_event = @drive.menu_builder_ext(menuone_choice)
 
                 if atten_event == 1
                     create_date
@@ -90,58 +93,73 @@ class Admin
         #Post: An admin was created with firstName and lastName.
         #Return: None.
         def set_admin_info                                                      #Getting admin's info.
-            print "Enter your First Name: "
-            firstName = STDIN.gets.chomp
+          system 'clear'
+          @drive.title_print_ext("Admin Mode")
+          @drive.sub_title_print("Get username")
 
-            #Using Regexp class
-            while !(firstName =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter your First Name: "
-                firstName = STDIN.gets.chomp
-            end
+          temp_name = ""
+          temp_l_name = ""
 
-            print "Enter your Last Name: "
-            lastName = STDIN.gets.chomp
+            loop do
+              print "\n\n#{@spacer}Please enter your first name: "
+              temp_name = STDIN.gets.chomp
 
-            #Using Regexp class
-            while !(lastName =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter your Last Name: "
-                lastName = STDIN.gets.chomp
-            end
+              if temp_name.match(/^[[:alpha:]]+$/)
+                  break
+              else
+                  print "\n#{@spacer}Only letters are allowed in your first name."
+              end
 
-            @fName = firstName
-            @lName = lastName
+          end
+
+          loop do
+              print "\n\n#{@spacer}Please enter your last name: "
+              temp_l_name = STDIN.gets.chomp
+
+              if temp_l_name.match(/^[[:alpha:]]+$/)
+                  break
+              else
+                  print "\n#{@spacer}Only letters are allowed in your last name."
+              end
+
+          end
+
+
+            @fName = temp_name
+            @lName = temp_l_name
         end
 
         #Pre: An admin was created.
         #Post: A Date object was created with the date of the event.
         #Return: None.
         def create_date                                                         #Creation of date.
+            system 'clear'
+            @drive.title_print_ext("Admin Mode")
+            @drive.sub_title_print("Set Event Information")
             invalid_date = true
 
             #Temporary date of todays date.
             date = Date.today
 
-            @drive.title_print("Date Formation")
-
-            print "Enter a name for the event: "
+            print "\n#{@spacer}Enter a name for the event: "
             eventName = STDIN.gets.chomp
             @event_name = eventName
 
-            print "Give a description of the event: "
+            print "#{@spacer}Give a description of the event: "
             eventDescription = STDIN.gets.chomp
             @descripton = eventDescription
 
             while invalid_date
                 #Retrieves the event's year from the user.                          Event's Year.
-                print "Input the year you'd like to make the event for(YYYY): "
+                print "\n#{@spacer}Input the year you'd like to make the event for(YYYY): "
                 events_year = STDIN.gets.chomp
             while !(events_year =~ /[[:digit:]]/)
-                print "Invalid input, please enter a year: "
+                print "\n#{@spacer}Invalid input, please enter a year: "
                 events_year = STDIN.gets.chomp
             end
 
             while (events_year < date.year.to_s) || (events_year > "2100")
-                print "Invalid year, please input a reasonable year: "
+                print "#{@spacer}Invalid year, please input a reasonable year: "
                 events_year = STDIN.gets.chomp
             end
 
@@ -163,8 +181,8 @@ class Admin
             monthMenu[11] = "12. December"
 
             #Takes the user's choice and uses a temp variable for event's month.Event's month.
-            puts "Please choose a month for the event(1-12): "
-            month_choice = @drive.menu_builder(monthMenu)
+            puts "\n#{@spacer}Please choose a month for the event(1-12): "
+            month_choice = @drive.menu_builder_ext(monthMenu)
             while (month_choice < 1) || (month_choice > 12)
                 month_choice = STDIN.gets.chomp
             end
@@ -201,6 +219,8 @@ class Admin
                 print "Remember there are 31 days in December."
             end
 
+            #Takes the user's choice and uses a temp variable for event's day.  Event's day.
+            puts "\n#{@spacer}Please choose a day for the event: "
             day_choice = STDIN.gets.chomp
             while (day_choice < 1) || (day_choice > 31)
                 day_choice = STDIN.gets.chomp
@@ -211,12 +231,12 @@ class Admin
             #Verifies if the date is a valid date for the event.
             if !(Date.valid_date?(@event_year, @event_month, @event_day))
                 invalid_date = true
-                puts "Date is not valid."
+                puts "#{@spacer}Date is not valid."
             else
                 d = Date.new(@event_year, @event_month, @event_day)
                 if d < Date.today
                     invalid_date = true
-                    puts "That date has passed!!"
+                    puts "#{@spacer}Date is not valid."
                 else
                     invalid_date = false
                 end
@@ -228,13 +248,14 @@ class Admin
         #Post: Gets the times that the event will take place and loads them into timeslots_array.
         #Return: None.
         def create_date_time                                                    #Creation of time.
-            @drive.title_print("Time setup")
-            start_time_match = true
 
-            print "(12) for 12hr format or (24) for 24hr format?: "
+
+            start_time_match = true
+            print "\n#{@spacer}Please specify a time format: "
+            print "\n#{@spacer}'12' for 12 hours or '24' for 24 hour time format?: "
             hour_rep = STDIN.gets.chomp
             while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
-                print "I'm sorry, please enter either 12 or 24: "
+                print "#{@spacer}I'm sorry, please enter either 12 or 24: "
                 hour_rep = STDIN.gets.chomp
             end
 
@@ -248,8 +269,8 @@ class Admin
                     slot_choices[i] = num.to_s
                 end
 
-                puts "How many time slots would you like to take for this event? \n"
-                print "(30 min increments):"
+                puts "\n#{@spacer}How many time slots would you like to take for this event? \n"
+                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous):"
 
                 #Receive the amount of slots they want to take up then convert.
                 slot_choice_s = @drive.validate_input(slot_choices)
@@ -259,13 +280,13 @@ class Admin
                 array_increment = 0
                 while slot_counter != slot_choice_i
                     #Retreives the time from the user.
-                    print "Enter a time (i.e., 7:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 7:30 P.M.):"
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
                     time_match = time_check(time, temp_array)
                     while time_match
-                        print "Must enter a valid time: "
+                        print "#{@spacer}Must enter a valid time: "
                         time = STDIN.gets.chomp
                         time_match = time_check(time, temp_array)
                     end
@@ -291,8 +312,8 @@ class Admin
                     slot_choices[i] = num.to_s
                 end
 
-                puts "How many time slots would you like to take for this event? \n"
-                print "(30 min increments):"
+                puts "\n#{@spacer}How many time slots would you like to take for this event? \n"
+                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous):"
 
                 #Receive the amount of slots they want to take up then convert.
                 slot_choice_s = @drive.validate_input(slot_choices)
@@ -301,13 +322,13 @@ class Admin
                 slot_counter = 0
                 array_increment = 0
                 while slot_counter != slot_choice_i
-                    print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
                     time_match = time_check(time, temp_array)
                     while time_match
-                        print "Must enter a valid time: "
+                        print "#{@spacer}Must enter a valid time: "
                         time = STDIN.gets.chomp
                         time_match = time_check(time, temp_array)
                     end
@@ -338,25 +359,25 @@ class Admin
                 return (temp_holder.to_i)
             end
 
-            raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
+            raise ArgumentError, '#{@spacer}Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
         end
 
         #Pre: An event was created and persisted to the data base with correct info.
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
         def get_validation
-            print "Go back to menu?(Yes/No): "
+            print "#{@spacer}Create another event?(Yes/No): "
             response = STDIN.gets.chomp
 
             #Check for Alphetical characters
             while !(response =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter Yes/No: "
+                print "#{@spacer}Not a valid input. Enter Yes/No: "
                 response = STDIN.gets.chomp
             end
 
             #Check for if the answer is yes or no.
             while (response.casecmp("yes") != 0) && (response.casecmp("no") != 0)
-                print "Not a valid input. Enter Yes/No: "
+                print "#{@spacer}Not a valid input. Enter Yes/No: "
                 response = STDIN.gets.chomp
             end
 

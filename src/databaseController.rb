@@ -12,6 +12,7 @@ class DatabaseController
 
     def initialize
 		@DB = Sequel.sqlite('db.sqlite')
+		@epoch = DateTime.now
 		init_database
     end
 
@@ -117,7 +118,9 @@ class DatabaseController
 			end
 
 			newEvent = Event.new(event[:'name'], event[:'description'], newTimeslots, newAttendees, event[:'id'])
-			events.push(newEvent)
+			if newEvent.get_date >= @epoch
+				events.push(newEvent)
+			end
 		end
 
 		return events
