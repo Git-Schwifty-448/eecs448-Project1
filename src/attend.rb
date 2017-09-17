@@ -250,7 +250,8 @@ class Attend
             if event.get_timeslots.length > 1
 
                 @drive.hr
-                print "\n#{@spacer}For each time slot of an event, indicate with 'y' or 'n' if you wish to attend\n\n"
+                print "\n#{@spacer}For each time slot of an event, indicate with 'y' or 'n' if you wish to attend"
+                print "\n#{@spacer}If you would like to attend the entire event indicate with 'a' or 'all'\n\n"
 
                 # get user responce and if the user wants to attend a specific time, add it to the array of attending events
                 for i in 0...event.get_timeslots.length
