@@ -55,8 +55,6 @@ class Controller
 		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
 		#e.add_attendee(a)
 		#dbCont.persist_event(e)
-
-		#sputs dbCont.get_events()[0].get_timeslots[0].hour
     end
 
 end
