@@ -234,7 +234,6 @@ class Admin
                 slot_choice_i = slot_choice_s.to_i
 
                 slot_counter = 0
-                temp_timeslot_array = Array.new
                 array_increment = 0
                 while slot_counter != slot_choice_i
                     #Retreives the time from the user.
@@ -278,7 +277,6 @@ class Admin
                 slot_choice_i = slot_choice_s.to_i
 
                 slot_counter = 0
-                temp_timeslot_array = Array.new
                 array_increment = 0
                 while slot_counter != slot_choice_i
                     print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
