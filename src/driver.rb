@@ -136,7 +136,7 @@ class Driver
     end
 
     def desc_printer(string)
-        @length = string.length.clone
+        @length = string.length
         string = string.split(' ')
 
         @new_string = String.new

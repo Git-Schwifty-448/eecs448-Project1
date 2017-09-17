@@ -54,11 +54,7 @@ class Controller
 		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
 		#e.add_attendee(a)
 		#dbCont.persist_event(e)
-<<<<<<< HEAD
 
 		#puts e.get_date
-=======
->>>>>>> master
     end
-
 end

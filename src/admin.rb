@@ -15,115 +15,111 @@ require 'date'
 class Admin
 
         def initialize
-          @fName = " "
-          @lName = " "
-          @event_counter = 0
-          @event_name = " "
-          @description = " "
-          @events = true
-          @military_time = true
-          @drive = Driver.new
-          @event_year = 0
-          @event_month = 0
-          @event_day = 0
-          @event_hour = 0
-          @event_minute = 0
-          @timeslots_array = Array.new
-          @DB = DatabaseController.new
+            @fName = " "
+            @lName = " "
+            @event_counter = 0
+            @event_name = " "
+            @description = " "
+            @events = true
+            @military_time = true
+            @drive = Driver.new
+            @event_year = 0
+            @event_month = 0
+            @event_day = 0
+            @event_hour = 0
+            @event_minute = 0
+            @timeslots_array = Array.new
+            @DB = DatabaseController.new
 
-          #-----------------------------------------
-          @number_of_events = 0
-          @spacer = "        "
-          @attendee_created = false
-          @attending_events = Array.new
-          @view_all = false
+            #-----------------------------------------
+            @number_of_events = 0
+            @spacer = "        "
+            @attendee_created = false
+            @attending_events = Array.new
         end
 
         def run                                                                 #Main method that calls other methods
-          yesNo = true
-          @drive.title_print("Admin Mode")
-          set_admin_info
-          menuone_choice = Array.new
-          menuone_choice[0] = "1. Create Event"
-          menuone_choice[1] = "2. See Attendees"
+            yesNo = true
 
-          puts "Would you like to create an event or see attendees?(1 or 2): "
-          atten_event = @drive.menu_builder(menuone_choice)
-
-          if atten_event == 1
             while yesNo
-              create_date
-              create_date_time
 
-              #Creation of new attendee
-              admin_name = @fName + " " + @lName
-              admin_attendee = Attendee.new(admin_name, @timeslots_array)
+                @drive.title_print("Admin Mode")
+                set_admin_info
+                menuone_choice = Array.new
+                menuone_choice[0] = "1. Create Event"
+                menuone_choice[1] = "2. See Attendees"
 
-              #Temp array for the attendee array for the event
-              attendee_array = Array.new
-              attendee_array[0] = admin_attendee
+                puts "Would you like to create an event or see attendees?(1 or 2): "
+                atten_event = @drive.menu_builder(menuone_choice)
 
-              #Creation of the event.
-              event = Event.new(@event_name, @description, @timeslots_array, attendee_array)
-              @DB.persist_event(event)
+                if atten_event == 1
+                    create_date
+                    create_date_time
 
-              set_event_counter(1)
-              yesNo = get_validation                                              #Asks user if they want to create another event.
+                    #Creation of new attendee
+                    admin_name = @fName + " " + @lName
+                    admin_attendee = Attendee.new(admin_name, @timeslots_array)
+
+                    #Temp array for the attendee array for the event
+                    attendee_array = Array.new
+                    attendee_array[0] = admin_attendee
+
+                    #Creation of the event.
+                    event = Event.new(@event_name, @description, @timeslots_array, attendee_array)
+                    @DB.persist_event(event)
+
+                    set_event_counter(1)
+                    yesNo = get_validation                                              #Asks user if they want to create another event.
+                elsif atten_event == 2
+                    run2
+                end
             end
-          elsif atten_event == 2
-            run2
-          end
-
         end
 
         #Accessor methods
         def get_event_counter
-          @event_counter
-        end
-
-        def get_event_date
-          @event_date
+            @event_counter
         end
 
         #Setter methods
         def set_event_counter(increase_number)
-          @event_counter += increase_number
+            @event_counter += increase_number
         end
 
         #Pre: User chooses admin from homepage.
         #Post: An admin was created with firstName and lastName.
         #Return: None.
         def set_admin_info                                                      #Getting admin's info.
-          print "Enter your First Name: "
-          firstName = STDIN.gets.chomp
-
-          #Using Regexp class
-          while !(firstName =~ /[[:alpha:]]/)
-            print "Not a valid input. Enter your First Name: "
+            print "Enter your First Name: "
             firstName = STDIN.gets.chomp
-          end
 
-          print "Enter your Last Name: "
-          lastName = STDIN.gets.chomp
+            #Using Regexp class
+            while !(firstName =~ /[[:alpha:]]/)
+                print "Not a valid input. Enter your First Name: "
+                firstName = STDIN.gets.chomp
+            end
 
-          #Using Regexp class
-          while !(lastName =~ /[[:alpha:]]/)
-            print "Not a valid input. Enter your Last Name: "
+            print "Enter your Last Name: "
             lastName = STDIN.gets.chomp
-          end
 
-          @fName = firstName
-          @lName = lastName
+            #Using Regexp class
+            while !(lastName =~ /[[:alpha:]]/)
+                print "Not a valid input. Enter your Last Name: "
+                lastName = STDIN.gets.chomp
+            end
+
+            @fName = firstName
+            @lName = lastName
         end
 
         #Pre: An admin was created.
         #Post: A Date object was created with the date of the event.
         #Return: None.
         def create_date                                                         #Creation of date.
-          invalid_date = true
+            invalid_date = true
 
-          #Temporary date of todays date.
-          date = Date.today
+            #Temporary date of todays date.
+            date = Date.today
 
             @drive.title_print("Date Formation")
 
@@ -135,18 +131,18 @@ class Admin
             eventDescription = STDIN.gets.chomp
             @descripton = eventDescription
 
-          while invalid_date
-            #Retrieves the event's year from the user.                          Event's Year.
-            print "Input the year you'd like to make the event for(YYYY): "
-            events_year = STDIN.gets.chomp
+            while invalid_date
+                #Retrieves the event's year from the user.                          Event's Year.
+                print "Input the year you'd like to make the event for(YYYY): "
+                events_year = STDIN.gets.chomp
             while !(events_year =~ /[[:digit:]]/)
-              print "Invalid input, please enter a year: "
-              events_year = STDIN.gets.chomp
+                print "Invalid input, please enter a year: "
+                events_year = STDIN.gets.chomp
             end
 
             while (events_year < date.year.to_s) || (events_year > "2100")
-              print "Invalid year, please input a reasonable year: "
-              events_year = STDIN.gets.chomp
+                print "Invalid year, please input a reasonable year: "
+                events_year = STDIN.gets.chomp
             end
 
             @event_year = events_year.to_i
@@ -170,7 +166,7 @@ class Admin
             puts "Please choose a month for the event(1-12): "
             month_choice = @drive.menu_builder(monthMenu)
             while (month_choice < 1) || (month_choice > 12)
-              month_choice = STDIN.gets.chomp
+                month_choice = STDIN.gets.chomp
             end
 
             @event_month = month_choice.to_i
@@ -185,131 +181,129 @@ class Admin
             puts "Please choose a day for the event(1-31): "
             day_choice = @drive.menu_builder(dayMenu)
             while (day_choice < 1) || (day_choice > 31)
-              day_choice = STDIN.gets.chomp
+                day_choice = STDIN.gets.chomp
             end
 
             @event_day = day_choice.to_i
 
             #Verifies if the date is a valid date for the event.
             if !(Date.valid_date?(@event_year, @event_month, @event_day))
-              invalid_date = true
-              puts "Date is not valid."
-            else
-              d = Date.new(@event_year, @event_month, @event_day)
-              if d < Date.today
                 invalid_date = true
                 puts "Date is not valid."
-              else
-                invalid_date = false
-              end
+            else
+                d = Date.new(@event_year, @event_month, @event_day)
+                if d < Date.today
+                    invalid_date = true
+                    puts "Date is not valid."
+                else
+                    invalid_date = false
+                end
             end
-
           end
-
-        # end
+        end
 
         #Pre: An admin was created and a Date object was created.
         #Post: Gets the times that the event will take place and loads them into timeslots_array.
         #Return: None.
         def create_date_time                                                    #Creation of time.
-          @drive.title_print("Time setup")
-          start_time_match = true
+            @drive.title_print("Time setup")
+            start_time_match = true
 
-          print "(12hr) or (24hr)?: "
-          hour_rep = STDIN.gets.chomp
-          while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
-            print "I'm sorry, please enter either 12 or 24: "
+            print "(12hr) or (24hr)?: "
             hour_rep = STDIN.gets.chomp
-          end
-
-          temp_array = create_time_array(hour_rep)
-
-          if hour_rep == "12"
-            #Creates Temporary array for slot validation.
-            slot_choices = Array.new
-            for i in 0...48
-              num = i + 1
-              slot_choices[i] = num.to_s
+            while (hour_rep.casecmp("12") != 0) && (hour_rep.casecmp("24") != 0)
+                print "I'm sorry, please enter either 12 or 24: "
+                hour_rep = STDIN.gets.chomp
             end
 
-            puts "How many time slots would you like to take for this event? \n"
-            print "(30 min increments):"
+            temp_array = create_time_array(hour_rep)
 
-            #Receive the amount of slots they want to take up then convert.
-            slot_choice_s = @drive.validate_input(slot_choices)
-            slot_choice_i = slot_choice_s.to_i
-
-            slot_counter = 0
-            temp_timeslot_array = Array.new
-            array_increment = 0
-            while slot_counter != slot_choice_i
-                #Retreives the time from the user.
-                print "Enter a time (i.e., 7:30 P.M.):"
-                time = STDIN.gets.chomp
-
-                #Checks to see if the time is valid throughout the array.
-                time_match = time_check(time, temp_array)
-                while time_match
-                  print "Must enter a valid time: "
-                  time = STDIN.gets.chomp
-                  time_match = time_check(time, temp_array)
+            if hour_rep == "12"
+                #Creates Temporary array for slot validation.
+                slot_choices = Array.new
+                for i in 0...48
+                    num = i + 1
+                    slot_choices[i] = num.to_s
                 end
 
-                time = time.split(':')
+                puts "How many time slots would you like to take for this event? \n"
+                print "(30 min increments):"
 
-                @event_hour = convert_to_military_time(time)
+                #Receive the amount of slots they want to take up then convert.
+                slot_choice_s = @drive.validate_input(slot_choices)
+                slot_choice_i = slot_choice_s.to_i
 
-                minute = time[1].slice(0...1)
-                @event_minute = minute.to_i
+                slot_counter = 0
+                temp_timeslot_array = Array.new
+                array_increment = 0
+                while slot_counter != slot_choice_i
+                    #Retreives the time from the user.
+                    print "Enter a time (i.e., 7:30 P.M.):"
+                    time = STDIN.gets.chomp
 
-                #Add the time in the temp_array to the temp_timeslot_array.
-                @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
-                array_increment += 1
-                slot_counter += 1
+                    #Checks to see if the time is valid throughout the array.
+                    time_match = time_check(time, temp_array)
+                    while time_match
+                        print "Must enter a valid time: "
+                        time = STDIN.gets.chomp
+                        time_match = time_check(time, temp_array)
+                    end
+
+                    time = time.split(':')
+
+                    @event_hour = convert_to_military_time(time)
+
+                    minute = time[1].slice(0...1)
+                    @event_minute = minute.to_i
+
+                    #Add the time in the temp_array to the temp_timeslot_array.
+                    @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                    array_increment += 1
+                    slot_counter += 1
+                end
+
+            elsif hour_rep == "24"
+                #Creates Temporary array for slot validation.
+                slot_choices = Array.new
+                for i in 0...48
+                    num = i + 1
+                    slot_choices[i] = num.to_s
+                end
+
+                puts "How many time slots would you like to take for this event? \n"
+                print "(30 min increments):"
+
+                #Receive the amount of slots they want to take up then convert.
+                slot_choice_s = @drive.validate_input(slot_choices)
+                slot_choice_i = slot_choice_s.to_i
+
+                slot_counter = 0
+                temp_timeslot_array = Array.new
+                array_increment = 0
+                while slot_counter != slot_choice_i
+                    print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+                    time = STDIN.gets.chomp
+
+                    #Checks to see if the time is valid throughout the array.
+                    time_match = time_check(time, temp_array)
+                    while time_match
+                        print "Must enter a valid time: "
+                        time = STDIN.gets.chomp
+                        time_match = time_check(time, temp_array)
+                    end
+
+                    time = time.split(':')
+
+                    @event_hour = time[0].to_i
+
+                    minute = time[1].first 2
+                    @event_minute = minute.to_i
+
+                    @timeslot_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                    array_increment += 1
+                    slot_counter += 1
+                end
             end
-
-          elsif hour_rep == "24"
-            #Creates Temporary array for slot validation.
-            slot_choices = Array.new
-            for i in 0...48
-              num = i + 1
-              slot_choices[i] = num.to_s
-            end
-
-            puts "How many time slots would you like to take for this event? \n"
-            print "(30 min increments):"
-
-            #Receive the amount of slots they want to take up then convert.
-            slot_choice_s = @drive.validate_input(slot_choices)
-            slot_choice_i = slot_choice_s.to_i
-
-            slot_counter = 0
-            temp_timeslot_array = Array.new
-            array_increment = 0
-            while slot_counter != slot_choice_i
-              print "Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
-              time = STDIN.gets.chomp
-
-              #Checks to see if the time is valid throughout the array.
-              time_match = time_check(time, temp_array)
-              while time_match
-                print "Must enter a valid time: "
-                time = STDIN.gets.chomp
-                time_match = time_check(time, temp_array)
-              end
-
-              time = time.split(':')
-
-              @event_hour = time[0].to_i
-
-              minute = time[1].first 2
-              @event_minute = minute.to_i
-
-              @timeslot_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
-              array_increment += 1
-              slot_counter += 1
-            end
-          end
         end
 
         #Pre: A time was given by the user and was then split by a character.
@@ -358,240 +352,203 @@ class Admin
         #Post: An array is created with either military time or 12 hr time.
         #Return: If 12, an array with 12 hr representation, if 24, and array with 24 hr representation.
         def create_time_array(hr)
-          if hr == "12"                                                   #12Hr time
-            hour_counter = 1
-
-            #Creates an array with 12 hour time slots.
-            twelve_hr_array = Array.new
-            twelve_hr_array[0] = "12:00 A.M."
-            twelve_hr_array[1] = "12:30 A.M."
-
-            #Fills the array with the hourly time slots
-            for i in 2...48
-              if i % 2 == 0
-                if i < 24
-                  if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
-                  elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
-                  end
-                elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
-                end
-              elsif i % 2 == 1
-                if i < 24
-                  if i <= 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
-                  elsif i > 19
-                    twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
-                  end
-                elsif i >= 24
-                  twelve_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
-                end
-              end
-
-              if i % 2 == 1
-                hour_counter += 1
-              end
-
-              #Resets hour_counter to 0 once it reaches 1 o'clock.
-              if hour_counter == 13
+            if hr == "12"                                                   #12Hr time
                 hour_counter = 1
-              end
-            end
 
-            return twelve_hr_array
-          elsif hr == "24"                                                #24Hr time
-            hour_counter = 0
+                #Creates an array with 12 hour time slots.
+                twelve_hr_array = Array.new
+                twelve_hr_array[0] = "12:00 A.M."
+                twelve_hr_array[1] = "12:30 A.M."
 
-            #Creates an array with 24 hour time slots.
-            twentyfour_hr_array = Array.new
+                #Fills the array with the hourly time slots
+                for i in 2...48
+                    if i % 2 == 0
+                        if i < 24
+                            if i <= 19
+                                twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                            elsif i > 19
+                                twelve_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                            end
+                        elsif i >= 24
+                            twelve_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                        end
+                    elsif i % 2 == 1
+                        if i < 24
+                            if i <= 19
+                                twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                            elsif i > 19
+                                twelve_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                            end
+                        elsif i >= 24
+                            twelve_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                        end
+                    end
 
-            #Fills the array with the hourly time slots
-            for i in 0...48
-              if i % 2 == 0
-                if i < 24
-                  if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
-                  elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
-                  end
-                elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                    if i % 2 == 1
+                        hour_counter += 1
+                    end
+
+                    #Resets hour_counter to 0 once it reaches 1 o'clock.
+                    if hour_counter == 13
+                        hour_counter = 1
+                    end
                 end
-              elsif i % 2 == 1
-                if i < 24
-                  if i <= 19
-                    twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
-                  elsif i > 19
-                    twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
-                  end
-                elsif i >= 24
-                  twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+
+                return twelve_hr_array
+            elsif hr == "24"                                                #24Hr time
+                hour_counter = 0
+
+                #Creates an array with 24 hour time slots.
+                twentyfour_hr_array = Array.new
+
+                #Fills the array with the hourly time slots
+                for i in 0...48
+                    if i % 2 == 0
+                        if i < 24
+                            if i <= 19
+                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
+                            elsif i > 19
+                                twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                            end
+                        elsif i >= 24
+                            twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                        end
+                    elsif i % 2 == 1
+                        if i < 24
+                            if i <= 19
+                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
+                            elsif i > 19
+                                twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                            end
+                        elsif i >= 24
+                            twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                        end
+                    end
+
+                    if i % 2 == 1
+                        hour_counter += 1
+                    end
                 end
-              end
 
-              if i % 2 == 1
-                hour_counter += 1
-              end
+                return twentyfour_hr_array
             end
-
-            return twentyfour_hr_array
-          end
         end
 
         #Pre: A time was input by the user and an array with a time representation was created.
         #Post: The user's input time was checked to see if it was in the time array.
         #Return: If the time IS in the array, then true. If the time IS NOT in the array, then false.
         def time_check(time, array)
-          for i in 0...48
-            if time.casecmp(array[i]) == 0
-              match = false
-              break
-            else
-              match = true
+            for i in 0...48
+                if time.casecmp(array[i]) == 0
+                    match = false
+                    break
+                else
+                    match = true
+                end
             end
-          end
 
-          return match
+            return match
         end
 
 
 #-------------------------------------------------------------------------------
 #                             Abe's Code
 #-------------------------------------------------------------------------------
-def run2
-    @event_array = @DB.get_events
-    # @event_array = [@e1,@e2,@e3]
-    @number_of_events = @event_array.length
-
-    @events = true
-    @browsing = true
-
-    if @number_of_events > 0
-        while @browsing
-            get_events()
-            @browsing = event_controller()
-        end
-        reminder()
-    else
-        @drive.title_print("Error")
-        print "\n\n#{@spacer}There are not currently any events in the database\n"
-        print "#{@spacer}Please use admin mode and add an event first!\n\n"
+    def run2
+        setup()
+        get_events
+        single_event_printer
     end
 
-    if !@attending_events.empty?
-        for i in 0...@attending_events.length
-            @db.update_event(@attending_events[i])
-        end
+    def setup
+        @db = DatabaseController.new
+        @event_array = @db.get_events
+        @number_of_events = @event_array.length
+        @events = true
+        @browsing = true
     end
-end
 
-# If there are events stored in the database, they are grabbed
-# and printed to terminal window (via single_event_printer).
-# If there are no events, a message is printed as such
-def get_events
-    if @events  == true
-        system "clear"
-        @drive.title_print_ext("Events")
-        @drive.sub_title_print("Upcoming Events")
-        print "\n"
+    def get_events
+            if @events  == true
+                system "clear"
+                @drive.title_print_ext("Events")
+                @drive.sub_title_print("Upcoming Events")
+                print "\n"
 
-        # Grab each event
-            for i in 0...@event_array.length
-                @drive.hr
-                single_event_printer(@event_array[i],false)
+                # Grab each event
+                    for i in 0...@event_array.length
+                        @drive.hr
+                        single_event_printer(@event_array[i],false)
+                    end
+            else
+                print "There are not currently any events in the database\n"
             end
-    else
-        print "There are not currently any events in the database\n"
-    end
-end
-
-# Template for printing a single event
-# takes an event object and a true/false if this is for printing in a list
-# or printing a single event
-def single_event_printer(event,single)
-
-    if !single
-        puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
-    end
-
-    puts "\n#{@spacer}Event Name:\t" + event.get_name
-
-    d = Date.parse(event.get_date)
-
-    puts "#{@spacer}Date:\t\t" + d.strftime('%A %B %d, %Y')
-    print "#{@spacer}Time(s)"
-
-    if !@military_time
-        print " (12hr): "
-
-        # make sure the event was created correctly
-        if event.get_timeslots_12hrs.kind_of?(Array)
-            for j in 0...event.get_timeslots_12hrs.length
-                print event.get_timeslots_12hrs[j]
-                if j != event.get_timeslots_12hrs.length-1
-                    print ", "
-                end
-            end
-        else
-            print "Should be an array!\n"
         end
-    else
-        print " (24hr): "
 
-        # make sure the event was created correctly
-        if event.get_timeslots.kind_of?(Array)
+        # @desc: Template for printing a single event
+        # @pre: takes an event and a bool flag to indicate if more than one event will eventually be printed
+        # @post: prints events
+        # @return: none
+        def single_event_printer(event,single)
+
+            if !single
+                puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
+            end
+
+            puts "\n#{@spacer}Event Name:\t" + event.get_name
+            puts "#{@spacer}Date:\t\t" + event.get_date.strftime('%A %B %d, %Y')
+            print "#{@spacer}Time(s)"
+
+            if !@military_time
+                print " (12hr):"
+            else
+                print " (24hr): "
+            end
+
             for j in 0...event.get_timeslots.length
-                print event.get_timeslots[j]
+                if !@military_time
+                    print event.get_timeslots[j].strftime('%l:%M%P')
+                else
+                    print event.get_timeslots[j].strftime('%H:%M')
+                end
+
                 if j != event.get_timeslots.length-1
                     print ", "
                 end
             end
-        else
-            print "Should be an array!\n"
-        end
-    end
 
-    print "\n#{@spacer}Attendees:\t"
+            print "\n#{@spacer}Attendees:\t"
 
-    if event.get_attendees.empty?
-        print "None yet, be the first to attend!\n"
-    end
-
-    if event.get_attendees.kind_of?(Array)
-        for i in 0...event.get_attendees.length
-            if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
-                print event.get_attendees[i].get_name() + " ("
-
-                for j in 0...event.get_attendees[i].get_timeslots.length
-                    if @military_time
-                        print event.get_attendees[i].get_timeslots[j]
+            if event.get_attendees.empty?
+                print "None yet, be the first to attend!\n"
+            else
+                for i in 0...event.get_attendees.length
+                    if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
+                        print event.get_attendees[i].get_name() + " ("
+                        for j in 0...event.get_attendees[i].get_timeslots.length
+                            if @military_time
+                                print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
+                            else
+                                print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
+                            end
+                            if j != event.get_attendees[i].get_timeslots.length-1
+                                print ", "
+                            end
+                        end
+                        print " )"
                     else
-                        print event.get_attendees[i].get_timeslots_12hrs[j]
+                        print event.get_attendees[i].get_name()
                     end
 
-                    if j != event.get_attendees[i].get_timeslots.length-1
+                    if i != event.get_attendees.length-1
                         print ", "
                     end
                 end
-                print ")"
-            else
-                print event.get_attendees[i].get_name()
             end
+            print "\n"
 
-            if i != event.get_attendees.length-1
-                print ", "
-            end
-
+            print "\n#{@spacer}Description:\t"
+            @drive.desc_printer(event.get_description)
+            print "\n"
         end
-        print "\n"
-    else
-        print "Should be an array!\n"
-    end
-
-    print "\n#{@spacer}Description:\t"
-    @drive.desc_printer event.get_description
-    print "\n"
-end
 end

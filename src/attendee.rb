@@ -26,11 +26,6 @@ class Attendee
         @timeslots
     end
 
-<<<<<<< HEAD
-                return @timeslots_12hrs
-        end
-
-=======
     def add_timeslot(new_slot)
         @timeslots.push(new_slot)
     end
@@ -59,6 +54,5 @@ class Attendee
 
         return @timeslots_12hrs
     end
->>>>>>> master
 
 end
