@@ -21,7 +21,6 @@ class Controller
     end
 
     def run
-
         @drive.title_print("Event Coordinator")
 
         print "\n\n"
