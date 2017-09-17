@@ -7,13 +7,6 @@
 
 =end
 
-=begin
-
-### TODOS ###
-3) Fix scoping issues (public v private)
-
-=end
-
 require 'date'
 
 require_relative 'event'
@@ -34,26 +27,11 @@ class User
     end
 
     def setup
-        # @db = DatabaseController.new
-        # @event_array = @db.get_events
-        # @number_of_events = @event_array.length
-        @events = true
-        @browsing = true
-
-
-		dbCont = DatabaseController.new()
-		e = Event.new('event', 'description', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)], [])
-        a = Attendee.new('Mike', [DateTime.new(2017, 10, 15, 10), DateTime.new(2017, 10, 15, 9), DateTime.new(2017, 10, 15, 11)])
-
-		# e.add_attendee(a)
-		# dbCont.persist_event(e)
-        
-        @event_array = dbCont.get_events
+        @db = DatabaseController.new
+        @event_array = @db.get_events
         @number_of_events = @event_array.length
         @events = true
         @browsing = true
-
-        ### END RUN ONCE
     end
 
     def run
@@ -277,7 +255,7 @@ class User
                         if @military_time
                             print "#{@spacer}#{event.get_timeslots[i].strftime('%l:%M%P')}, attend?: "
                         else
-                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%Mg')}, attend?: "
+                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%M')}, attend?: "
                         end
                         @user_input = STDIN.gets.chomp
                     end
@@ -357,7 +335,7 @@ class User
                 if @temp_name.match(/^[[:alpha:]]+$/)
                     break
                 else
-                    print "\n#{@spacer}Only letters are allowed"
+                    print "\n#{@spacer}Only letters are allowed in your first name."
                 end
                 
             end
@@ -370,7 +348,7 @@ class User
                     @temp_name = @temp_name + " " + @temp_l_name
                     break
                 else
-                    print "\n#{@spacer}Only letters are allowed"
+                    print "\n#{@spacer}Only letters are allowed in your last name."
                 end
                 
             end
@@ -390,28 +368,6 @@ class User
             raise ArgumentError, 'The ID does not match an in the database'
         end
 
-        #converts a single time to military time for use with creating attendee
-        def convert_to_military_time(standard_time)
-
-            if standard_time[5] == 'p'
-                standard_time.chop
-                standard_time.chop
-                @temp_holder = @standardtime.split(':')
-                @temp_holder[0] = @temp_holder[0].to_i + 12
-                @temp_holder[0].to_s
-                @mt = @temp_holder[0] + ":" + @temp_holder[1]
-
-                return @mt
-            else
-                standard_time.chop
-                standard_time.chop
-                return standard_time
-            end
-
-            raise ArgumentError, 'Could not convert time. Make sure input is formatted as hh:mmam or hh:mmpm'
-
-        end
-
         # Resets with the same username to go to multiple events
         def clean_attendee(attendee)
             @name = attendee.get_name
@@ -419,12 +375,3 @@ class User
             return clean_attendee
         end
 end
-
-=begin GARBAGE                        
-                        # DEBUG USE ONLY
-                        for i in 0...@sub_acceptable_input.length
-                            puts @sub_acceptable_input[i]
-                        end
-=end
-
-# username checking from https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
