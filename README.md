@@ -1,13 +1,32 @@
-Qablex
+# Quablex
 
-Authors: Abe Dick, Qualen Pollard, Alex Shadley
+A simple, lightweight tool for planning and scheduling events.
 
-Instructions: To execute program execute 'make' in the base directory of
-repository.
+## Getting Started
 
-Libraries/Technologies Used:
--sqlite3 database
--sequel ruby library
+### Prerequisites
 
-Sources:
+Running Quablex will require:
+Ruby (2.4)
+Sqlite
+Ruby Gems: Sequel, sqlite3
+
+### Installation
+
+Once all of the prerequisites are installed, simply clone the repository and execute 'make' in the base directory of the repository.
+
+## Built With
+
+*[Sqlite3](https://www.sqlite.org/) - database
+*[Sequel](https://github.com/jeremyevans/sequel) - ruby library for interacting with databases
+**
+
+## Authors
+
+* **Abe Dick** - [abedick](https://github.com/abedick)
+* **Qualen Pollard** - [qualenpollard](https://github.com/qualenpollard)
+* **Alex Shadley** - [alex4864](https://github.com/alex4864)
+
+## Additional Sources
+
 https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
