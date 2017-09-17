@@ -342,7 +342,11 @@ class Admin
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
         def get_validation
-            print "#{@spacer}Create another event?(Yes/No): "
+          system 'clear'
+          @drive.title_print_ext("Admin Mode")
+          @drive.sub_title_print("Event Information")
+            print "\n#{@spacer}Event created!"
+            print "\n\n#{@spacer}Create another event?(Yes/No): "
             response = STDIN.gets.chomp
 
             #Check for Alphetical characters
