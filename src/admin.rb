@@ -189,9 +189,7 @@ class Admin
 
             @event_month = month_choice.to_i
 
-            #Takes the user's choice and uses a temp variable for event's day.  Event's day.
-            puts "Please choose a day for the event: "
-
+            #Case statement for month choice and days display
             case month_choice
             when 1
                 print "Remember there are 31 days in January."
