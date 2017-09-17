@@ -116,7 +116,7 @@ class DatabaseController
 				newAttendees.push(newAttendee)
 			end
 
-			newEvent = Event.new(event[:'name'], event[:'description'], event[:'date'], newTimeslots, newAttendees, event[:'id'])
+			newEvent = Event.new(event[:'name'], event[:'description'], newTimeslots, newAttendees, event[:'id'])
 			events.push(newEvent)
 		end
 
