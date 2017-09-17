@@ -102,14 +102,14 @@ class DatabaseController
 		@DB[:events].order(:date).each do |event|
 			newTimeslots = []
 			@DB[:timeslots].where(parent_table: 'events', parent_id: event[:'id']).each do |timeslot|
-				newTimeslots.push(timeslot[:'time'])
+				newTimeslots.push(DateTime.parse(timeslot[:'time']))
 			end
 
 			newAttendees = []
 			@DB[:attendees].where(parent_id: event[:'id']).each do |attendee|
 				attendeeTimeslots = []
 				@DB[:timeslots].where(parent_table: 'attendees', parent_id: attendee[:'id']).each do |timeslot|
-					attendeeTimeslots.push(timeslot[:'time'])
+					attendeeTimeslots.push(DateTime.parse(timeslot[:'time']))
 				end
 
 				newAttendee = Attendee.new(attendee[:'name'], attendeeTimeslots)

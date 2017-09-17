@@ -16,7 +16,9 @@ class Event
     def initialize(name, description, timeslots, attendees, id = nil)
         raise ArgumentError.new("'name' must be a string") if !name.is_a? String
         raise ArgumentError.new("'description' must be a string") if !description.is_a? String
-        raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
+		raise ArgumentError.new("'timeslots' must be an array") if !timeslots.kind_of? Array
+        raise ArgumentError.new("'timeslots' must not be empty") if timeslots.empty?
+		raise ArgumentError.new("'attendees' must be an array") if !attendees.kind_of? Array
 
 		timeslots.sort!
 
