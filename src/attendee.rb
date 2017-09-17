@@ -7,8 +7,9 @@
 
 class Attendee
 
-        # timeslots and attendees must be passed in as arrays, but empty arrays are
-        # are acceptable
+        # Params:
+		# +name+:: String containing the name of the attendee
+		# +timeslots+:: Array of DateTime objects representing the timeslots the attendee can make
         def initialize(name, timeslots)
             raise ArgumentError.new("'name' must be a string") if !name.is_a? String
             # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
