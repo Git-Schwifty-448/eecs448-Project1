@@ -43,9 +43,12 @@ class Attend
             end
             reminder()
         else
+            system 'clear'
             @drive.title_print("Error")
             print "\n\n#{@spacer}There are not currently any events in the database\n"
             print "#{@spacer}Please use admin mode and add an event first!\n\n"
+
+            sleep 2
         end
 
         # @pre: none

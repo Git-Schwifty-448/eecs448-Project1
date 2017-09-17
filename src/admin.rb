@@ -216,9 +216,9 @@ class Admin
             end
 
             #Takes the user's choice and uses a temp variable for event's day.  Event's day.
-            puts "\n#{@spacer}Please choose a day for the event: "
+            print "\n#{@spacer}Please choose a day for the event: "
             day_choice = STDIN.gets.chomp
-            while (day_choice < 1) || (day_choice > 31)
+            while (day_choice.to_i < 1) || (day_choice.to_i > 31)
                 day_choice = STDIN.gets.chomp
             end
 
