@@ -189,32 +189,31 @@ class Admin
 
             @event_month = month_choice.to_i
 
-            #Case statement for month choice and days display
             case month_choice
             when 1
-                print "Remember there are 31 days in January."
+                print "#{@spacer}Remember there are 31 days in January."
             when 2
-                print "Remember there are 28 days in February."
+                print "#{@spacer}Remember there are 28 days in February."
             when 3
-                print "Remember there are 31 days in March."
+                print "#{@spacer}Remember there are 31 days in March."
             when 4
-                print "Remember there are 30 days in April."
+                print "#{@spacer}Remember there are 30 days in April."
             when 5
-                print "Remember there are 31 days in May."
+                print "#{@spacer}Remember there are 31 days in May."
             when 6
-                print "Remember there are 30 days in June."
+                print "#{@spacer}Remember there are 30 days in June."
             when 7
-                print "Remember there are 31 days in July."
+                print "#{@spacer}Remember there are 31 days in July."
             when 8
-                print "Remember there are 31 days in August."
+                print "#{@spacer}Remember there are 31 days in August."
             when 9
-                print "Remember there are 30 days in September."
+                print "#{@spacer}Remember there are 30 days in September."
             when 10
-                print "Remember there are 31 days in October."
+                print "#{@spacer}Remember there are 31 days in October."
             when 11
-                print "Remember there are 30 days in November."
+                print "#{@spacer}Remember there are 30 days in November."
             when 12
-                print "Remember there are 31 days in December."
+                print "#{@spacer}Remember there are 31 days in December."
             end
 
             #Takes the user's choice and uses a temp variable for event's day.  Event's day.
@@ -364,7 +363,11 @@ class Admin
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
         def get_validation
-            print "#{@spacer}Create another event?(Yes/No): "
+          system 'clear'
+          @drive.title_print_ext("Admin Mode")
+          @drive.sub_title_print("Event Information")
+            print "\n#{@spacer}Event created!"
+            print "\n\n#{@spacer}Create another event?(Yes/No): "
             response = STDIN.gets.chomp
 
             #Check for Alphetical characters
