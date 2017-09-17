@@ -8,7 +8,6 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
-  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -170,47 +169,44 @@
           
           <div class="method-source-code" id="run-source">
             <pre><span class="ruby-comment"># File src/controller.rb, line 23</span>
-    <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
 
-        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print</span>(<span class="ruby-string">&quot;Event Coordinator&quot;</span>)
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print</span>(<span class="ruby-string">&quot;Event Coordinator&quot;</span>)
 
-        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\n\n&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t            \u2513&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t          \u2571&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t        ╱           | EECS 448 Project 1&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t      ╳             | Team: Git Schwifty&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t    ╱               | Alex, Abe, Qualen&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t  ╱&quot;</span>
-        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t\u2516\n\n\n&quot;</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\n\n&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t            \u2513&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t          \u2571&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t        ╱           | EECS 448 Project 1&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t      ╳             | Team: Git Schwifty&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t    ╱               | Alex, Abe, Qualen&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t  ╱&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\t\u2516\n\n\n&quot;</span>
 
-        <span class="ruby-identifier">menu</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">menu</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
 
-        <span class="ruby-identifier">menu</span>[<span class="ruby-value">0</span>] = <span class="ruby-string">&quot;1. Admin Mode&quot;</span>
-        <span class="ruby-identifier">menu</span>[<span class="ruby-value">1</span>] = <span class="ruby-string">&quot;2. User Mode&quot;</span>
-        <span class="ruby-identifier">menu</span>[<span class="ruby-value">2</span>] = <span class="ruby-string">&quot;3. Quit&quot;</span>
-         
-        <span class="ruby-identifier">menu_choice</span> = <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">menu_builder</span>(<span class="ruby-identifier">menu</span>)
+    <span class="ruby-identifier">menu</span>[<span class="ruby-value">0</span>] = <span class="ruby-string">&quot;1. Admin Mode&quot;</span>
+    <span class="ruby-identifier">menu</span>[<span class="ruby-value">1</span>] = <span class="ruby-string">&quot;2. User Mode&quot;</span>
+    <span class="ruby-identifier">menu</span>[<span class="ruby-value">2</span>] = <span class="ruby-string">&quot;3. Quit&quot;</span>
 
-        <span class="ruby-keyword">case</span> <span class="ruby-identifier">menu_choice</span>
-            <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>
-                <span class="ruby-ivar">@admin_controller</span> = <span class="ruby-constant">Admin</span>.<span class="ruby-identifier">new</span>
-                <span class="ruby-ivar">@admin_controller</span>.<span class="ruby-identifier">run</span>
-            <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>
-                <span class="ruby-ivar">@user_controller</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
-                <span class="ruby-ivar">@user_controller</span>.<span class="ruby-identifier">run</span>
-        <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">menu_choice</span> = <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">menu_builder</span>(<span class="ruby-identifier">menu</span>)
 
-<span class="ruby-comment">#&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
-<span class="ruby-comment">#=======</span>
-                <span class="ruby-comment">#dbCont = DatabaseController.new()</span>
-                <span class="ruby-comment">#e = Event.new(&#39;event&#39;, &#39;description&#39;, Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])</span>
-                <span class="ruby-comment">#a = Attendee.new(&#39;Mike&#39;, [DateTime.new(2017, 9, 15, 10)])</span>
-                <span class="ruby-comment">#e.add_attendee(a)</span>
-                <span class="ruby-comment">#dbCont.persist_event(e)</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">menu_choice</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>
+            <span class="ruby-ivar">@admin_controller</span> = <span class="ruby-constant">Admin</span>.<span class="ruby-identifier">new</span>
+            <span class="ruby-ivar">@admin_controller</span>.<span class="ruby-identifier">run</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>
+            <span class="ruby-ivar">@user_controller</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+            <span class="ruby-ivar">@user_controller</span>.<span class="ruby-identifier">run</span>
+    <span class="ruby-keyword">end</span>
 
-                <span class="ruby-comment">#puts dbCont.get_events[0].get_attendees[0].get_timeslots</span>
-<span class="ruby-comment">#&gt;&gt;&gt;&gt;&gt;&gt;&gt; 842a1346632b0c9c761a2e4ba27c134c9d8b6714</span>
-    <span class="ruby-keyword">end</span></pre>
+            <span class="ruby-identifier">dbCont</span> = <span class="ruby-constant">DatabaseController</span>.<span class="ruby-identifier">new</span>()
+            <span class="ruby-identifier">e</span> = <span class="ruby-constant">Event</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;event&#39;</span>, <span class="ruby-string">&#39;description&#39;</span>, [<span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2017</span>, <span class="ruby-value">9</span>, <span class="ruby-value">15</span>, <span class="ruby-value">10</span>), <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2017</span>, <span class="ruby-value">9</span>, <span class="ruby-value">15</span>, <span class="ruby-value">9</span>), <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2017</span>, <span class="ruby-value">9</span>, <span class="ruby-value">15</span>, <span class="ruby-value">11</span>)], [])
+            <span class="ruby-identifier">a</span> = <span class="ruby-constant">Attendee</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;Mike&#39;</span>, [<span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2017</span>, <span class="ruby-value">9</span>, <span class="ruby-value">15</span>, <span class="ruby-value">10</span>)])
+            <span class="ruby-identifier">e</span>.<span class="ruby-identifier">add_attendee</span>(<span class="ruby-identifier">a</span>)
+            <span class="ruby-comment">#dbCont.persist_event(e)</span>
+
+            <span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">get_date</span>
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -229,7 +225,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

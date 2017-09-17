@@ -50,13 +50,13 @@ class Controller
                 @user_controller.run
         end
 
-		#dbCont = DatabaseController.new()
-		#e = Event.new('event', 'description', Date.new(2017, 9, 15), [DateTime.new(2017, 9, 15, 10)], [])
-		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
-		#e.add_attendee(a)
+		dbCont = DatabaseController.new()
+		e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
+		a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
+		e.add_attendee(a)
 		#dbCont.persist_event(e)
 
-		#puts dbCont.get_events[0].get_attendees[0].get_timeslots
+		puts e.get_date
     end
 
 end

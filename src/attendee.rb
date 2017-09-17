@@ -14,7 +14,7 @@ class Attendee
             # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
 
             @name = name
-            @timeslots = timeslots
+            @timeslots = timeslots.sort!
         end
 
         def get_name
@@ -53,4 +53,9 @@ class Attendee
 
                 return @timeslots_12hrs
         end
+<<<<<<< HEAD
+
+    end
+=======
 end
+>>>>>>> 0b86d132984e9d754b6e0064ac8917a58a89fa88
