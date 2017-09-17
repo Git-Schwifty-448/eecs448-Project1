@@ -166,15 +166,15 @@ class Attend
         def event_controller()
             @drive.hr
             puts "\n\n#{@spacer}If you wish to attend an event, enter the Event's ID number otherwise enter t to toggle time"
-            puts "#{@spacer}format or \"Quit\" to end the application\n"
+            puts "#{@spacer}format or \"Return\" to return to the main screen of the application\n"
 
             # set up the user input and create the array of acceptable responces
             @user_input = ""
             @acceptable_input = Array.new
             @acceptable_input.push(*['t',
-                                    'q',
-                                    "quit",
-                                    "Quit"])
+                                    'r',
+                                    "return",
+                                    "Return"])
             # get all of the ID's in the database array
             @list_ids = Array.new
             for i in 0...@number_of_events

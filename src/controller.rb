@@ -21,40 +21,46 @@ class Controller
     end
 
     def run
-        @drive.title_print("Quablex Event Coordinator")
 
-        print "\n\n"
-        puts "\t            \u2513"
-        puts "\t          \u2571"
-        puts "\t        ╱           | EECS 448 Project 1"
-        puts "\t      ╳             | Team: Git Schwifty"
-        puts "\t    ╱               | Alex, Abe, Qualen"
-        puts "\t  ╱"
-        puts "\t\u2516\n\n\n"
+        while true
+            system 'clear'
+            @drive.title_print("Quablex Event Coordinator")
 
-        menu = Array.new
+            print "\n\n"
+            puts "\t            \u2513"
+            puts "\t          \u2571"
+            puts "\t        ╱           | EECS 448 Project 1"
+            puts "\t      ╳             | Team: Git Schwifty"
+            puts "\t    ╱               | Alex, Abe, Qualen"
+            puts "\t  ╱"
+            puts "\t\u2516\n\n\n"
 
-        menu[0] = "1. Admin Mode"
-        menu[1] = "2. User Mode"
-        menu[2] = "3. Quit"
+            menu = Array.new
 
-        menu_choice = @drive.menu_builder(menu)
+            menu[0] = "1. Admin Mode"
+            menu[1] = "2. User Mode"
+            menu[2] = "3. Quit"
 
-        case menu_choice
-            when 1
-                @admin_controller = Admin.new
-                @admin_controller.run
-            when 2
-                @user_controller = Attend.new
-                @user_controller.run
+            menu_choice = @drive.menu_builder(menu)
+
+            case menu_choice
+                when 1
+                    @admin_controller = Admin.new
+                    @admin_controller.run
+                when 2
+                    @user_controller = Attend.new
+                    @user_controller.run
+                when 3
+                    break
+            end
+
+            #dbCont = DatabaseController.new()
+            #e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
+            #a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
+            #e.add_attendee(a)
+            #dbCont.persist_event(e)
+
+            #puts e.get_date
         end
-
-		#dbCont = DatabaseController.new()
-		#e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
-		#a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
-		#e.add_attendee(a)
-		#dbCont.persist_event(e)
-
-		#puts e.get_date
     end
 end
