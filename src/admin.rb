@@ -90,26 +90,40 @@ class Admin
         #Post: An admin was created with firstName and lastName.
         #Return: None.
         def set_admin_info                                                      #Getting admin's info.
-            print "Enter your First Name: "
-            firstName = STDIN.gets.chomp
+          system 'clear'
+          @drive.title_print_ext("Admin Mode")
+          @drive.sub_title_print("Get username")
 
-            #Using Regexp class
-            while !(firstName =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter your First Name: "
-                firstName = STDIN.gets.chomp
-            end
+          temp_name = ""
+          temp_l_name = ""
 
-            print "Enter your Last Name: "
-            lastName = STDIN.gets.chomp
+            loop do
+              print "\n\n#{@spacer}Please enter your first name: "
+              temp_name = STDIN.gets.chomp
 
-            #Using Regexp class
-            while !(lastName =~ /[[:alpha:]]/)
-                print "Not a valid input. Enter your Last Name: "
-                lastName = STDIN.gets.chomp
-            end
+              if temp_name.match(/^[[:alpha:]]+$/)
+                  break
+              else
+                  print "\n#{@spacer}Only letters are allowed in your first name."
+              end
+              
+          end
 
-            @fName = firstName
-            @lName = lastName
+          loop do
+              print "\n\n#{@spacer}Please enter your last name: "
+              temp_l_name = STDIN.gets.chomp
+
+              if temp_l_name.match(/^[[:alpha:]]+$/)
+                  break
+              else
+                  print "\n#{@spacer}Only letters are allowed in your last name."
+              end
+              
+          end
+
+
+            @fName = temp_name
+            @lName = temp_l_name
         end
 
         #Pre: An admin was created.
