@@ -53,9 +53,4 @@ class Attendee
 
                 return @timeslots_12hrs
         end
-<<<<<<< HEAD
-
-    end
-=======
 end
->>>>>>> 0b86d132984e9d754b6e0064ac8917a58a89fa88

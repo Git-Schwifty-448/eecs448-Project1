@@ -221,7 +221,7 @@ class Admin
 
           end
 
-        end
+        # end
 
 
         def create_date_time(event_number)                                      #Creation of time.
@@ -295,7 +295,7 @@ class Admin
               slot_counter += 1
             end
 
-          temp_array[get_event_counter] = start_time
+		  temp_array[get_event_counter] = start_time
           set_timeslot_array(temp_array, get_event_counter)
 
         end
