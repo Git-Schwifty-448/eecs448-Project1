@@ -73,7 +73,7 @@ class Admin
                     set_event_counter(1)
                     yesNo = get_validation                                              #Asks user if they want to create another event.
                 elsif atten_event == 2
-                    run2
+                    display_events
                 end
             end
         end
@@ -495,101 +495,100 @@ class Admin
 #-------------------------------------------------------------------------------
 #                             Abe's Code
 #-------------------------------------------------------------------------------
-    def run2
-        setup()
-        get_events
-        single_event_printer
-    end
-
-    def setup
-        @db = DatabaseController.new
-        @event_array = @db.get_events
+	def display_events
+		@military_time = true
+        @event_array = @DB.get_events
         @number_of_events = @event_array.length
-        @events = true
-        @browsing = true
+		
+		if @number_of_events > 0
+			system "clear"
+			@drive.title_print_ext("Events")
+			@drive.sub_title_print("Upcoming Events")
+			print "\n"
+
+			# Grab each event
+			for i in 0...@event_array.length
+				@drive.hr
+				if @number_of_events > 0
+					single_event_printer(@event_array[i])
+				end
+			end
+			while true
+				@drive.hr
+				print "\n\n#{@spacer}Please press enter to continue\n\n"
+				empty_space = STDIN.gets.chomp
+				break
+			end
+		else
+			system 'clear'
+            @drive.title_print("Error")
+			print "\n\n#{@spacer}There are not currently any events in the database\n"
+			sleep 2
+		end
     end
 
-    def get_events
-            if @events  == true
-                system "clear"
-                @drive.title_print_ext("Events")
-                @drive.sub_title_print("Upcoming Events")
-                print "\n"
+	# @desc: Template for printing a single event
+	# @pre: takes an event and a bool flag to indicate if more than one event will eventually be printed
+	# @post: prints events
+	# @return: none
+	def single_event_printer(event)
 
-                # Grab each event
-                    for i in 0...@event_array.length
-                        @drive.hr
-                        single_event_printer(@event_array[i],false)
-                    end
-            else
-                print "There are not currently any events in the database\n"
-            end
-        end
+		puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
 
-        # @desc: Template for printing a single event
-        # @pre: takes an event and a bool flag to indicate if more than one event will eventually be printed
-        # @post: prints events
-        # @return: none
-        def single_event_printer(event,single)
+		puts "\n#{@spacer}Event Name:\t" + event.get_name
+		puts "#{@spacer}Date:\t\t" + event.get_date.strftime('%A %B %d, %Y')
+		print "#{@spacer}Time(s)"
 
-            if !single
-                puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
-            end
+		if !@military_time
+			print " (12hr):"
+		else
+			print " (24hr): "
+		end
 
-            puts "\n#{@spacer}Event Name:\t" + event.get_name
-            puts "#{@spacer}Date:\t\t" + event.get_date.strftime('%A %B %d, %Y')
-            print "#{@spacer}Time(s)"
+		for j in 0...event.get_timeslots.length
+			if !@military_time
+				print event.get_timeslots[j].strftime('%l:%M%P')
+			else
+				print event.get_timeslots[j].strftime('%H:%M')
+			end
 
-            if !@military_time
-                print " (12hr):"
-            else
-                print " (24hr): "
-            end
+			if j != event.get_timeslots.length-1
+				print ", "
+			end
+		end
 
-            for j in 0...event.get_timeslots.length
-                if !@military_time
-                    print event.get_timeslots[j].strftime('%l:%M%P')
-                else
-                    print event.get_timeslots[j].strftime('%H:%M')
-                end
+		print "\n#{@spacer}Attendees:\t"
 
-                if j != event.get_timeslots.length-1
-                    print ", "
-                end
-            end
+		if event.get_attendees.empty?
+			print "None yet, be the first to attend!\n"
+		else
+			for i in 0...event.get_attendees.length
+				if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
+					print event.get_attendees[i].get_name() + " ("
+					for j in 0...event.get_attendees[i].get_timeslots.length
+						if @military_time
+							print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
+						else
+							print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
+						end
+						if j != event.get_attendees[i].get_timeslots.length-1
+							print ", "
+						end
+					end
+					print " )"
+				else
+					print event.get_attendees[i].get_name()
+				end
 
-            print "\n#{@spacer}Attendees:\t"
+				if i != event.get_attendees.length-1
+					print ", "
+				end
+			end
+		end
+		print "\n"
 
-            if event.get_attendees.empty?
-                print "None yet, be the first to attend!\n"
-            else
-                for i in 0...event.get_attendees.length
-                    if event.get_attendees[i].get_timeslots.length != event.get_timeslots.length
-                        print event.get_attendees[i].get_name() + " ("
-                        for j in 0...event.get_attendees[i].get_timeslots.length
-                            if @military_time
-                                print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
-                            else
-                                print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
-                            end
-                            if j != event.get_attendees[i].get_timeslots.length-1
-                                print ", "
-                            end
-                        end
-                        print " )"
-                    else
-                        print event.get_attendees[i].get_name()
-                    end
-
-                    if i != event.get_attendees.length-1
-                        print ", "
-                    end
-                end
-            end
-            print "\n"
-
-            print "\n#{@spacer}Description:\t"
-            @drive.desc_printer(event.get_description)
-            print "\n"
-        end
+		print "\n#{@spacer}Description:\t"
+		@drive.desc_printer(event.get_description)
+		print "\n"
+	end
 end
