@@ -319,7 +319,7 @@ class Admin
                 slot_counter = 0
                 array_increment = 0
                 while slot_counter != slot_choice_i
-                    print "#{@spacer}Enter a time (i.e., 07:30 A.M. or 19:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 07:30 or 19:30):"
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
@@ -448,22 +448,22 @@ class Admin
                     if i % 2 == 0
                         if i < 24
                             if i <= 19
-                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00 A.M.")
+                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":00")
                             elsif i > 19
-                                twentyfour_hr_array[i] = (hour_counter.to_s + ":00 A.M.")
+                                twentyfour_hr_array[i] = (hour_counter.to_s + ":00")
                             end
                         elsif i >= 24
-                            twentyfour_hr_array[i] = (hour_counter.to_s + ":00 P.M.")
+                            twentyfour_hr_array[i] = (hour_counter.to_s + ":00")
                         end
                     elsif i % 2 == 1
                         if i < 24
                             if i <= 19
-                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30 A.M.")
+                                twentyfour_hr_array[i] = ("0" + hour_counter.to_s + ":30")
                             elsif i > 19
-                                twentyfour_hr_array[i] = (hour_counter.to_s + ":30 A.M.")
+                                twentyfour_hr_array[i] = (hour_counter.to_s + ":30")
                             end
                         elsif i >= 24
-                            twentyfour_hr_array[i] = (hour_counter.to_s + ":30 P.M.")
+                            twentyfour_hr_array[i] = (hour_counter.to_s + ":30")
                         end
                     end
 
