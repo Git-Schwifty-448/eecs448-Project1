@@ -224,7 +224,7 @@ class Admin
 
           end
 
-        end
+        # end
 
         #Pre: An admin was created and a Date object was created.
         #Post: Gets the times that the event will take place and loads them into timeslots_array.
