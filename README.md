@@ -7,9 +7,9 @@ A simple, lightweight tool for planning and scheduling events.
 ### Prerequisites
 
 Running Quablex will require:
-Ruby (2.4)
-Sqlite
-Ruby Gems: Sequel, sqlite3
+* Ruby (2.4)
+* Sqlite
+* Ruby Gems: Sequel, sqlite3
 
 ### Installation
 
