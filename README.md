@@ -17,9 +17,8 @@ Once all of the prerequisites are installed, simply clone the repository and exe
 
 ## Built With
 
-*[Sqlite3](https://www.sqlite.org/) - database
-*[Sequel](https://github.com/jeremyevans/sequel) - ruby library for interacting with databases
-**
+* [Sqlite3](https://www.sqlite.org/) - database
+* [Sequel](https://github.com/jeremyevans/sequel) - ruby library for interacting with databases
 
 ## Authors
 
