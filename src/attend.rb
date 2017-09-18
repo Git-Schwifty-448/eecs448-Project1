@@ -20,7 +20,7 @@ class Attend
         @user_name = String.new
         @drive = Driver.new
         @events = false
-        @military_time = true
+        @military_time = false
         @number_of_events = 0
         @spacer = "        "
         @attendee_created = false
@@ -56,11 +56,7 @@ class Attend
         end
 
         # posts updated events to the database with new attendee information
-        if !@attending_events.empty?
-            for i in 0...@attending_events.length
-                @db.update_event(@attending_events[i])
-            end
-        end
+        post_updates()
     end
 
     private
@@ -212,7 +208,11 @@ class Attend
                     print "#{@spacer}You are already attending this event!"
                     sleep 2
                     return @browsing
-                when 'q',"quit","Quit"
+                when 'r',"return","Return"
+                    # Reset the interface for the user control before giving control back to controller
+                    post_updates()
+                    @attending_events = Array.new
+                    @attendee_created = false
                     @browsing = false
                     return @browsing
                 when 't'
@@ -276,10 +276,10 @@ class Attend
                     @user_input = ""
 
                     while (!@acceptable_input.include? @user_input)
-                        if @military_time
+                        if !@military_time
                             print "#{@spacer}#{event.get_timeslots[i].strftime('%l:%M%P')}, attend?: "
                         else
-                            print "#{@spacer}#{event.get_timeslots[i].strftime('%k:%M')}, attend?: "
+                            print "#{@spacer}#{event.get_timeslots[i].strftime('%H:%M')}, attend?: "
                         end
                         @user_input = STDIN.gets.chomp
                     end
@@ -403,5 +403,17 @@ class Attend
             @name = attendee.get_name
             clean_attendee = Attendee.new(@name,[])
             return clean_attendee
+        end
+
+        # @pre: none
+        # @post: Updates the database
+        # @return: none
+        def post_updates
+             # posts updated events to the database with new attendee information
+            if !@attending_events.empty?
+                for i in 0...@attending_events.length
+                    @db.update_event(@attending_events[i])
+                end
+            end
         end
 end

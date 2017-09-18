@@ -75,7 +75,7 @@ class Admin
                     yesNo = get_validation                                              #Asks user if they want to create another event.
                 elsif atten_event == 2
 					display_events
-				else
+                else
 					break
                 end
             end

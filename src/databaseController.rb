@@ -102,7 +102,6 @@ class DatabaseController
 	# events[0].getName
 	# etc.
 	#
-	# TODO: sort array
 	def get_events()
 		events = []
 
