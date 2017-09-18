@@ -197,7 +197,7 @@ class Admin
                 print "#{@spacer}Remember there are 31 days in January:"
                 day_choice = STDIN.gets.chomp
             when 2
-                print "#{@spacer}Remember there are 28 days in February:"
+                print "#{@spacer}Remember there are 28 days in February...unless it's a leap year!:"
                 day_choice = STDIN.gets.chomp
                 if Date.gregorian_leap?(@event_year)        #Checks for leap year.
                     while (day_choice.to_i < 1) || (day_choice.to_i > 29)
@@ -375,7 +375,7 @@ class Admin
         def convert_to_military_time(standard_time)
             temp_holder = standard_time[0]
             temp_holder2 = standard_time[1]
-            if temp_holder2[4].casecmp('p') == 0
+            if temp_holder2[3].casecmp("p") == 0
                 return (temp_holder.to_i + 12)
             else
                 return (temp_holder.to_i)
@@ -392,7 +392,7 @@ class Admin
           @drive.title_print_ext("Admin Mode")
           @drive.sub_title_print("Event Information")
             print "\n#{@spacer}Event created!"
-            print "\n\n#{@spacer}Create another event?(Yes/No): "
+            print "\n\n#{@spacer}Go to Admin Menu?(Yes/No): "
             response = STDIN.gets.chomp
 
             #Check for Alphetical characters
@@ -408,9 +408,9 @@ class Admin
             end
 
             #Sets a temp variable to return to call.
-            if ((response.casecmp("no")) == 0)
+            if ((response.casecmp("yes")) == 0)
                 return true
-            elsif ((response.casecmp("yes")) == 0)
+            elsif ((response.casecmp("no")) == 0)
                 return false
             end
         end
@@ -525,7 +525,7 @@ class Admin
 		@military_time = true
         @event_array = @DB.get_events
         @number_of_events = @event_array.length
-		
+
 		if @number_of_events > 0
 			system "clear"
 			@drive.title_print_ext("Events")

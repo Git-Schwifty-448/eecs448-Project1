@@ -27,6 +27,10 @@ class Attend
         @attending_events = Array.new
     end
 
+    def get_military_time
+        @name
+    end
+
     # @desc: In charge of control of the attend class. Runs the setup to get database data,
     # runs the program, and then posts the events back to the database
     # @pre: none
@@ -136,9 +140,9 @@ class Attend
                         print event.get_attendees[i].get_name() + " ("
                         for j in 0...event.get_attendees[i].get_timeslots.length
                             if @military_time
-                                print event.get_attendees[i].get_timeslots[j].strftime('%l:%M')
+                                print event.get_attendees[i].get_timeslots[j].strftime('%H:%M')
                             else
-                                print event.get_attendees[i].get_timeslots[j].strftime('%H:%M%P')
+                                print event.get_attendees[i].get_timeslots[j].strftime('%I:%M%P')
                             end
                             if j != event.get_attendees[i].get_timeslots.length-1
                                 print ", "

@@ -1,8 +1,8 @@
 =begin
     File: driver.rb
-    Author:
+    Author: Abraham Dick
     Date Created: 9/8/17
-    Description:
+    Description: In charge of printing things to terminal and doing some basical calculations
 =end
 
 class Driver

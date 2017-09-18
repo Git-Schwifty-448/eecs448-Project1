@@ -1,9 +1,9 @@
 =begin
 
     File: controller.rb
-    Author:
+    Author: Abraham Dick
     Date Created: 9/8/17
-    Description:
+    Description: Controls the basic distribution between the two main modes and looping
 
 =end
 
@@ -21,6 +21,9 @@ class Controller
     end
 
     def run
+        # Create objects for both modes to keep military time constant
+        @admin_controller = Admin.new
+        @user_controller = Attend.new
 
         while true
             system 'clear'
@@ -36,31 +39,20 @@ class Controller
             puts "\t\u2516\n\n\n"
 
             menu = Array.new
-
-            menu[0] = "1. Admin Mode"
-            menu[1] = "2. User Mode"
+            menu[0] = "1. Create Events (Admin Mode)"
+            menu[1] = "2. Go to Events (Adding Availability Mode)"
             menu[2] = "3. Quit"
-
             menu_choice = @drive.menu_builder(menu)
 
             case menu_choice
                 when 1
-                    @admin_controller = Admin.new
                     @admin_controller.run
                 when 2
-                    @user_controller = Attend.new
                     @user_controller.run
                 when 3
                     break
             end
 
-            #dbCont = DatabaseController.new()
-            #e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
-            #a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
-            #e.add_attendee(a)
-            #dbCont.persist_event(e)
-
-            #puts e.get_date
         end
     end
 end
