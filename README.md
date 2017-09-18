@@ -28,5 +28,4 @@ Once all of the prerequisites are installed, simply clone the repository and exe
 
 ## Additional Sources
 
-* https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
-Used for validating input of characters only
+* https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string  Used for validating input of characters only
