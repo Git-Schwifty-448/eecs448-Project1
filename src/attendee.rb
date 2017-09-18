@@ -12,7 +12,7 @@ class Attendee
 	# +timeslots+:: Array of DateTime objects representing the timeslots the attendee can make
     def initialize(name, timeslots)
         raise ArgumentError.new("'name' must be a string") if !name.is_a? String
-        # cdraise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
+        # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
 
         @name = name
         @timeslots = timeslots.sort!
@@ -41,7 +41,6 @@ class Attendee
             for i in 0...@timeslots.length
                 @temp_holder = @timeslots[i].split(':')
                 @temp_holder[0] = @temp_holder[0].to_i
-
                 if @temp_holder[0] > 12
                     @temp_holder[0] = @temp_holder[0] - 12
                     @timeslots_12hrs.push(@temp_holder[0].to_s + ":" + @temp_holder[1] + "pm")
