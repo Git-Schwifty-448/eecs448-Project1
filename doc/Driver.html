@@ -74,6 +74,8 @@
     
     <li ><a href="#method-i-choice_getter">#choice_getter</a>
     
+    <li ><a href="#method-i-choice_getter_ext">#choice_getter_ext</a>
+    
     <li ><a href="#method-i-desc_printer">#desc_printer</a>
     
     <li ><a href="#method-i-get_alpha">#get_alpha</a>
@@ -81,6 +83,8 @@
     <li ><a href="#method-i-hr">#hr</a>
     
     <li ><a href="#method-i-menu_builder">#menu_builder</a>
+    
+    <li ><a href="#method-i-menu_builder_ext">#menu_builder_ext</a>
     
     <li ><a href="#method-i-sub_title_print">#sub_title_print</a>
     
@@ -148,6 +152,7 @@
             <pre><span class="ruby-comment"># File src/driver.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
     <span class="ruby-ivar">@size</span> = <span class="ruby-value">95</span>
+    <span class="ruby-ivar">@spacer</span> = <span class="ruby-string">&quot;        &quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -186,13 +191,55 @@
 
           
           <div class="method-source-code" id="choice_getter-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 114</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">choice_getter</span>(<span class="ruby-identifier">low</span>,<span class="ruby-identifier">high</span>)
 
     <span class="ruby-identifier">choice</span> = <span class="ruby-value">0</span>
 
     <span class="ruby-keyword">while</span> (<span class="ruby-identifier">choice</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">low</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">choice</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">high</span>)
         <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Please make a selection: &quot;</span>
+        <span class="ruby-identifier">choice</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">choice</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-choice_getter_ext" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">choice_getter_ext</span><span
+            class="method-args">(low,high)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="choice_getter_ext-source">
+            <pre><span class="ruby-comment"># File src/driver.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">choice_getter_ext</span>(<span class="ruby-identifier">low</span>,<span class="ruby-identifier">high</span>)
+
+    <span class="ruby-identifier">choice</span> = <span class="ruby-value">0</span>
+
+    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">choice</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">low</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">choice</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">high</span>)
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;        Please make a selection: &quot;</span>
         <span class="ruby-identifier">choice</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">to_i</span>
     <span class="ruby-keyword">end</span>
 
@@ -228,9 +275,9 @@
 
           
           <div class="method-source-code" id="desc_printer-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 138</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 158</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">desc_printer</span>(<span class="ruby-identifier">string</span>)
-    <span class="ruby-ivar">@length</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">clone</span>
+    <span class="ruby-ivar">@length</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">length</span>
     <span class="ruby-identifier">string</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; &#39;</span>)
 
     <span class="ruby-ivar">@new_string</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>
@@ -288,7 +335,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="get_alpha-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 170</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 190</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_alpha</span>(<span class="ruby-identifier">message</span>)
     <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
         <span class="ruby-identifier">print</span> <span class="ruby-identifier">message</span>
@@ -299,7 +346,6 @@ that only contain upper and lowercase letters</p>
         <span class="ruby-keyword">else</span>
             <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Only letters are allowed&quot;</span>
         <span class="ruby-keyword">end</span>
-        
     <span class="ruby-keyword">end</span>
 
     <span class="ruby-keyword">return</span> <span class="ruby-ivar">@input</span>
@@ -333,7 +379,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="hr-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 128</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">hr</span>
     <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@size</span><span class="ruby-operator">+</span><span class="ruby-value">2</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>
@@ -372,17 +418,52 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="menu_builder-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 102</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">menu_builder</span>(<span class="ruby-identifier">option_array</span>)
+    <span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">option</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; \u21E8 #{option}&quot;</span>
+    <span class="ruby-keyword">end</span>
 
+    <span class="ruby-identifier">menu_choice</span> = <span class="ruby-identifier">choice_getter</span>(<span class="ruby-value">1</span>,<span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">length</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">menu_choice</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
 
-<span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">option</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; \u21E8 #{option}&quot;</span>
-<span class="ruby-keyword">end</span>
+        
 
-<span class="ruby-identifier">menu_choice</span> = <span class="ruby-identifier">choice_getter</span>(<span class="ruby-value">1</span>,<span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">length</span>)
-<span class="ruby-keyword">return</span> <span class="ruby-identifier">menu_choice</span>
+        
+      </div>
 
+    
+      <div id="method-i-menu_builder_ext" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">menu_builder_ext</span><span
+            class="method-args">(option_array)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="menu_builder_ext-source">
+            <pre><span class="ruby-comment"># File src/driver.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">menu_builder_ext</span>(<span class="ruby-identifier">option_array</span>)
+    <span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">option</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;         \u21E8 #{option}&quot;</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">menu_choice</span> = <span class="ruby-identifier">choice_getter_ext</span>(<span class="ruby-value">1</span>,<span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">length</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">menu_choice</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -413,7 +494,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="sub_title_print-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 79</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 80</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">sub_title_print</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -465,7 +546,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="title_print-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 14</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">title_print</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -524,7 +605,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="title_print_ext-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 45</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">title_print_ext</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -588,7 +669,7 @@ from that list</p>
 
           
           <div class="method-source-code" id="validate_input-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 188</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 207</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_input</span>(<span class="ruby-identifier">acceptable_input</span>)
     <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;&quot;</span>
 

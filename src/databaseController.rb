@@ -8,6 +8,11 @@
 require 'sequel'
 require 'sqlite3'
 
+##
+# Controller class used to encapsulate all database logic.  Also used to
+# generate the database if no database currently exists.  Hardcoded with the
+# database name 'db.sqlite'.
+
 class DatabaseController
 
     def initialize
@@ -76,6 +81,8 @@ class DatabaseController
 		end
 	end
 
+	# finds the event in the database that matches the event passed in; matching
+	# performed by the 'id' field
 	def update_event(event)
 		eventDataset = @DB[:events].where(id: event.get_id)
 		attendeeDataset = @DB[:attendees].where(parent_id: event.get_id)

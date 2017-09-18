@@ -95,6 +95,10 @@
 
   <section class="description">
     
+<p><a href="Controller.html">Controller</a> class used to encapsulate all
+database logic.  Also used to generate the database if no database
+currently exists.  Hardcoded with the database name &#39;db.sqlite&#39;.</p>
+
   </section>
 
   
@@ -135,9 +139,10 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 13</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
             <span class="ruby-ivar">@DB</span> = <span class="ruby-constant">Sequel</span>.<span class="ruby-identifier">sqlite</span>(<span class="ruby-string">&#39;db.sqlite&#39;</span>)
+            <span class="ruby-ivar">@epoch</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>
             <span class="ruby-identifier">init_database</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -182,21 +187,21 @@ href="0">events</a>.getName etc.</p>
 
           
           <div class="method-source-code" id="get_events-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 99</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_events</span>()
         <span class="ruby-identifier">events</span> = []
 
         <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:events</span>].<span class="ruby-identifier">order</span>(<span class="ruby-value">:date</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">event</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">newTimeslots</span> = []
                 <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:timeslots</span>].<span class="ruby-identifier">where</span>(<span class="ruby-identifier">parent_table</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;events&#39;</span>, <span class="ruby-identifier">parent_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>[<span class="ruby-value">:&#39;id&#39;</span>]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">timeslot</span><span class="ruby-operator">|</span>
-                        <span class="ruby-identifier">newTimeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">timeslot</span>[<span class="ruby-value">:&#39;time&#39;</span>])
+                        <span class="ruby-identifier">newTimeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">timeslot</span>[<span class="ruby-value">:&#39;time&#39;</span>]))
                 <span class="ruby-keyword">end</span>
 
                 <span class="ruby-identifier">newAttendees</span> = []
                 <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:attendees</span>].<span class="ruby-identifier">where</span>(<span class="ruby-identifier">parent_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>[<span class="ruby-value">:&#39;id&#39;</span>]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attendee</span><span class="ruby-operator">|</span>
                         <span class="ruby-identifier">attendeeTimeslots</span> = []
                         <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:timeslots</span>].<span class="ruby-identifier">where</span>(<span class="ruby-identifier">parent_table</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;attendees&#39;</span>, <span class="ruby-identifier">parent_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">attendee</span>[<span class="ruby-value">:&#39;id&#39;</span>]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">timeslot</span><span class="ruby-operator">|</span>
-                                <span class="ruby-identifier">attendeeTimeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">timeslot</span>[<span class="ruby-value">:&#39;time&#39;</span>])
+                                <span class="ruby-identifier">attendeeTimeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">timeslot</span>[<span class="ruby-value">:&#39;time&#39;</span>]))
                         <span class="ruby-keyword">end</span>
 
                         <span class="ruby-identifier">newAttendee</span> = <span class="ruby-constant">Attendee</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">attendee</span>[<span class="ruby-value">:&#39;name&#39;</span>], <span class="ruby-identifier">attendeeTimeslots</span>)
@@ -204,7 +209,9 @@ href="0">events</a>.getName etc.</p>
                 <span class="ruby-keyword">end</span>
 
                 <span class="ruby-identifier">newEvent</span> = <span class="ruby-constant">Event</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">event</span>[<span class="ruby-value">:&#39;name&#39;</span>], <span class="ruby-identifier">event</span>[<span class="ruby-value">:&#39;description&#39;</span>], <span class="ruby-identifier">newTimeslots</span>, <span class="ruby-identifier">newAttendees</span>, <span class="ruby-identifier">event</span>[<span class="ruby-value">:&#39;id&#39;</span>])
-                <span class="ruby-identifier">events</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">newEvent</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">newEvent</span>.<span class="ruby-identifier">get_date</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@epoch</span>
+                        <span class="ruby-identifier">events</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">newEvent</span>)
+                <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
 
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">events</span>
@@ -238,7 +245,7 @@ href="0">events</a>.getName etc.</p>
 
           
           <div class="method-source-code" id="init_database-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 19</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init_database</span>
         <span class="ruby-keyword">if</span>(<span class="ruby-operator">!</span><span class="ruby-ivar">@DB</span>.<span class="ruby-identifier">table_exists?</span>(<span class="ruby-value">:events</span>))
                 <span class="ruby-ivar">@DB</span>.<span class="ruby-identifier">create_table</span> <span class="ruby-value">:events</span> <span class="ruby-keyword">do</span>
@@ -246,7 +253,6 @@ href="0">events</a>.getName etc.</p>
                         <span class="ruby-constant">String</span> <span class="ruby-value">:name</span>
                         <span class="ruby-constant">String</span> <span class="ruby-value">:description</span>
                         <span class="ruby-constant">String</span> <span class="ruby-value">:date</span>
-                        <span class="ruby-constant">String</span> <span class="ruby-value">:timeslots</span>
                 <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
 
@@ -303,7 +309,7 @@ Params:</p>
 
           
           <div class="method-source-code" id="persist_attendee-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 71</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persist_attendee</span>(<span class="ruby-identifier">attendee</span>, <span class="ruby-identifier">parentid</span>)
         <span class="ruby-identifier">id</span> = <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:attendees</span>].<span class="ruby-identifier">insert</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">attendee</span>.<span class="ruby-identifier">get_name</span>, <span class="ruby-value">:parent_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">parentid</span>)
 
@@ -345,7 +351,7 @@ belongs to</p>
 
           
           <div class="method-source-code" id="persist_event-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 53</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">persist_event</span>(<span class="ruby-identifier">event</span>)
         <span class="ruby-ivar">@DB</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
                 <span class="ruby-identifier">id</span> = <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:events</span>].<span class="ruby-identifier">insert</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_name</span>, <span class="ruby-value">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_description</span>, <span class="ruby-value">:date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_date</span>)
@@ -382,13 +388,14 @@ belongs to</p>
 
         <div class="method-description">
           
-          
+          <p>finds the event in the database that matches the event passed in; matching
+performed by the &#39;id&#39; field</p>
           
           
 
           
           <div class="method-source-code" id="update_event-source">
-            <pre><span class="ruby-comment"># File src/databaseController.rb, line 79</span>
+            <pre><span class="ruby-comment"># File src/databaseController.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_event</span>(<span class="ruby-identifier">event</span>)
         <span class="ruby-identifier">eventDataset</span> = <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:events</span>].<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_id</span>)
         <span class="ruby-identifier">attendeeDataset</span> = <span class="ruby-ivar">@DB</span>[<span class="ruby-value">:attendees</span>].<span class="ruby-identifier">where</span>(<span class="ruby-identifier">parent_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_id</span>)
