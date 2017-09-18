@@ -45,7 +45,8 @@ class Admin
                 
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
-                menuone_choice[1] = "2. See Attendees"
+				menuone_choice[1] = "2. See Attendees"
+				menuone_choice[2] = "3. Return to Main Menu"
 
 
                 system 'clear'
@@ -73,7 +74,9 @@ class Admin
                     set_event_counter(1)
                     yesNo = get_validation                                              #Asks user if they want to create another event.
                 elsif atten_event == 2
-                    display_events
+					display_events
+				else
+					break
                 end
             end
         end
