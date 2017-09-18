@@ -16,10 +16,14 @@ class Attendee
 	# +timeslots+:: Array of DateTime objects representing the timeslots the attendee can make
     def initialize(name, timeslots)
         raise ArgumentError.new("'name' must be a string") if !name.is_a? String
+<<<<<<< HEAD
 
 
         # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
 
+=======
+        # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
+>>>>>>> 9b9fd511e92b74286363adf80f5b1c4614021dfc
 
         @name = name
         @timeslots = timeslots.sort!
