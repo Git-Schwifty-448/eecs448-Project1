@@ -24,7 +24,6 @@ class DatabaseController
 				String :name
 				String :description
 				String :date
-				String :timeslots
 			end
 		end
 
