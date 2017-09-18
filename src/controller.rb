@@ -21,7 +21,6 @@ class Controller
     end
 
     def run
-
         # Create objects for both modes to keep military time constant
         @admin_controller = Admin.new
         @user_controller = Attend.new
@@ -40,11 +39,9 @@ class Controller
             puts "\t\u2516\n\n\n"
 
             menu = Array.new
-
             menu[0] = "1. Create Events (Admin Mode)"
             menu[1] = "2. Go to Events (Adding Availability Mode)"
             menu[2] = "3. Quit"
-
             menu_choice = @drive.menu_builder(menu)
 
             case menu_choice
@@ -56,13 +53,6 @@ class Controller
                     break
             end
 
-            #dbCont = DatabaseController.new()
-            #e = Event.new('event', 'description', [DateTime.new(2017, 9, 15, 10), DateTime.new(2017, 9, 15, 9), DateTime.new(2017, 9, 15, 11)], [])
-            #a = Attendee.new('Mike', [DateTime.new(2017, 9, 15, 10)])
-            #e.add_attendee(a)
-            #dbCont.persist_event(e)
-
-            #puts e.get_date
         end
     end
 end
