@@ -42,7 +42,7 @@ class Admin
             yesNo = true
             set_admin_info
             while yesNo
-                
+
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
                 menuone_choice[1] = "2. See Attendees"
@@ -157,7 +157,7 @@ class Admin
                 events_year = STDIN.gets.chomp
             end
 
-            while (events_year < date.year.to_s) || (events_year > "2100")
+            while (events_year.to_i < 2017) || (events_year.to_i > 2100)
                 print "#{@spacer}Invalid year, please input a reasonable year: "
                 events_year = STDIN.gets.chomp
             end
@@ -188,37 +188,60 @@ class Admin
 
             @event_month = month_choice.to_i
 
+            puts "\n#{@spacer}Please choose a day for the event... "
             case month_choice
             when 1
-                print "#{@spacer}Remember there are 31 days in January."
+                print "#{@spacer}Remember there are 31 days in January:"
+                day_choice = STDIN.gets.chomp
             when 2
-                print "#{@spacer}Remember there are 28 days in February."
+                print "#{@spacer}Remember there are 28 days in February:"
+                day_choice = STDIN.gets.chomp
+                if Date.gregorian_leap?(@event_year)        #Checks for leap year.
+                    while (day_choice.to_i < 1) || (day_choice.to_i > 29)
+                    print "\n#{@spacer}That day doesn't exist! Try again:"
+                    day_choice = STDIN.gets.chomp
+                    end
+                else                                        #Checks on a regular year.
+                    while (day_choice.to_i < 1) || (day_choice.to_i > 28)
+                    print "\n#{@spacer}That day doesn't exist! Try again:"
+                    day_choice = STDIN.gets.chomp
+                    end
+                end
             when 3
-                print "#{@spacer}Remember there are 31 days in March."
+                print "#{@spacer}Remember there are 31 days in March:"
+                day_choice = STDIN.gets.chomp
             when 4
-                print "#{@spacer}Remember there are 30 days in April."
+                print "#{@spacer}Remember there are 30 days in April:"
+                day_choice = STDIN.gets.chomp
             when 5
-                print "#{@spacer}Remember there are 31 days in May."
+                print "#{@spacer}Remember there are 31 days in May:"
+                day_choice = STDIN.gets.chomp
             when 6
-                print "#{@spacer}Remember there are 30 days in June."
+                print "#{@spacer}Remember there are 30 days in June:"
+                day_choice = STDIN.gets.chomp
             when 7
-                print "#{@spacer}Remember there are 31 days in July."
+                print "#{@spacer}Remember there are 31 days in July:"
+                day_choice = STDIN.gets.chomp
             when 8
-                print "#{@spacer}Remember there are 31 days in August."
+                print "#{@spacer}Remember there are 31 days in August:"
+                day_choice = STDIN.gets.chomp
             when 9
-                print "#{@spacer}Remember there are 30 days in September."
+                print "#{@spacer}Remember there are 30 days in September:"
+                day_choice = STDIN.gets.chomp
             when 10
-                print "#{@spacer}Remember there are 31 days in October."
+                print "#{@spacer}Remember there are 31 days in October:"
+                day_choice = STDIN.gets.chomp
             when 11
-                print "#{@spacer}Remember there are 30 days in November."
+                print "#{@spacer}Remember there are 30 days in November:"
+                day_choice = STDIN.gets.chomp
             when 12
-                print "#{@spacer}Remember there are 31 days in December."
+                print "#{@spacer}Remember there are 31 days in December:"
+                day_choice = STDIN.gets.chomp
             end
 
-            #Takes the user's choice and uses a temp variable for event's day.  Event's day.
-            print "\n#{@spacer}Please choose a day for the event: "
-            day_choice = STDIN.gets.chomp
+            #Additional check for other months
             while (day_choice.to_i < 1) || (day_choice.to_i > 31)
+                print "\n#{@spacer}That day doesn't exist! Try again:"
                 day_choice = STDIN.gets.chomp
             end
 
@@ -336,7 +359,7 @@ class Admin
                     minute = time[1].slice(0..1)
                     @event_minute = minute.to_i
 
-                    @timeslot_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                    @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
                     array_increment += 1
                     slot_counter += 1
                 end
