@@ -42,7 +42,7 @@ class Admin
             yesNo = true
             set_admin_info
             while yesNo
-                
+
                 menuone_choice = Array.new
                 menuone_choice[0] = "1. Create Event"
                 menuone_choice[1] = "2. See Attendees"
@@ -146,7 +146,7 @@ class Admin
 
             print "#{@spacer}Give a description of the event: "
             eventDescription = STDIN.gets.chomp
-            @descripton = eventDescription
+            @description = eventDescription
 
             while invalid_date
                 #Retrieves the event's year from the user.                          Event's Year.
