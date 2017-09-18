@@ -64,7 +64,7 @@ class Attend
         # @pre: none
         # @post: creates a database controller object retrieves the events, also sets some bool flags depending on what the database returns
         # @return: none
-        def setup
+        def setup #:doc:
             @db = DatabaseController.new
             @event_array = @db.get_events
             @number_of_events = @event_array.length
@@ -77,7 +77,7 @@ class Attend
         #       and printed to terminal window (via single_event_printer). 
         #       If there are no events, a message is printed as such  
         # @return: none 
-        def get_events
+        def get_events #:doc:
             if @events  == true
                 system "clear"
                 @drive.title_print_ext("Events")
@@ -98,7 +98,7 @@ class Attend
         # @pre: takes an event and a bool flag to indicate if more than one event will eventually be printed
         # @post: prints events
         # @return: none
-        def single_event_printer(event,single)
+        def single_event_printer(event,single) #:doc:
 
             if !single
                 puts "\n\n#{@spacer}Event ID:\t" + event.get_id.to_s
@@ -164,7 +164,7 @@ class Attend
         # @pre: None 
         # @post: outputs each event and returns if the user wants to attend
         # @return: None
-        def event_controller()
+        def event_controller() #:doc:
             @drive.hr
             puts "\n\n#{@spacer}If you wish to attend an event, enter the Event's ID number otherwise enter t to toggle time"
             puts "#{@spacer}format or \"Return\" to return to the main screen of the application\n"
@@ -231,7 +231,7 @@ class Attend
         # @pre: an event must be passed
         # @post: the user is guided through adding themselves to an event
         # @return: true to continue looping
-        def attend_event(event)
+        def attend_event(event) #:doc:
 
             # If the user has already created an attendee object
             if !@attendee_created
@@ -328,7 +328,7 @@ class Attend
         # @pre: none
         # @post: Prints a reminder of the events that the attendee object is attending
         # @return: none
-        def reminder
+        def reminder #:doc:
             system "clear"
 
             if @attending_events.any?
@@ -347,7 +347,7 @@ class Attend
         # @pre: takes the time slot of the event the user wishes to attend
         # @post: gets a first and last name and creates the attendee object
         # @return: the new attendee for the event
-        def create_user(origin_time_slot)
+        def create_user(origin_time_slot) #:doc:
             system "clear"
             @drive.title_print_ext("User Mode")
             @drive.sub_title_print("Get User Name")
@@ -385,7 +385,7 @@ class Attend
 
         # pre: takes an int ID number
         # return: finds and returns the event in the event array in which the passed in id number matches
-        def get_event_by_id(id_number)
+        def get_event_by_id(id_number) #:doc:
             for i in 0...@event_array.length
                 if(@event_array[i].get_id == id_number.to_i)
                     return @event_array[i]
@@ -399,7 +399,7 @@ class Attend
         # @pre: takes an attendee object
         # @post: removes the timeslots but keeps the username of the attendee passed in
         # @return: a 'new' attendee with the same name but no timeslots
-        def clean_attendee(attendee)
+        def clean_attendee(attendee) #:doc:
             @name = attendee.get_name
             clean_attendee = Attendee.new(@name,[])
             return clean_attendee
@@ -408,7 +408,7 @@ class Attend
         # @pre: none
         # @post: Updates the database
         # @return: none
-        def post_updates
+        def post_updates #:doc:
              # posts updated events to the database with new attendee information
             if !@attending_events.empty?
                 for i in 0...@attending_events.length

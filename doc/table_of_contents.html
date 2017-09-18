@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -35,7 +36,7 @@
       <li><a href="README_md.html#label-Getting+Started">Getting Started</a>
       <li><a href="README_md.html#label-Prerequisites">Prerequisites</a>
       <li><a href="README_md.html#label-Installation">Installation</a>
-      <li><a href="README_md.html#label-Built+With">Built With</a>
+      <li><a href="README_md.html#label-Built+With+-28Dependencies-29">Built With (Dependencies)</a>
       <li><a href="README_md.html#label-Authors">Authors</a>
       <li><a href="README_md.html#label-Additional+Sources">Additional Sources</a>
     </ul>
@@ -75,14 +76,14 @@
 <ul>
 
   <li class="method">
-    <a href="Admin.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
     <a href="Attend.html#method-c-new">::new</a>
     &mdash;
     <span class="container">Attend</span>
+
+  <li class="method">
+    <a href="Admin.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Attendee.html#method-c-new">::new</a>
@@ -120,6 +121,11 @@
     <span class="container">Attendee</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-attend_event">#attend_event</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Driver.html#method-i-choice_getter">#choice_getter</a>
     &mdash;
     <span class="container">Driver</span>
@@ -128,6 +134,11 @@
     <a href="Driver.html#method-i-choice_getter_ext">#choice_getter_ext</a>
     &mdash;
     <span class="container">Driver</span>
+
+  <li class="method">
+    <a href="Attend.html#method-i-clean_attendee">#clean_attendee</a>
+    &mdash;
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Attendee.html#method-i-clear_timeslot">#clear_timeslot</a>
@@ -155,6 +166,11 @@
     <span class="container">Admin</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-create_user">#create_user</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Driver.html#method-i-desc_printer">#desc_printer</a>
     &mdash;
     <span class="container">Driver</span>
@@ -163,6 +179,11 @@
     <a href="Admin.html#method-i-display_events">#display_events</a>
     &mdash;
     <span class="container">Admin</span>
+
+  <li class="method">
+    <a href="Attend.html#method-i-event_controller">#event_controller</a>
+    &mdash;
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Driver.html#method-i-get_alpha">#get_alpha</a>
@@ -185,6 +206,11 @@
     <span class="container">Event</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-get_event_by_id">#get_event_by_id</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Admin.html#method-i-get_event_counter">#get_event_counter</a>
     &mdash;
     <span class="container">Admin</span>
@@ -195,9 +221,19 @@
     <span class="container">DatabaseController</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-get_events">#get_events</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Event.html#method-i-get_id">#get_id</a>
     &mdash;
     <span class="container">Event</span>
+
+  <li class="method">
+    <a href="Attend.html#method-i-get_military_time">#get_military_time</a>
+    &mdash;
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Attendee.html#method-i-get_name">#get_name</a>
@@ -265,14 +301,14 @@
     <span class="container">DatabaseController</span>
 
   <li class="method">
-    <a href="Object.html#method-i-run">#run</a>
+    <a href="Attend.html#method-i-post_updates">#post_updates</a>
     &mdash;
-    <span class="container">Object</span>
+    <span class="container">Attend</span>
 
   <li class="method">
-    <a href="Admin.html#method-i-run">#run</a>
+    <a href="Attend.html#method-i-reminder">#reminder</a>
     &mdash;
-    <span class="container">Admin</span>
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Attend.html#method-i-run">#run</a>
@@ -285,6 +321,16 @@
     <span class="container">Controller</span>
 
   <li class="method">
+    <a href="Admin.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">Admin</span>
+
+  <li class="method">
+    <a href="Object.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">Object</span>
+
+  <li class="method">
     <a href="Admin.html#method-i-set_admin_info">#set_admin_info</a>
     &mdash;
     <span class="container">Admin</span>
@@ -295,9 +341,19 @@
     <span class="container">Admin</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-setup">#setup</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Admin.html#method-i-single_event_printer">#single_event_printer</a>
     &mdash;
     <span class="container">Admin</span>
+
+  <li class="method">
+    <a href="Attend.html#method-i-single_event_printer">#single_event_printer</a>
+    &mdash;
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Driver.html#method-i-sub_title_print">#sub_title_print</a>
@@ -334,7 +390,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -154,6 +155,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
             <pre><span class="ruby-comment"># File src/attendee.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">timeslots</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;&#39;name&#39; must be a string&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+    <span class="ruby-comment"># raise ArgumentError.new(&quot;&#39;timeslots&#39; must not be empty&quot;) if timeslots.length == 0</span>
 
     <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
     <span class="ruby-ivar">@timeslots</span> = <span class="ruby-identifier">timeslots</span>.<span class="ruby-identifier">sort!</span>
@@ -195,7 +197,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
           
           <div class="method-source-code" id="add_timeslot-source">
-            <pre><span class="ruby-comment"># File src/attendee.rb, line 32</span>
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_timeslot</span>(<span class="ruby-identifier">new_slot</span>)
     <span class="ruby-ivar">@timeslots</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">new_slot</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -228,7 +230,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
           
           <div class="method-source-code" id="clear_timeslot-source">
-            <pre><span class="ruby-comment"># File src/attendee.rb, line 36</span>
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_timeslot</span>
     <span class="ruby-ivar">@timeslots</span> = []
 <span class="ruby-keyword">end</span></pre>
@@ -261,7 +263,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
           
           <div class="method-source-code" id="get_name-source">
-            <pre><span class="ruby-comment"># File src/attendee.rb, line 24</span>
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_name</span>
     <span class="ruby-ivar">@name</span>
 <span class="ruby-keyword">end</span></pre>
@@ -294,7 +296,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
           
           <div class="method-source-code" id="get_timeslots-source">
-            <pre><span class="ruby-comment"># File src/attendee.rb, line 28</span>
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots</span>
     <span class="ruby-ivar">@timeslots</span>
 <span class="ruby-keyword">end</span></pre>
@@ -327,7 +329,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
           
           <div class="method-source-code" id="get_timeslots_12hrs-source">
-            <pre><span class="ruby-comment"># File src/attendee.rb, line 41</span>
+            <pre><span class="ruby-comment"># File src/attendee.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timeslots_12hrs</span>
     <span class="ruby-comment">#create the new array</span>
     <span class="ruby-ivar">@timeslots_12hrs</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
@@ -335,7 +337,6 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
         <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@timeslots</span>.<span class="ruby-identifier">length</span>
             <span class="ruby-ivar">@temp_holder</span> = <span class="ruby-ivar">@timeslots</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
             <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
-
             <span class="ruby-keyword">if</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">12</span>
                 <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] = <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-value">12</span>
                 <span class="ruby-ivar">@timeslots_12hrs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_holder</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;pm&quot;</span>)
@@ -366,7 +367,7 @@ always exist in the table of an <a href="Event.html">Event</a> object.</p>
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

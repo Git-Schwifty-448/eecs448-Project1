@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class Attend - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-attend_event">#attend_event</a>
+    
+    <li ><a href="#method-i-clean_attendee">#clean_attendee</a>
+    
+    <li ><a href="#method-i-create_user">#create_user</a>
+    
+    <li ><a href="#method-i-event_controller">#event_controller</a>
+    
+    <li ><a href="#method-i-get_event_by_id">#get_event_by_id</a>
+    
+    <li ><a href="#method-i-get_events">#get_events</a>
+    
+    <li ><a href="#method-i-get_military_time">#get_military_time</a>
+    
+    <li ><a href="#method-i-post_updates">#post_updates</a>
+    
+    <li ><a href="#method-i-reminder">#reminder</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-setup">#setup</a>
+    
+    <li ><a href="#method-i-single_event_printer">#single_event_printer</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Attend">
+  <h1 id="class-Attend" class="class">
+    class Attend
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>sets up the member variables for <a href="Attend.html">Attend</a> class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+    <span class="ruby-ivar">@user_name</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@drive</span> = <span class="ruby-constant">Driver</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@events</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@military_time</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@number_of_events</span> = <span class="ruby-value">0</span>
+    <span class="ruby-ivar">@spacer</span> = <span class="ruby-string">&quot;        &quot;</span>
+    <span class="ruby-ivar">@attendee_created</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@attending_events</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_military_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_military_time</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_military_time-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_military_time</span>
+    <span class="ruby-ivar">@name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@desc: In charge of control of the attend class. Runs the setup to get
+database data, runs the program, and then posts the events back to the
+database @pre: none @post: main controller for the program @return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
+    <span class="ruby-identifier">setup</span>()
+
+    <span class="ruby-comment"># if there are events to be retrieved, print the list of them and then begin the controller method</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@number_of_events</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@browsing</span>
+            <span class="ruby-identifier">get_events</span>()
+            <span class="ruby-ivar">@browsing</span> = <span class="ruby-identifier">event_controller</span>()
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">reminder</span>()
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">system</span> <span class="ruby-string">&#39;clear&#39;</span>
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print</span>(<span class="ruby-string">&quot;Error&quot;</span>)
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}There are not currently any events in the database\n&quot;</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;#{@spacer}Please use admin mode and add an event first!\n\n&quot;</span>
+
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">2</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># posts updated events to the database with new attendee information</span>
+    <span class="ruby-identifier">post_updates</span>()
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-attend_event" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attend_event</span><span
+            class="method-args">(event)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: an event must be passed @post: the user is guided through adding
+themselves to an event @return: true to continue looping</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attend_event-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 234</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attend_event</span>(<span class="ruby-identifier">event</span>) <span class="ruby-comment">#:doc:</span>
+
+    <span class="ruby-comment"># If the user has already created an attendee object</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@attendee_created</span>
+        <span class="ruby-ivar">@new_user</span> = <span class="ruby-identifier">create_user</span>([])
+        <span class="ruby-ivar">@attendee_created</span> = <span class="ruby-keyword">true</span>
+
+    <span class="ruby-comment"># If they selected an event, their timeslots for that event need to be cleared out</span>
+    <span class="ruby-keyword">else</span> 
+        <span class="ruby-ivar">@new_user</span> = <span class="ruby-identifier">clean_attendee</span>(<span class="ruby-ivar">@new_user</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Print the terminal graphics</span>
+    <span class="ruby-identifier">system</span> <span class="ruby-string">&quot;clear&quot;</span>
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print_ext</span>(<span class="ruby-string">&quot;Events&quot;</span>)
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">sub_title_print</span>(<span class="ruby-string">&quot;Attend an Event&quot;</span>)
+
+    <span class="ruby-comment"># reprint the details of only the specific event the user is interested in</span>
+    <span class="ruby-identifier">single_event_printer</span>(<span class="ruby-identifier">event</span>,<span class="ruby-keyword">true</span>)
+
+    <span class="ruby-comment"># check to see how many timeslots are availiable and proceed </span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">hr</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}For each time slot of an event, indicate with &#39;y&#39; or &#39;n&#39; if you wish to attend&quot;</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}If you would like to attend the entire event indicate with &#39;a&#39; or &#39;all&#39;\n\n&quot;</span>
+
+        <span class="ruby-comment"># get user responce and if the user wants to attend a specific time, add it to the array of attending events</span>
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span>
+            <span class="ruby-ivar">@acceptable_input</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+            <span class="ruby-ivar">@acceptable_input</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span>[<span class="ruby-string">&quot;y&quot;</span>,
+                                    <span class="ruby-string">&quot;Y&quot;</span>,
+                                    <span class="ruby-string">&quot;yes&quot;</span>,
+                                    <span class="ruby-string">&quot;Yes&quot;</span>,
+                                    <span class="ruby-string">&quot;n&quot;</span>,
+                                    <span class="ruby-string">&quot;N&quot;</span>,
+                                    <span class="ruby-string">&quot;No&quot;</span>,
+                                    <span class="ruby-string">&quot;no&quot;</span>,
+                                    <span class="ruby-string">&quot;a&quot;</span>,
+                                    <span class="ruby-string">&quot;A&quot;</span>,
+                                    <span class="ruby-string">&quot;all&quot;</span>,
+                                    <span class="ruby-string">&quot;All&quot;</span>])
+            <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;&quot;</span>
+
+            <span class="ruby-keyword">while</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@acceptable_input</span>.<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@user_input</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@military_time</span>
+                    <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;#{@spacer}#{event.get_timeslots[i].strftime(&#39;%l:%M%P&#39;)}, attend?: &quot;</span>
+                <span class="ruby-keyword">else</span>
+                    <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;#{@spacer}#{event.get_timeslots[i].strftime(&#39;%H:%M&#39;)}, attend?: &quot;</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-ivar">@user_input</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+            <span class="ruby-keyword">end</span>
+
+            <span class="ruby-keyword">case</span> <span class="ruby-ivar">@user_input</span>
+                <span class="ruby-comment"># Add the user</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;y&quot;</span>,<span class="ruby-string">&quot;Y&quot;</span>,<span class="ruby-string">&quot;yes&quot;</span>,<span class="ruby-string">&quot;Yes&quot;</span>
+                    <span class="ruby-ivar">@new_user</span>.<span class="ruby-identifier">add_timeslot</span>(<span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">i</span>])
+                <span class="ruby-comment"># Do nothing</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;n&quot;</span>,<span class="ruby-string">&quot;N&quot;</span>,<span class="ruby-string">&quot;no&quot;</span>,<span class="ruby-string">&quot;No&quot;</span>
+                    <span class="ruby-comment"># unused</span>
+                <span class="ruby-comment"># Add all of the timeslots to the user</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;a&quot;</span>,<span class="ruby-string">&quot;A&quot;</span>,<span class="ruby-string">&quot;all&quot;</span>,<span class="ruby-string">&quot;All&quot;</span>
+                    <span class="ruby-ivar">@new_user</span>.<span class="ruby-identifier">clear_timeslot</span>
+                    <span class="ruby-keyword">for</span> <span class="ruby-identifier">j</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span>
+                        <span class="ruby-ivar">@new_user</span>.<span class="ruby-identifier">add_timeslot</span>(<span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">j</span>])
+                    <span class="ruby-keyword">end</span>
+                    <span class="ruby-keyword">break</span>
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment"># if no events were chosen</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@new_user</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}No times selected, returning to event list.&quot;</span>
+            <span class="ruby-identifier">sleep</span> <span class="ruby-value">2</span>
+        <span class="ruby-keyword">else</span> <span class="ruby-comment"># Add the user to the event and then add the event to the update table</span>
+            <span class="ruby-identifier">event</span>.<span class="ruby-identifier">add_attendee</span>(<span class="ruby-ivar">@new_user</span>)
+            <span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">event</span>)
+            <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}Your selections have beens saved!&quot;</span>
+            <span class="ruby-identifier">sleep</span> <span class="ruby-value">2</span>
+        <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Otherwise, assume that the event has only one timeslot</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@new_user</span>.<span class="ruby-identifier">add_timeslot</span>(<span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>)
+        <span class="ruby-identifier">event</span>.<span class="ruby-identifier">add_attendee</span>(<span class="ruby-ivar">@new_user</span>)
+        <span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">event</span>)
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}Your were added to the list!&quot;</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">2</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Keep the program looping</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-clean_attendee" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clean_attendee</span><span
+            class="method-args">(attendee)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@desc: Resets with the same username to go to multiple events @pre: takes
+an attendee object @post: removes the timeslots but keeps the username of
+the attendee passed in @return: a &#39;new&#39; attendee with the same name
+but no timeslots</p>
+          
+          
+
+          
+          <div class="method-source-code" id="clean_attendee-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 402</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clean_attendee</span>(<span class="ruby-identifier">attendee</span>) <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">attendee</span>.<span class="ruby-identifier">get_name</span>
+    <span class="ruby-identifier">clean_attendee</span> = <span class="ruby-constant">Attendee</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@name</span>,[])
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">clean_attendee</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_user</span><span
+            class="method-args">(origin_time_slot)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: takes the time slot of the event the user wishes to attend @post:
+gets a first and last name and creates the attendee object @return: the new
+attendee for the event</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_user-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 350</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_user</span>(<span class="ruby-identifier">origin_time_slot</span>) <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-identifier">system</span> <span class="ruby-string">&quot;clear&quot;</span>
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print_ext</span>(<span class="ruby-string">&quot;User Mode&quot;</span>)
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">sub_title_print</span>(<span class="ruby-string">&quot;Get User Name&quot;</span>)
+
+    <span class="ruby-ivar">@temp_name</span> = <span class="ruby-constant">String</span>.<span class="ruby-identifier">new</span>
+
+    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}Please enter your first name: &quot;</span>
+        <span class="ruby-ivar">@temp_name</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@temp_name</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/^[[:alpha:]]+$/</span>)
+            <span class="ruby-keyword">break</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Only letters are allowed in your first name.&quot;</span>
+        <span class="ruby-keyword">end</span>
+        
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n\n#{@spacer}Please enter your last name: &quot;</span>
+        <span class="ruby-ivar">@temp_l_name</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@temp_l_name</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/^[[:alpha:]]+$/</span>)
+            <span class="ruby-ivar">@temp_name</span> = <span class="ruby-ivar">@temp_name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@temp_l_name</span>
+            <span class="ruby-keyword">break</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Only letters are allowed in your last name.&quot;</span>
+        <span class="ruby-keyword">end</span>
+        
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@new_attendee</span> = <span class="ruby-constant">Attendee</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@temp_name</span>,<span class="ruby-identifier">origin_time_slot</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-ivar">@new_attendee</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-event_controller" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">event_controller</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: None  @post: outputs each event and returns if the user wants to
+attend @return: None</p>
+          
+          
+
+          
+          <div class="method-source-code" id="event_controller-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 167</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">event_controller</span>() <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">hr</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\n\n#{@spacer}If you wish to attend an event, enter the Event&#39;s ID number otherwise enter t to toggle time&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@spacer}format or \&quot;Return\&quot; to return to the main screen of the application\n&quot;</span>
+
+    <span class="ruby-comment"># set up the user input and create the array of acceptable responces</span>
+    <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-ivar">@acceptable_input</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@acceptable_input</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span>[<span class="ruby-string">&#39;t&#39;</span>,
+                            <span class="ruby-string">&#39;r&#39;</span>,
+                            <span class="ruby-string">&quot;return&quot;</span>,
+                            <span class="ruby-string">&quot;Return&quot;</span>])
+    <span class="ruby-comment"># get all of the ID&#39;s in the database array</span>
+    <span class="ruby-ivar">@list_ids</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@number_of_events</span>
+        <span class="ruby-ivar">@list_ids</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@event_array</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_id</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># get id&#39;s of events that the user is attending already</span>
+    <span class="ruby-ivar">@already_attending</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">length</span>
+        <span class="ruby-ivar">@already_attending</span>.<span class="ruby-identifier">push</span>(<span class="ruby-ivar">@attending_events</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_id</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@acceptable_input</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@list_ids</span>
+    
+    <span class="ruby-comment"># get user input</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@acceptable_input</span>.<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@user_input</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Choice: &quot;</span>
+        <span class="ruby-ivar">@user_input</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@list_ids</span> <span class="ruby-operator">-=</span> <span class="ruby-ivar">@already_attending</span>
+    
+    <span class="ruby-comment"># handle input</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-ivar">@user_input</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-operator">*</span><span class="ruby-ivar">@list_ids</span>
+            <span class="ruby-comment"># @username = get_user_name()</span>
+            <span class="ruby-ivar">@browsing</span> = <span class="ruby-identifier">attend_event</span>(<span class="ruby-identifier">get_event_by_id</span>(<span class="ruby-ivar">@user_input</span>))
+            <span class="ruby-keyword">return</span> <span class="ruby-ivar">@browsing</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-operator">*</span><span class="ruby-ivar">@already_attending</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;#{@spacer}You are already attending this event!&quot;</span>
+            <span class="ruby-identifier">sleep</span> <span class="ruby-value">2</span>
+            <span class="ruby-keyword">return</span> <span class="ruby-ivar">@browsing</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;r&#39;</span>,<span class="ruby-string">&quot;return&quot;</span>,<span class="ruby-string">&quot;Return&quot;</span>
+            <span class="ruby-comment"># Reset the interface for the user control before giving control back to controller</span>
+            <span class="ruby-identifier">post_updates</span>()
+            <span class="ruby-ivar">@attending_events</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+            <span class="ruby-ivar">@attendee_created</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-ivar">@browsing</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">return</span> <span class="ruby-ivar">@browsing</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;t&#39;</span>
+            <span class="ruby-comment">#repring the event with military time flipped</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@military_time</span>
+                <span class="ruby-ivar">@military_time</span> = <span class="ruby-keyword">true</span>
+            <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@military_time</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">end</span>
+
+            <span class="ruby-identifier">get_events</span>()
+            <span class="ruby-identifier">event_controller</span>()
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_event_by_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_event_by_id</span><span
+            class="method-args">(id_number)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>pre: takes an int ID number return: finds and returns the event in the
+event array in which the passed in id number matches</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_event_by_id-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 388</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_event_by_id</span>(<span class="ruby-identifier">id_number</span>) <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@event_array</span>.<span class="ruby-identifier">length</span>
+        <span class="ruby-keyword">if</span>(<span class="ruby-ivar">@event_array</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id_number</span>.<span class="ruby-identifier">to_i</span>)
+            <span class="ruby-keyword">return</span> <span class="ruby-ivar">@event_array</span>[<span class="ruby-identifier">i</span>]
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;The ID does not match an in the database&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_events" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_events</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: none @post:If there are events stored in the database, they are
+retrieved</p>
+
+<pre>and printed to terminal window (via single_event_printer). 
+If there are no events, a message is printed as such</pre>
+
+<p>@return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_events-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_events</span> <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@events</span>  <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">system</span> <span class="ruby-string">&quot;clear&quot;</span>
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print_ext</span>(<span class="ruby-string">&quot;Events&quot;</span>)
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">sub_title_print</span>(<span class="ruby-string">&quot;Upcoming Events&quot;</span>)
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\n&quot;</span>
+
+        <span class="ruby-comment"># Grab each event</span>
+            <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@event_array</span>.<span class="ruby-identifier">length</span>
+                <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">hr</span>
+                <span class="ruby-identifier">single_event_printer</span>(<span class="ruby-ivar">@event_array</span>[<span class="ruby-identifier">i</span>],<span class="ruby-keyword">false</span>)
+            <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;There are not currently any events in the database\n&quot;</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-post_updates" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">post_updates</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: none @post: Updates the database @return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="post_updates-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 411</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">post_updates</span> <span class="ruby-comment">#:doc:</span>
+     <span class="ruby-comment"># posts updated events to the database with new attendee information</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">length</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">update_event</span>(<span class="ruby-ivar">@attending_events</span>[<span class="ruby-identifier">i</span>])
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reminder" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reminder</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: none @post: Prints a reminder of the events that the attendee object
+is attending @return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="reminder-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 331</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reminder</span> <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-identifier">system</span> <span class="ruby-string">&quot;clear&quot;</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">any?</span>
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">title_print_ext</span>(<span class="ruby-string">&quot;Reminders&quot;</span>)
+        <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">sub_title_print</span>(<span class="ruby-string">&quot;List of Selected Events&quot;</span>)
+
+        <span class="ruby-comment"># Grab each event that the user is going to and print it</span>
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@attending_events</span>.<span class="ruby-identifier">length</span>
+            <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">hr</span>
+            <span class="ruby-identifier">single_event_printer</span>(<span class="ruby-ivar">@attending_events</span>[<span class="ruby-identifier">i</span>],<span class="ruby-keyword">false</span>)
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">sleep</span> <span class="ruby-value">3</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-setup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@pre: none @post: creates a database controller object retrieves the
+events, also sets some bool flags depending on what the database returns
+@return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="setup-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span> <span class="ruby-comment">#:doc:</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-constant">DatabaseController</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@event_array</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">get_events</span>
+    <span class="ruby-ivar">@number_of_events</span> = <span class="ruby-ivar">@event_array</span>.<span class="ruby-identifier">length</span>
+    <span class="ruby-ivar">@events</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@browsing</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-single_event_printer" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">single_event_printer</span><span
+            class="method-args">(event,single)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@desc: Template for printing a single event @pre: takes an event and a bool
+flag to indicate if more than one event will eventually be printed @post:
+prints events @return: none</p>
+          
+          
+
+          
+          <div class="method-source-code" id="single_event_printer-source">
+            <pre><span class="ruby-comment"># File src/attend.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">single_event_printer</span>(<span class="ruby-identifier">event</span>,<span class="ruby-identifier">single</span>) <span class="ruby-comment">#:doc:</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">single</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\n\n#{@spacer}Event ID:\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_id</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;\n#{@spacer}Event Name:\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_name</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{@spacer}Date:\t\t&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%A %B %d, %Y&#39;</span>)
+    <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;#{@spacer}Time(s)&quot;</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@military_time</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot; (12hr):&quot;</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot; (24hr): &quot;</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">for</span> <span class="ruby-identifier">j</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@military_time</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">j</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%l:%M%P&#39;</span>)
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">j</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%H:%M&#39;</span>)
+        <span class="ruby-keyword">end</span>
+    
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">j</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;, &quot;</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Attendees:\t&quot;</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;None yet, be the first to attend!\n&quot;</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>.<span class="ruby-identifier">length</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span>
+                <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_name</span>() <span class="ruby-operator">+</span> <span class="ruby-string">&quot; (&quot;</span>
+                <span class="ruby-keyword">for</span> <span class="ruby-identifier">j</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span>
+                    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@military_time</span>
+                        <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">j</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%H:%M&#39;</span>)
+                    <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_timeslots</span>[<span class="ruby-identifier">j</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%I:%M%P&#39;</span>)
+                    <span class="ruby-keyword">end</span>
+                    <span class="ruby-keyword">if</span> <span class="ruby-identifier">j</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_timeslots</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>
+                        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;, &quot;</span>
+                    <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;)&quot;</span>
+            <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">print</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">get_name</span>()
+            <span class="ruby-keyword">end</span>
+
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_attendees</span>.<span class="ruby-identifier">length</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>
+                <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;, &quot;</span>
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\n&quot;</span>
+
+    <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;\n#{@spacer}Description:\t&quot;</span>
+    <span class="ruby-ivar">@drive</span>.<span class="ruby-identifier">desc_printer</span> <span class="ruby-identifier">event</span>.<span class="ruby-identifier">get_description</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\n&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

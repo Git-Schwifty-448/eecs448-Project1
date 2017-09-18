@@ -1,12 +1,13 @@
-Sun, 17 Sep 2017 20:01:15 -0500
-./README.md	Sun, 17 Sep 2017 19:34:18 -0500
-./src/databaseController.rb	Sun, 17 Sep 2017 20:01:08 -0500
-./src/attend.rb	Sun, 17 Sep 2017 19:04:16 -0500
-./src/driver.rb	Sun, 17 Sep 2017 17:56:27 -0500
-./src/attendee.rb	Sun, 17 Sep 2017 19:58:24 -0500
-./src/event.rb	Sun, 17 Sep 2017 19:56:29 -0500
-./src/controller.rb	Sun, 17 Sep 2017 19:04:59 -0500
-./src/admin.rb	Sun, 17 Sep 2017 19:07:39 -0500
-./main.rb	Thu, 14 Sep 2017 10:42:24 -0500
-./Makefile	Sun, 17 Sep 2017 15:14:44 -0500
-./db.sqlite	Sun, 17 Sep 2017 19:22:43 -0500
+Sun, 17 Sep 2017 22:42:05 -0500
+./2.sqlite	Sun, 17 Sep 2017 22:07:00 -0500
+./db.sqlite	Sun, 17 Sep 2017 22:15:09 -0500
+./main.rb	Sun, 17 Sep 2017 19:57:19 -0500
+./Makefile	Sun, 17 Sep 2017 15:09:01 -0500
+./README.md	Sun, 17 Sep 2017 22:16:22 -0500
+./src/admin.rb	Sun, 17 Sep 2017 22:19:20 -0500
+./src/attend.rb	Sun, 17 Sep 2017 22:34:24 -0500
+./src/attendee.rb	Sun, 17 Sep 2017 22:39:44 -0500
+./src/controller.rb	Sun, 17 Sep 2017 22:42:01 -0500
+./src/databaseController.rb	Sun, 17 Sep 2017 22:01:19 -0500
+./src/driver.rb	Sun, 17 Sep 2017 22:38:17 -0500
+./src/event.rb	Sun, 17 Sep 2017 20:14:41 -0500

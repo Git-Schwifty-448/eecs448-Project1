@@ -8,6 +8,7 @@
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -107,7 +108,8 @@
 
   <section class="description">
     
-<p>File: driver.rb Author: Date Created: 9/8/17 Description:</p>
+<p>File: driver.rb Author: Abraham Dick Date Created: 9/8/17 Description: In
+charge of printing things to terminal and doing some basical calculations</p>
 
   </section>
 
@@ -185,13 +187,14 @@
 
         <div class="method-description">
           
-          
+          <p>@pre: takes an an upper and lower bounds @post:gets user input @return: an
+integer option</p>
           
           
 
           
           <div class="method-source-code" id="choice_getter-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 112</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">choice_getter</span>(<span class="ruby-identifier">low</span>,<span class="ruby-identifier">high</span>)
 
     <span class="ruby-identifier">choice</span> = <span class="ruby-value">0</span>
@@ -227,13 +230,15 @@
 
         <div class="method-description">
           
-          
+          <p>same as <a
+href="Driver.html#method-i-choice_getter">#choice_getter</a>(low,high)
+except for use with the correct spacing for the sub titled options</p>
           
           
 
           
           <div class="method-source-code" id="choice_getter_ext-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 134</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 150</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">choice_getter_ext</span>(<span class="ruby-identifier">low</span>,<span class="ruby-identifier">high</span>)
 
     <span class="ruby-identifier">choice</span> = <span class="ruby-value">0</span>
@@ -269,13 +274,13 @@
 
         <div class="method-description">
           
-          
+          <p>breaks up a long string over multiple lines</p>
           
           
 
           
           <div class="method-source-code" id="desc_printer-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 158</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 177</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">desc_printer</span>(<span class="ruby-identifier">string</span>)
     <span class="ruby-ivar">@length</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">length</span>
     <span class="ruby-identifier">string</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; &#39;</span>)
@@ -335,7 +340,7 @@ that only contain upper and lowercase letters</p>
 
           
           <div class="method-source-code" id="get_alpha-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 190</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 209</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_alpha</span>(<span class="ruby-identifier">message</span>)
     <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
         <span class="ruby-identifier">print</span> <span class="ruby-identifier">message</span>
@@ -373,13 +378,13 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          
+          <p>@pre: none @post: prints a horizontal rule to terminal @return: none</p>
           
           
 
           
           <div class="method-source-code" id="hr-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 148</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 166</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">hr</span>
     <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-ivar">@size</span><span class="ruby-operator">+</span><span class="ruby-value">2</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>
@@ -412,13 +417,14 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          
+          <p>@pre: takes an array @post:prints and calls choic_getter @return: an
+integer option</p>
           
           
 
           
           <div class="method-source-code" id="menu_builder-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 103</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">menu_builder</span>(<span class="ruby-identifier">option_array</span>)
     <span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">option</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot; \u21E8 #{option}&quot;</span>
@@ -450,13 +456,15 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          
+          <p>same as <a
+href="Driver.html#method-i-menu_builder">#menu_builder</a>(option_array)
+except for use with the correct spacing for the sub titled options</p>
           
           
 
           
           <div class="method-source-code" id="menu_builder_ext-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 125</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 140</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">menu_builder_ext</span>(<span class="ruby-identifier">option_array</span>)
     <span class="ruby-identifier">option_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">option</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;         \u21E8 #{option}&quot;</span>
@@ -488,13 +496,13 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          
+          <p>@pre: Takes a string @post:prints a title heading bracket @return: none</p>
           
           
 
           
           <div class="method-source-code" id="sub_title_print-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 80</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">sub_title_print</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -540,13 +548,13 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          
+          <p>@pre: Takes a string @post:prints a title heading bracket @return: none</p>
           
           
 
           
           <div class="method-source-code" id="title_print-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 15</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">title_print</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -599,13 +607,13 @@ that only contain upper and lowercase letters</p>
 
         <div class="method-description">
           
-          <p>for use with sub title print onyl</p>
+          <p>@pre: Takes a string @post:prints a title heading bracket @return: none</p>
           
           
 
           
           <div class="method-source-code" id="title_print_ext-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 46</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">title_print_ext</span>(<span class="ruby-identifier">title</span>)
 
     <span class="ruby-identifier">title_size</span> = <span class="ruby-identifier">title</span>.<span class="ruby-identifier">length</span>
@@ -669,7 +677,7 @@ from that list</p>
 
           
           <div class="method-source-code" id="validate_input-source">
-            <pre><span class="ruby-comment"># File src/driver.rb, line 207</span>
+            <pre><span class="ruby-comment"># File src/driver.rb, line 226</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_input</span>(<span class="ruby-identifier">acceptable_input</span>)
     <span class="ruby-ivar">@user_input</span> = <span class="ruby-string">&quot;&quot;</span>
 
@@ -698,7 +706,7 @@ from that list</p>
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Generated by <a href="https://rdoc.github.io/rdoc">RDoc</a> 5.0.0.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

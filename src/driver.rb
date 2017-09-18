@@ -12,6 +12,9 @@ class Driver
         @spacer = "        "
     end
 
+    # @pre: Takes a string
+    # @post:prints a title heading bracket
+    # @return: none
     def title_print(title)
 
         title_size = title.length
@@ -42,7 +45,9 @@ class Driver
         print "\u2518\n"
     end
 
-    #for use with sub title print onyl
+    # @pre: Takes a string
+    # @post:prints a title heading bracket
+    # @return: none
     def title_print_ext(title)
 
         title_size = title.length
@@ -77,6 +82,9 @@ class Driver
         print "\u2534\u2500\u2500\u2500\u2510\n"
     end
 
+    # @pre: Takes a string
+    # @post:prints a title heading bracket
+    # @return: none
     def sub_title_print(title)
 
         title_size = title.length
@@ -100,6 +108,9 @@ class Driver
         print "\u2518\n"
     end
 
+    # @pre: takes an array
+    # @post:prints and calls choic_getter
+    # @return: an integer option
     def menu_builder(option_array)
         option_array.each do |option|
             puts " \u21E8 #{option}"
@@ -109,6 +120,9 @@ class Driver
         return menu_choice
     end
 
+    # @pre: takes an an upper and lower bounds
+    # @post:gets user input
+    # @return: an integer option
     def choice_getter(low,high)
 
         choice = 0
@@ -122,6 +136,7 @@ class Driver
 
     end
 
+    # same as menu_builder(option_array) except for use with the correct spacing for the sub titled options
     def menu_builder_ext(option_array)
         option_array.each do |option|
             puts "         \u21E8 #{option}"
@@ -131,6 +146,7 @@ class Driver
         return menu_choice
     end
 
+    # same as choice_getter(low,high) except for use with the correct spacing for the sub titled options
     def choice_getter_ext(low,high)
 
         choice = 0
@@ -144,7 +160,9 @@ class Driver
 
     end
 
-
+    # @pre: none
+    # @post: prints a horizontal rule to terminal
+    # @return: none
     def hr
         for i in 0...@size+2
             if i > 3
@@ -155,6 +173,7 @@ class Driver
         end
     end
 
+    # breaks up a long string over multiple lines
     def desc_printer(string)
         @length = string.length
         string = string.split(' ')
