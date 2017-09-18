@@ -51,9 +51,7 @@ class Attend
             sleep 2
         end
 
-        # @pre: none
-        # @post: posts updated events to the database with new attendee information
-        # @return: none
+        # posts updated events to the database with new attendee information
         if !@attending_events.empty?
             for i in 0...@attending_events.length
                 @db.update_event(@attending_events[i])
