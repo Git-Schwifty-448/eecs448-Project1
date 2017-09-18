@@ -3,7 +3,7 @@
     File: admin.rb
     Author: Qualen Pollard
     Date Created: 9/8/17
-    Description: Models the admins controls over creating events.
+    Description: Models the admins controls over creating events and showing events.
 
 =end
 
@@ -434,12 +434,13 @@ class Admin
                 return (temp_holder.to_i)
             end
 
-            raise ArgumentError, '#{@spacer}Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m.'
+            raise ArgumentError, "\n#{@spacer}Could not convert time. Make sure input is formatted as hh:mm a.m. or hh:mm p.m."
         end
 
         #Pre: An event was created and persisted to the data base with correct info.
         #Post: If yes, the admin gets to create another event. If no, then the program exits.
         #Return: True if yes, false if no.
+
         def get_validation
           system 'clear'
           @drive.title_print_ext("Admin Mode")
@@ -574,7 +575,7 @@ class Admin
 #-------------------------------------------------------------------------------
 #                             Abe's Code
 #-------------------------------------------------------------------------------
-	def display_events
+    def display_events
 		@military_time = true
         @event_array = @DB.get_events
         @number_of_events = @event_array.length
@@ -671,3 +672,8 @@ class Admin
 		print "\n"
 	end
 end
+
+#Used DateTime class of Ruby for storing dates and time.
+#".split(':')" from https://ruby-doc.org/core-2.2.0/String.html
+#"/[[:alpha:]]/" and "/[[:digit:]]/" from Regexp class of Ruby
+#".casecmp" method understood from https://stackoverflow.com/questions/13824444/comparing-two-strings-in-ruby
