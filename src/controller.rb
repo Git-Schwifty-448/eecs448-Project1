@@ -1,9 +1,9 @@
 =begin
 
     File: controller.rb
-    Author:
+    Author: Abraham Dick
     Date Created: 9/8/17
-    Description:
+    Description: Controls the basic distribution between the two main modes and looping
 
 =end
 

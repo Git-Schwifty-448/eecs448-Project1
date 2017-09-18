@@ -1,9 +1,9 @@
 =begin
 
     File: main.rb
-    Author:
+    Author: Abraham Dick
     Date Created: 9/8/17
-    Description:
+    Description: In charge of running the program from the top level folder (creating the main controller)
 
 =end
 
