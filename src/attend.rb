@@ -27,6 +27,10 @@ class Attend
         @attending_events = Array.new
     end
 
+    def get_military_time
+        @name
+    end
+
     # @desc: In charge of control of the attend class. Runs the setup to get database data,
     # runs the program, and then posts the events back to the database
     # @pre: none

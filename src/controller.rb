@@ -22,6 +22,10 @@ class Controller
 
     def run
 
+        # Create objects for both modes to keep military time constant
+        @admin_controller = Admin.new
+        @user_controller = Attend.new
+
         while true
             system 'clear'
             @drive.title_print("Quablex Event Coordinator")
@@ -45,10 +49,8 @@ class Controller
 
             case menu_choice
                 when 1
-                    @admin_controller = Admin.new
                     @admin_controller.run
                 when 2
-                    @user_controller = Attend.new
                     @user_controller.run
                 when 3
                     break
