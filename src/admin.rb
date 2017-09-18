@@ -194,57 +194,57 @@ class Admin
             puts "\n#{@spacer}Please choose a day for the event... "
             case month_choice
             when 1
-                print "#{@spacer}Remember there are 31 days in January:"
+                print "#{@spacer}Remember there are 31 days in January: "
                 day_choice = STDIN.gets.chomp
             when 2
-                print "#{@spacer}Remember there are 28 days in February...unless it's a leap year!:"
+                print "#{@spacer}Remember there are 28 days in February...unless it's a leap year!: "
                 day_choice = STDIN.gets.chomp
                 if Date.gregorian_leap?(@event_year)        #Checks for leap year.
                     while (day_choice.to_i < 1) || (day_choice.to_i > 29)
-                    print "\n#{@spacer}That day doesn't exist! Try again:"
+                    print "\n#{@spacer}That day doesn't exist! Try again: "
                     day_choice = STDIN.gets.chomp
                     end
                 else                                        #Checks on a regular year.
                     while (day_choice.to_i < 1) || (day_choice.to_i > 28)
-                    print "\n#{@spacer}That day doesn't exist! Try again:"
+                    print "\n#{@spacer}That day doesn't exist! Try again: "
                     day_choice = STDIN.gets.chomp
                     end
                 end
             when 3
-                print "#{@spacer}Remember there are 31 days in March:"
+                print "#{@spacer}Remember there are 31 days in March: "
                 day_choice = STDIN.gets.chomp
             when 4
-                print "#{@spacer}Remember there are 30 days in April:"
+                print "#{@spacer}Remember there are 30 days in April: "
                 day_choice = STDIN.gets.chomp
             when 5
-                print "#{@spacer}Remember there are 31 days in May:"
+                print "#{@spacer}Remember there are 31 days in May: "
                 day_choice = STDIN.gets.chomp
             when 6
-                print "#{@spacer}Remember there are 30 days in June:"
+                print "#{@spacer}Remember there are 30 days in June: "
                 day_choice = STDIN.gets.chomp
             when 7
-                print "#{@spacer}Remember there are 31 days in July:"
+                print "#{@spacer}Remember there are 31 days in July: "
                 day_choice = STDIN.gets.chomp
             when 8
-                print "#{@spacer}Remember there are 31 days in August:"
+                print "#{@spacer}Remember there are 31 days in August: "
                 day_choice = STDIN.gets.chomp
             when 9
-                print "#{@spacer}Remember there are 30 days in September:"
+                print "#{@spacer}Remember there are 30 days in September: "
                 day_choice = STDIN.gets.chomp
             when 10
-                print "#{@spacer}Remember there are 31 days in October:"
+                print "#{@spacer}Remember there are 31 days in October: "
                 day_choice = STDIN.gets.chomp
             when 11
-                print "#{@spacer}Remember there are 30 days in November:"
+                print "#{@spacer}Remember there are 30 days in November: "
                 day_choice = STDIN.gets.chomp
             when 12
-                print "#{@spacer}Remember there are 31 days in December:"
+                print "#{@spacer}Remember there are 31 days in December: "
                 day_choice = STDIN.gets.chomp
             end
 
             #Additional check for other months
             while (day_choice.to_i < 1) || (day_choice.to_i > 31)
-                print "\n#{@spacer}That day doesn't exist! Try again:"
+                print "\n#{@spacer}That day doesn't exist! Try again: "
                 day_choice = STDIN.gets.chomp
             end
 
@@ -292,7 +292,7 @@ class Admin
                 end
 
                 puts "\n#{@spacer}How many time slots would you like to take for this event? \n"
-                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous):"
+                print "#{@spacer}(Events are scheduled in 30 minute blocks. These blocks can be non-contiguous): "
 
                 #Receive the amount of slots they want to take up then convert.
                 slot_choice_s = @drive.validate_input(slot_choices)
@@ -302,7 +302,7 @@ class Admin
                 array_increment = 0
                 while slot_counter != slot_choice_i
                     #Retreives the time from the user.
-                    print "#{@spacer}Enter a time (i.e., 7:30 P.M.):"
+                    print "#{@spacer}Enter a time (i.e., 7:30 P.M.): "
                     time = STDIN.gets.chomp
 
                     #Checks to see if the time is valid throughout the array.
@@ -320,8 +320,35 @@ class Admin
                     minute = time[1].slice(0..1)
                     @event_minute = minute.to_i
 
+                    if @timeslots_array.length == 0
+                    else
+                        d = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                        while @timeslots_array.include?(d)
+                            puts "#{@spacer}Sorry, that time is already in the array, try again..."
+                            print "#{@spacer}Enter a time (i.e., 7:30 P.M.):"
+                            time = STDIN.gets.chomp
+
+                            #Checks to see if the time is valid throughout the array.
+                            time_match = time_check(time, temp_array)
+                            while time_match
+                                print "#{@spacer}Must enter a valid time: "
+                                time = STDIN.gets.chomp
+                                time_match = time_check(time, temp_array)
+                            end
+
+                            time = time.split(':')
+
+                            @event_hour = convert_to_military_time(time)
+
+                            minute = time[1].slice(0..1)
+                            @event_minute = minute.to_i
+                            d = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                        end
+                    end
+
                     #Add the time in the temp_array to the temp_timeslot_array.
                     @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+
                     array_increment += 1
                     slot_counter += 1
                 end
@@ -361,6 +388,32 @@ class Admin
 
                     minute = time[1].slice(0..1)
                     @event_minute = minute.to_i
+
+                    if @timeslots_array.length == 0
+                    else
+                        d = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                        while @timeslots_array.include?(d)
+                            puts "#{@spacer}Sorry, that time is already in the array, try again..."
+                            print "#{@spacer}Enter a time (i.e., 7:30 P.M.):"
+                            time = STDIN.gets.chomp
+
+                            #Checks to see if the time is valid throughout the array.
+                            time_match = time_check(time, temp_array)
+                            while time_match
+                                print "#{@spacer}Must enter a valid time: "
+                                time = STDIN.gets.chomp
+                                time_match = time_check(time, temp_array)
+                            end
+
+                            time = time.split(':')
+
+                            @event_hour = time[0].to_i
+
+                            minute = time[1].slice(0..1)
+                            @event_minute = minute.to_i
+                            d = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
+                        end
+                    end
 
                     @timeslots_array[array_increment] = DateTime.new(@event_year, @event_month, @event_day, @event_hour, @event_minute)
                     array_increment += 1
