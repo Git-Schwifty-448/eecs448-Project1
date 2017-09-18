@@ -37,8 +37,8 @@ class Controller
 
             menu = Array.new
 
-            menu[0] = "1. Admin Mode"
-            menu[1] = "2. User Mode"
+            menu[0] = "1. Create Events (Admin Mode)"
+            menu[1] = "2. Go to Events (Adding Availability Mode)"
             menu[2] = "3. Quit"
 
             menu_choice = @drive.menu_builder(menu)

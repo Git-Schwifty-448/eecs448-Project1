@@ -144,7 +144,7 @@ class Attend
                                 print ", "
                             end
                         end
-                        print ")"
+                        print " )"
                     else
                         print event.get_attendees[i].get_name()
                     end
