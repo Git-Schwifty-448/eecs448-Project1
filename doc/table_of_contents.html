@@ -25,10 +25,20 @@
 <h2 id="pages">Pages</h2>
 <ul>
   <li class="file">
-    <a href="README_txt.html">README</a>
+    <a href="Makefile.html">Makefile</a>
   </li>
     <li class="file">
-    <a href="planning_txt.html">planning</a>
+    <a href="README_md.html">README</a>
+
+    <ul>
+      <li><a href="README_md.html#label-Quablex">Quablex</a>
+      <li><a href="README_md.html#label-Getting+Started">Getting Started</a>
+      <li><a href="README_md.html#label-Prerequisites">Prerequisites</a>
+      <li><a href="README_md.html#label-Installation">Installation</a>
+      <li><a href="README_md.html#label-Built+With">Built With</a>
+      <li><a href="README_md.html#label-Authors">Authors</a>
+      <li><a href="README_md.html#label-Additional+Sources">Additional Sources</a>
+    </ul>
   </li>
   
 </ul>
@@ -37,6 +47,9 @@
 <ul>
   <li class="class">
     <a href="Admin.html">Admin</a>
+  </li>
+  <li class="class">
+    <a href="Attend.html">Attend</a>
   </li>
   <li class="class">
     <a href="Attendee.html">Attendee</a>
@@ -56,9 +69,6 @@
   <li class="class">
     <a href="Object.html">Object</a>
   </li>
-  <li class="class">
-    <a href="User.html">User</a>
-  </li>
 </ul>
 
 <h2 id="methods">Methods</h2>
@@ -68,6 +78,11 @@
     <a href="Admin.html#method-c-new">::new</a>
     &mdash;
     <span class="container">Admin</span>
+
+  <li class="method">
+    <a href="Attend.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Attend</span>
 
   <li class="method">
     <a href="Attendee.html#method-c-new">::new</a>
@@ -95,11 +110,6 @@
     <span class="container">Event</span>
 
   <li class="method">
-    <a href="User.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
     <a href="Event.html#method-i-add_attendee">#add_attendee</a>
     &mdash;
     <span class="container">Event</span>
@@ -110,19 +120,14 @@
     <span class="container">Attendee</span>
 
   <li class="method">
-    <a href="User.html#method-i-attend_event">#attend_event</a>
-    &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
     <a href="Driver.html#method-i-choice_getter">#choice_getter</a>
     &mdash;
     <span class="container">Driver</span>
 
   <li class="method">
-    <a href="User.html#method-i-clean_attendee">#clean_attendee</a>
+    <a href="Driver.html#method-i-choice_getter_ext">#choice_getter_ext</a>
     &mdash;
-    <span class="container">User</span>
+    <span class="container">Driver</span>
 
   <li class="method">
     <a href="Attendee.html#method-i-clear_timeslot">#clear_timeslot</a>
@@ -130,9 +135,9 @@
     <span class="container">Attendee</span>
 
   <li class="method">
-    <a href="User.html#method-i-convert_to_military_time">#convert_to_military_time</a>
+    <a href="Admin.html#method-i-convert_to_military_time">#convert_to_military_time</a>
     &mdash;
-    <span class="container">User</span>
+    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Admin.html#method-i-create_date">#create_date</a>
@@ -145,14 +150,9 @@
     <span class="container">Admin</span>
 
   <li class="method">
-    <a href="Object.html#method-i-create_time_array">#create_time_array</a>
+    <a href="Admin.html#method-i-create_time_array">#create_time_array</a>
     &mdash;
-    <span class="container">Object</span>
-
-  <li class="method">
-    <a href="User.html#method-i-create_user">#create_user</a>
-    &mdash;
-    <span class="container">User</span>
+    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Driver.html#method-i-desc_printer">#desc_printer</a>
@@ -160,9 +160,9 @@
     <span class="container">Driver</span>
 
   <li class="method">
-    <a href="User.html#method-i-event_controller">#event_controller</a>
+    <a href="Admin.html#method-i-display_events">#display_events</a>
     &mdash;
-    <span class="container">User</span>
+    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Driver.html#method-i-get_alpha">#get_alpha</a>
@@ -180,32 +180,12 @@
     <span class="container">Event</span>
 
   <li class="method">
-    <a href="Admin.html#method-i-get_description">#get_description</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
     <a href="Event.html#method-i-get_description">#get_description</a>
     &mdash;
     <span class="container">Event</span>
 
   <li class="method">
-    <a href="User.html#method-i-get_event_by_id">#get_event_by_id</a>
-    &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
     <a href="Admin.html#method-i-get_event_counter">#get_event_counter</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-get_event_date">#get_event_date</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-get_event_name">#get_event_name</a>
     &mdash;
     <span class="container">Admin</span>
 
@@ -215,29 +195,9 @@
     <span class="container">DatabaseController</span>
 
   <li class="method">
-    <a href="User.html#method-i-get_events">#get_events</a>
-    &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-get_f_name">#get_f_name</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
     <a href="Event.html#method-i-get_id">#get_id</a>
     &mdash;
     <span class="container">Event</span>
-
-  <li class="method">
-    <a href="Object.html#method-i-get_index">#get_index</a>
-    &mdash;
-    <span class="container">Object</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-get_l_name">#get_l_name</a>
-    &mdash;
-    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Attendee.html#method-i-get_name">#get_name</a>
@@ -270,14 +230,9 @@
     <span class="container">Event</span>
 
   <li class="method">
-    <a href="Admin.html#method-i-get_timeslots_array">#get_timeslots_array</a>
+    <a href="Admin.html#method-i-get_validation">#get_validation</a>
     &mdash;
     <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Object.html#method-i-get_validation">#get_validation</a>
-    &mdash;
-    <span class="container">Object</span>
 
   <li class="method">
     <a href="Driver.html#method-i-hr">#hr</a>
@@ -295,6 +250,11 @@
     <span class="container">Driver</span>
 
   <li class="method">
+    <a href="Driver.html#method-i-menu_builder_ext">#menu_builder_ext</a>
+    &mdash;
+    <span class="container">Driver</span>
+
+  <li class="method">
     <a href="DatabaseController.html#method-i-persist_attendee">#persist_attendee</a>
     &mdash;
     <span class="container">DatabaseController</span>
@@ -303,11 +263,6 @@
     <a href="DatabaseController.html#method-i-persist_event">#persist_event</a>
     &mdash;
     <span class="container">DatabaseController</span>
-
-  <li class="method">
-    <a href="User.html#method-i-reminder">#reminder</a>
-    &mdash;
-    <span class="container">User</span>
 
   <li class="method">
     <a href="Object.html#method-i-run">#run</a>
@@ -320,14 +275,14 @@
     <span class="container">Admin</span>
 
   <li class="method">
+    <a href="Attend.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">Attend</span>
+
+  <li class="method">
     <a href="Controller.html#method-i-run">#run</a>
     &mdash;
     <span class="container">Controller</span>
-
-  <li class="method">
-    <a href="User.html#method-i-run">#run</a>
-    &mdash;
-    <span class="container">User</span>
 
   <li class="method">
     <a href="Admin.html#method-i-set_admin_info">#set_admin_info</a>
@@ -340,39 +295,9 @@
     <span class="container">Admin</span>
 
   <li class="method">
-    <a href="Admin.html#method-i-set_event_date">#set_event_date</a>
+    <a href="Admin.html#method-i-single_event_printer">#single_event_printer</a>
     &mdash;
     <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-set_event_description">#set_event_description</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-set_event_name">#set_event_name</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-set_f_name">#set_f_name</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-set_l_name">#set_l_name</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="Admin.html#method-i-set_timeslot_array">#set_timeslot_array</a>
-    &mdash;
-    <span class="container">Admin</span>
-
-  <li class="method">
-    <a href="User.html#method-i-single_event_printer">#single_event_printer</a>
-    &mdash;
-    <span class="container">User</span>
 
   <li class="method">
     <a href="Driver.html#method-i-sub_title_print">#sub_title_print</a>
@@ -380,14 +305,9 @@
     <span class="container">Driver</span>
 
   <li class="method">
-    <a href="User.html#method-i-testing">#testing</a>
+    <a href="Admin.html#method-i-time_check">#time_check</a>
     &mdash;
-    <span class="container">User</span>
-
-  <li class="method">
-    <a href="Object.html#method-i-time_check">#time_check</a>
-    &mdash;
-    <span class="container">Object</span>
+    <span class="container">Admin</span>
 
   <li class="method">
     <a href="Driver.html#method-i-title_print">#title_print</a>

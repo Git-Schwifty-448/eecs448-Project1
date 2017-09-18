@@ -5,6 +5,10 @@
     Description: stores information about an attendee for a specific event
 =end
 
+=begin rdoc
+Contains the information of a single attendee for one specific Event.  Attendee
+should always exist in the table of an Event object.
+=end
 class Attendee
 
     # Params:
@@ -12,7 +16,10 @@ class Attendee
 	# +timeslots+:: Array of DateTime objects representing the timeslots the attendee can make
     def initialize(name, timeslots)
         raise ArgumentError.new("'name' must be a string") if !name.is_a? String
+<<<<<<< HEAD
+=======
         # raise ArgumentError.new("'timeslots' must not be empty") if timeslots.length == 0
+>>>>>>> 9b8e2ceceb048eb82554fd297b157bca5b256147
 
         @name = name
         @timeslots = timeslots.sort!
@@ -34,6 +41,7 @@ class Attendee
         @timeslots = []
     end
 
+	# Gets timeslots of the event, converted into 12hr format.
     def get_timeslots_12hrs
     	#create the new array
     	@timeslots_12hrs = Array.new

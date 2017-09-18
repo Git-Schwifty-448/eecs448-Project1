@@ -6,7 +6,7 @@ A simple, lightweight tool for planning and scheduling events.
 
 ### Prerequisites
 
-Running Quablex will require:
+Running Quablex will require:  
 * Ruby (2.4)
 * Sqlite
 * Ruby Gems: Sequel, sqlite3
@@ -28,4 +28,7 @@ Once all of the prerequisites are installed, simply clone the repository and exe
 
 ## Additional Sources
 
-https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
+* [Sequel Cheat Sheet](http://sequel.jeremyevans.net/rdoc/files/doc/cheat_sheet_rdoc.html)
+* https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string
+* https://stackoverflow.com/questions/6407834/how-can-i-check-my-input-string  
+Used for validating input of characters only
